@@ -1,0 +1,25 @@
+/voicebox/
+/voice/aud/
+
+############
+## Matlal tempfiles
+############
+*.m~
+
+############
+## wav_files
+############
+*.wav
+
+############
+## Windows
+############
+
+# Windows image file caches
+Thumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Mac crap
+.DS_Store
