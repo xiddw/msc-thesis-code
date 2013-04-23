@@ -1,8 +1,8 @@
 %{
     cd 'E:\ESCUELA\CIMAT\4 Semestre\ST2\prog\'
-    cd 'C:\Users\Estudiante\Documents\GitHub\msc-thesis-code\'
+    
+    cd 'C:\Users\xiddw\Documents\GitHub\msc-thesis-code\'
     addpath('hmm\')
-    % addpath('voicebox\')
     addpath('mfcc\')
     addpath('voice\')
 mex -O -outdir hmm hmm/cfwd_bwd.cpp hmm\cpptipos\matriz.cpp hmm\cpptipos\vector.cpp
@@ -13,24 +13,23 @@ kk = [45:15:90, 100:20:200];
 %grnd = 'mfcc\calderon5_ground.csv';
 
 grnd = 'pruebas\cuervo1f_ground.csv';
-%grnd = 'mfcc\noct1f_ground.csv';
+%grnd = 'pruebas\noct1f_ground.csv';
+
+MAX_ITER_ESTIM = 30;
+MAX_ITER_HMM = 340;
+
+R_SERIES = 200;
 
 kk = [120];
 
+T = 0;
+
 for www = kk
     tic;
-
-    MAX_ITER_ESTIM = 30;
-    MAX_ITER_HMM = 340;
-
-    R_SERIES = 200;
-
     % Variable latente z_n {speakers}
     % Variable observada x_n {diccionario}
-    
-    %noct1f
-    
-    ruta = strcat('pruebas\prb_cuervo2f_', int2str(kk), '\')
+       
+    ruta = strcat('pruebas\prb_cuervo1f1_', int2str(kk), '\')
     arch = strcat('pruebas\cuervo1f_', int2str(kk), '.csv')
     
     %ruta = strcat('mfcc\prb_noct1f_', int2str(kk), '\')
@@ -41,12 +40,6 @@ for www = kk
     mkdir(ruta);
 
     kc = csvread(arch);
-
-    listLL1 = [];
-    listLL2 = [];
-    listbic = [];
-    listfp1 = [];
-    listfp2 = [];
 
     K = max(kc);    % Numero de 'palabras' en diccionario
     NN = 2;          % Numero de speakers
@@ -64,7 +57,14 @@ for www = kk
 
     data = kc';
     
-    seq_boot = 1:8;
+    seq_boot = 1:8;    
+    ss = length(seq_boot);
+    
+    listLL1 = zeros(ss);
+    listLL2 = zeros(ss);
+    listbic = zeros(ss);
+    listfp1 = zeros(ss);
+    listfp2 = zeros(ss);
 
     for qqq = seq_boot
         NN = 1 + qqq;
@@ -152,12 +152,12 @@ for www = kk
         img2 = strcat(ruta, int2str(NN), 'to', int2str(NN+1), '_');
         [fp1, fp2] = myplot(orig, img1, ffin1, img2, ffin2);
 
-        listLL1 = [listLL1, maxLL1];
-        listLL2 = [listLL2, maxLL2];
+        listLL1(qqq) = maxLL1;
+        listLL2(qqq) = maxLL2;
 
-        listbic = [listbic, bic];
-        listfp1 = [listfp1, fp1];
-        listfp2 = [listfp2, fp2];
+        listbic(qqq) = bic;
+        listfp1(qqq) = fp1;
+        listfp2(qqq) = fp2;
 
         archivo = strcat(ruta, int2str(NN), 'to', int2str(NN+1));
         save(archivo, 'orig', 'fin1', 'fin2', 'ffin1', 'ffin2')
@@ -168,18 +168,18 @@ for www = kk
     save(archivo, 'listLL1', 'listLL2', 'listbic', 'listfp1', 'listfp2')
     
     close all;
-
+    tac;
 end
 
-N = 120;
-% T = 7219;
-T = 6415;
+ % N  = 120;
+%% T = 7219;
+ % T = 6415;
 
 ii = 2;
 hh = length(listLL1);
 bb = zeros(1, hh);
 MM = 1;
-lambda = 3e3;
+lambda = 2.8e3;
 for i = 1:hh
     MM = MM+1;
     bb(i) = (listLL1(i) - listLL2(i)) - 0.5 * lambda * (MM-1)+(MM*(MM-1))+(MM*(N-1)) * log(T);
