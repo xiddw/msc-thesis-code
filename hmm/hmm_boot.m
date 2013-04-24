@@ -232,11 +232,11 @@ for www = kk
         pvalue = (b + 1) / (R_SERIES + 1);
 
         %%
-        %{       
+        %%{       
         img1 = strcat(ruta, int2str(NN), 'to', int2str(NN+1));
         img2 = strcat(ruta, int2str(NN), 'to', int2str(NN+1), '_');
         [fp1, fp2] = myplot(orig, img1, ffin1, img2, ffin2);
-        %}
+        %%}
         
         %%
         listLL1(qqq) = maxLL1;
