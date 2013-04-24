@@ -1,8 +1,9 @@
 %{
     cd 'E:\ESCUELA\CIMAT\4 Semestre\ST2\prog\'
+    
+    cd 'C:\Users\xiddw\Documents\GitHub\msc-thesis-code\'
     cd 'C:\Users\Estudiante\Documents\GitHub\msc-thesis-code\'
     addpath('hmm\')
-    % addpath('voicebox\')
     addpath('mfcc\')
     addpath('voice\')
 mex -O -outdir hmm hmm/cfwd_bwd.cpp hmm\cpptipos\matriz.cpp hmm\cpptipos\vector.cpp
@@ -13,24 +14,23 @@ kk = [45:15:90, 100:20:200];
 %grnd = 'mfcc\calderon5_ground.csv';
 
 grnd = 'pruebas\cuervo1f_ground.csv';
-%grnd = 'mfcc\noct1f_ground.csv';
+%grnd = 'pruebas\noct1f_ground.csv';
+
+MAX_ITER_ESTIM = 30;
+MAX_ITER_HMM = 340;
+
+R_SERIES = 200;
 
 kk = [120];
 
+T = 0;
+
 for www = kk
     tic;
-
-    MAX_ITER_ESTIM = 30;
-    MAX_ITER_HMM = 340;
-
-    R_SERIES = 200;
-
     % Variable latente z_n {speakers}
     % Variable observada x_n {diccionario}
-    
-    %noct1f
-    
-    ruta = strcat('pruebas\prb_cuervo2f_', int2str(kk), '\')
+       
+    ruta = strcat('pruebas\prb_cuervo1f_boot_', int2str(kk), '\')
     arch = strcat('pruebas\cuervo1f_', int2str(kk), '.csv')
     
     %ruta = strcat('mfcc\prb_noct1f_', int2str(kk), '\')
@@ -41,12 +41,6 @@ for www = kk
     mkdir(ruta);
 
     kc = csvread(arch);
-
-    listLL1 = [];
-    listLL2 = [];
-    listbic = [];
-    listfp1 = [];
-    listfp2 = [];
 
     K = max(kc);    % Numero de 'palabras' en diccionario
     NN = 2;          % Numero de speakers
@@ -64,10 +58,20 @@ for www = kk
 
     data = kc';
     
-    seq_boot = 1:8;
+    seq_boot = 1:3;    
+    seq_offs = 4;
+    ss = length(seq_boot);
+    
+    listLL1 = zeros(ss);
+    listLL2 = zeros(ss);
+    listLLR = zeros(ss);
+    listpva = zeros(ss);
+    %listbic = zeros(ss);
+    listfp1 = zeros(ss);
+    listfp2 = zeros(ss);
 
     for qqq = seq_boot
-        NN = 1 + qqq;
+        NN = seq_offs + qqq;
         %%% Primer modelo
         N1 = NN;	% Numero de speakers
         KN1 = int32(K/N1); % Numero de palabras por speaker
@@ -129,35 +133,120 @@ for www = kk
                 maxi2 = ii;        
                 fin2 = param;
             end 
-
-            %fprintf('Iter: %2d; ', ii);
-            %fprintf('curr1: %f, mm1 (%02d): %f; ', LL1(end), maxi1, maxLL1);
-            %fprintf('curr2: %f, mm2 (%02d): %f; ', LL2(end), maxi2, maxLL2);
-            %fprintf('\n');  
-
+            
+            fprintf('Iter: %2d; ', ii);
+            fprintf('c1: %f, m1 (%02d): %f; ', LL1(end), maxi1, maxLL1);
+            fprintf('c2: %f, m2 (%02d): %f; ', LL2(end), maxi2, maxLL2);
+            fprintf('\n');   
+            
         end
 
         % Estimar log LikelihoodRatio (Observed)
         llro = maxLL2 - maxLL1;
         fprintf('log LR (obs): [%f] \n', llro);
 
-        lambda = 1.0;
-        bic = maxLL1 - 0.5 * lambda * (N1-1)+(N1*(N1-1))+(N1*(K-1)) * log(T) ;
-
+        toc; 
+        
+        %%
         ffin1 = sort_params(orig, fin1);
         ffin2 = sort_params(orig, fin2);
+        
+        
+        %%
+        fprintf('Bootstrapped series: \n');
 
-        toc; 
+        b = 0;
+
+        maxLLRB = -1e12;
+
+        for i = 1:R_SERIES    
+            fprintf('\tSeries %3d: \n', i);
+
+            %{
+            fin1.obs = hmm_sample(fin1, N1, K, T);
+            [ll1] = calc_values(fin1.priori, fin1.mtrans, fin1.memisn, fin1.obs);
+
+            fin2.obs = hmm_sample(fin2, N2, K, T);      
+            [ll2] = calc_values(fin2.priori, fin2.mtrans, fin2.memisn, fin2.obs);
+            %}
+
+            boot = ffin1;
+            boot.obs = hmm_sample(boot, N1, K, T);
+
+            tmaxLL1 = -1e12;
+            tmaxLL2 = -1e12;
+
+            maxi1 = 0;
+            maxi2 = 0;
+
+            tic;    
+            for ii = 1:(MAX_ITER_ESTIM)
+                esti1 = params_rnd(N1, K, KN1);
+                esti1.obs = hmm_sample(esti1, N1, K, T);
+                esti1.hid = key1(esti1.obs); 
+
+                [LL1, param, iter1] = ...
+                    hmm_em(boot.obs, esti1.priori, esti1.mtrans, esti1.memisn, MAX_ITER_HMM);
+
+                if(LL1(end) > tmaxLL1)
+                    tmaxLL1 = LL1(end);
+                    maxi1 = ii;
+
+                    fin1 = param;
+                end     
+
+                esti2 = params_rnd(N2, K, KN2);
+                esti2.obs = hmm_sample(esti2, N2, K, T);
+                esti2.hid = key2(esti2.obs);
+
+                [LL2, param, iter2] = ...
+                    hmm_em(boot.obs, esti2.priori, esti2.mtrans, esti2.memisn, MAX_ITER_HMM - 50);
+
+                if(LL2(end) > tmaxLL2)
+                    tmaxLL2 = LL2(end);
+                    maxi2 = ii;
+
+                    fin2 = param;
+                end 
+
+                fprintf('\t\tIter: %2d; ', ii);
+                fprintf('c: %f, m1 (%02d): %f; ', LL1(end), maxi1, tmaxLL1);
+                fprintf('c: %f, m2 (%02d): %f; ', LL2(end), maxi2, tmaxLL2);
+                fprintf('\n');      
+            end   
+
+            llrb = tmaxLL2 - tmaxLL1;
+            fprintf('\tlog LR (boot){%3d}: [%f] \n', i, llrb);
+
+            if llrb > llro
+                b = b+1
+            end   
+
+            if maxLLRB < llrb
+                maxLLRB = llrb;
+            end
+
+            toc;
+        end
+
+        pvalue = (b + 1) / (R_SERIES + 1);
+
+        %%
+        %{       
         img1 = strcat(ruta, int2str(NN), 'to', int2str(NN+1));
         img2 = strcat(ruta, int2str(NN), 'to', int2str(NN+1), '_');
         [fp1, fp2] = myplot(orig, img1, ffin1, img2, ffin2);
-
-        listLL1 = [listLL1, maxLL1];
-        listLL2 = [listLL2, maxLL2];
-
-        listbic = [listbic, bic];
-        listfp1 = [listfp1, fp1];
-        listfp2 = [listfp2, fp2];
+        %}
+        
+        %%
+        listLL1(qqq) = maxLL1;
+        listLL2(qqq) = maxLL2;
+        listLLR(qqq) = maxLLRB;
+        % listbic(qqq) = bic;
+        listfp1(qqq) = fp1;
+        listfp2(qqq) = fp2;
+        
+        listpva(qqq) = pvalue;
 
         archivo = strcat(ruta, int2str(NN), 'to', int2str(NN+1));
         save(archivo, 'orig', 'fin1', 'fin2', 'ffin1', 'ffin2')
@@ -168,35 +257,7 @@ for www = kk
     save(archivo, 'listLL1', 'listLL2', 'listbic', 'listfp1', 'listfp2')
     
     close all;
-
+    tac;
 end
 
-N = 120;
-% T = 7219;
-T = 6415;
-
-ii = 2;
-hh = length(listLL1);
-bb = zeros(1, hh);
-MM = 1;
-lambda = 3e3;
-for i = 1:hh
-    MM = MM+1;
-    bb(i) = (listLL1(i) - listLL2(i)) - 0.5 * lambda * (MM-1)+(MM*(MM-1))+(MM*(N-1)) * log(T);
-end
-
-f0 = figure; 
-
-sp(1) = plot(ii:(hh+1), bb, 'b');
-hold on;
-sp(2) = plot(ii:(hh+1), bb, 'or', 'MarkerFaceColor', 'r');
-t1 = title('Selección de modelo con BIC');
-
-set(t1, 'FontSize', 16)
-set(gca, 'FontSize', 12);
-set(gca, 'box', 'off');
-set(sp(2),'MarkerSize', 7);
-set(sp, 'linewidth', 2)
-
-legend(strcat('lambda= ', int2str(lambda)))
-hold off;
+        
