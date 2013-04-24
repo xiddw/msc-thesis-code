@@ -29,8 +29,8 @@ for www = kk
     
     %noct1f
     
-    ruta = strcat('mfcc\prb_cuervo1f_', int2str(kk), '\')
-    arch = strcat('mfcc\cuervo1f_', int2str(kk), '.csv')
+    ruta = strcat('pruebas\prb_cuervo1f_', int2str(kk), '\')
+    arch = strcat('pruebas\cuervo1f_', int2str(kk), '.csv')
     
     %ruta = strcat('mfcc\prb_noct1f_', int2str(kk), '\')
     %arch = strcat('mfcc\noct1f_', int2str(kk), '.csv')
@@ -198,5 +198,4 @@ set(sp(2),'MarkerSize', 7);
 set(sp, 'linewidth', 2)
 
 legend(strcat('lambda= ', int2str(lambda)))
-
 hold off;

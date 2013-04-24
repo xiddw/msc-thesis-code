@@ -1,4 +1,5 @@
 function [fp1, fp2] = myplot(a, archivo1, b, archivo2, c)
+    resol = '-r400';
     nrows = 4;
     
     ns = [max(a.hid), max(b.hid)];
@@ -95,7 +96,10 @@ function [fp1, fp2] = myplot(a, archivo1, b, archivo2, c)
     
     set(sf, 'Position', get(0,'Screensize')); 
     %% saveas(sf, archivo1);
-    %% print('-dpng', archivo1, '-r200');
+    if ~strcmp(archivo1, '')
+        print('-dpng', archivo1, resol);
+    end
+    %% 
     
     %%%
     if numel(a.hid) < numel(b.hid)
@@ -163,6 +167,8 @@ function [fp1, fp2] = myplot(a, archivo1, b, archivo2, c)
     
     set(sf, 'Position', get(0,'Screensize')); 
     %% saveas(sf, archivo2);    
-    %% print('-dpng', archivo2, '-r200');
+    if ~strcmp(archivo2, '')
+        print('-dpng', archivo2, resol);
+    end
     
     %colormap(pink)
