@@ -7,7 +7,7 @@ addpath('voice\')
 mex -O -outdir hmm hmm/cfwd_bwd.cpp hmm\cpptipos\matriz.cpp hmm\cpptipos\vector.cpp
 %}
 
-ruta = 'pruebas/prb5/';
+ruta = 'pruebas/prb2/';
 
 tic;
 
@@ -20,7 +20,7 @@ R_SERIES = 200; % 200
 % Variable observada x_n {diccionario}
 K = 120;	% Numero de 'palabras' en diccionario
 
-T = 7000;  	% Numero de muestras en el tiempo
+T = 2000;  	% Numero de muestras en el tiempo
 EX = 1; 	% Numero de ejemplos
 
 NN = 6;     % Numero de speakers
@@ -54,6 +54,7 @@ listLL2 = [];
 listbic = [];
 listfp1 = [];
 listfp2 = [];
+listpva = [];
 
 for qqq = 1:10
 
@@ -124,7 +125,7 @@ end
 llro = maxLL2 - maxLL1;
 fprintf('log LR (obs): [%f] \n', llro);
 
-lambda = 1.0;
+lambda = 3e3;
 bic = maxLL1 - 0.5 * lambda * (N1-1)+(N1*(N1-1))+(N1*(K-1)) * log(T) ;
 
 ffin1 = sort_params(orig, fin1);
@@ -134,23 +135,6 @@ toc;
 img1 = strcat(ruta, int2str(NN), 'to', int2str(NN+1));
 img2 = strcat(ruta, int2str(NN), 'to', int2str(NN+1), '_');
 [fp1, fp2] = myplot(orig, img1, ffin1, img2, ffin2);
-
-listLL1 = [listLL1, maxLL1];
-listLL2 = [listLL2, maxLL2];
-listbic = [listbic, bic];
-listfp1 = [listfp1, fp1];
-listfp2 = [listfp2, fp2];
-
-archivo = strcat(ruta, int2str(NN), 'to', int2str(NN+1));
-save(archivo, 'orig', 'fin1', 'fin2', 'ffin1', 'ffin2')
-
-archivo = strcat(ruta, 'lists.mat');
-save(archivo, 'listLL1', 'listLL2', 'listbic', 'listfp1', 'listfp2')
-
-end
-
-return;
-
 
 % Simular bootstrapped series con modelo parametrizado (modelo 1)
 fprintf('Bootstrapped series: \n');
@@ -209,7 +193,7 @@ for i = 1:R_SERIES
             fin2 = param;
         end 
 
-        fprintf('Iter: %2d; ', ii);
+        fprintf('\t\tIter: %2d; ', ii);
         fprintf('c: %f, m1 (%02d): %f; ', LL1(end), maxi1, maxLL1);
         fprintf('c: %f, m2 (%02d): %f; ', LL2(end), maxi2, maxLL2);
         fprintf('\n');      
@@ -230,3 +214,18 @@ for i = 1:R_SERIES
 end
 
 pvalue = (b + 1) / (R_SERIES + 1);
+
+listLL1 = [listLL1, maxLL1];
+listLL2 = [listLL2, maxLL2];
+listbic = [listbic, bic];
+listfp1 = [listfp1, fp1];
+listfp2 = [listfp2, fp2];
+listpva = [listpva, pvalue];
+
+archivo = strcat(ruta, int2str(NN), 'to', int2str(NN+1));
+save(archivo, 'orig', 'fin1', 'fin2', 'ffin1', 'ffin2')
+
+archivo = strcat(ruta, 'lists.mat');
+save(archivo, 'listLL1', 'listLL2', 'listbic', 'listfp1', 'listfp2')
+
+end
