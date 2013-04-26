@@ -94,7 +94,7 @@ function [fp1, fp2] = myplot(a, archivo1, b, archivo2, c)
     sp = [];
     tt = [];
     
-    set(sf, 'Position', get(0,'Screensize')); 
+    %% set(sf, 'Position', get(0,'Screensize')); 
     %% saveas(sf, archivo1);
     if ~strcmp(archivo1, '')
         print('-dpng', archivo1, resol);
@@ -165,7 +165,7 @@ function [fp1, fp2] = myplot(a, archivo1, b, archivo2, c)
     
     set(tt, 'FontSize', 16)
     
-    set(sf, 'Position', get(0,'Screensize')); 
+    %% set(sf, 'Position', get(0,'Screensize')); 
     %% saveas(sf, archivo2);    
     if ~strcmp(archivo2, '')
         print('-dpng', archivo2, resol);

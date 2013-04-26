@@ -62,13 +62,13 @@ for www = kk
     seq_offs = 4;
     ss = length(seq_boot);
     
-    listLL1 = zeros(ss);
-    listLL2 = zeros(ss);
-    listLLR = zeros(ss);
-    listpva = zeros(ss);
-    %listbic = zeros(ss);
-    listfp1 = zeros(ss);
-    listfp2 = zeros(ss);
+    listLL1 = zeros(1, ss);
+    listLL2 = zeros(1, ss);
+    listLLR = zeros(1, ss);
+    listpva = zeros(1, ss);
+    %listbic = zeros(1, ss);
+    listfp1 = zeros(1, ss);
+    listfp2 = zeros(1, ss);
 
     for qqq = seq_boot
         NN = seq_offs + qqq;
