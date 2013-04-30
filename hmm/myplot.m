@@ -143,7 +143,7 @@ function [fp1, fp2] = myplot(a, archivo1, b, archivo2, c)
         sp(i) = subplot(nrows, ncols, i);
         hold on;        
                
-        sl(i) = plot(c.hid(idx), '-b')
+        sl(i) = plot(c.hid(idx), '-b');
         ylim([1, ns(3)+1])
         tt(3) = title(strcat('Secuencia recuperada para k=', int2str(ns(3))));
         
@@ -153,7 +153,6 @@ function [fp1, fp2] = myplot(a, archivo1, b, archivo2, c)
         
         fp2 = sum(q > 0);        
         fprintf('(Modelo 2) FP + FN = %d\n', fp2);        
-        i = i+1;
     end
     
     set(sp, 'FontSize', 13)

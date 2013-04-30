@@ -4,7 +4,7 @@ function [ param ] = params_gen( N, K, KN )
     param.priori = normalize(param.priori, 1);
 
     a = 1;
-    b = 50;
+    b = 60;
     c = 2;
     param.mtrans = toeplitz([b, a, zeros(1, N-2)], ...
                            [b, c, zeros(1, N-2)]);                   

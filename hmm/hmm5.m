@@ -9,7 +9,7 @@ addpath('voice\')
 mex -O -outdir hmm hmm/cfwd_bwd.cpp hmm\cpptipos\matriz.cpp hmm\cpptipos\vector.cpp
 %}
 
-ruta = 'pruebas/prb_201/';
+ruta = 'pruebas/prb_203/';
 
 tic;
 
@@ -50,10 +50,25 @@ key2 = [key2, repmat(key2(end), 1, K - numel(key2))];
 %%% Parámetros originales (suavizados) (corresponden al modelo 1)
 oorig = params_gen(N1, K, KN1);
 oorig.obs = hmm_sample(oorig, N1, K, T);
+%oorig.obs = ceil(medfilt2(oorig.obs, [1, 5]));
 oorig.hid = key1(oorig.obs);
 
 orig = oorig;
-%orig.hid = ceil(medfilt2(orig.hid, [3, 1]));
+
+figure; imagesc(orig.obs);
+figure; imagesc(orig.hid);
+
+orig.tid = ceil(medfilt2(orig.hid, [1, 7]));
+
+xx = orig.tid ~= orig.hid;
+vv = orig.tid(xx);
+orig.obs(xx) = (vv-1) * double(KN1) + 1;
+orig.hid = key1(orig.obs);
+
+figure; imagesc(orig.obs);
+figure; imagesc(orig.hid);
+
+%return;
 
 seq_boot = 1:5;    
 seq_offs = 2;
