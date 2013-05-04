@@ -55,18 +55,21 @@ oorig.hid = key1(oorig.obs);
 
 orig = oorig;
 
-figure; imagesc(orig.obs);
-figure; imagesc(orig.hid);
+%figure; imagesc(orig.obs);
+%figure; imagesc(orig.hid);
 
-orig.tid = ceil(medfilt2(orig.hid, [1, 7]));
+orig.tid = ceil(medfilt2(orig.hid, [1, 4]));
 
 xx = orig.tid ~= orig.hid;
 vv = orig.tid(xx);
+
 orig.obs(xx) = (vv-1) * double(KN1) + 1;
 orig.hid = key1(orig.obs);
 
-figure; imagesc(orig.obs);
-figure; imagesc(orig.hid);
+sum(orig.tid ~= orig.hid);
+
+%figure; imagesc(orig.obs);
+%figure; imagesc(orig.hid);
 
 %return;
 
@@ -173,7 +176,7 @@ for qqq = seq_boot
 
     b = 0;
     
-    continue;
+    %continue;
 
     maxLLRB = -1e12;
     listLLRr = zeros(1, R_SERIES);
@@ -253,6 +256,7 @@ for qqq = seq_boot
 
     pvalue = (b + 1) / (R_SERIES + 1);
 
+    qqq;
     listLL1(qqq) = maxLL1;
     listLL2(qqq) = maxLL2;
     listLLR(qqq) = maxLLRB;
@@ -264,8 +268,7 @@ for qqq = seq_boot
     listfp2(qqq) = fp2;
     
     archivo = strcat(ruta,'RSeries', int2str(NN));
-    save(archivo, 'listLLRr', 'llro')            
-    
+    save(archivo, 'listLLRr', 'llro')
 
     archivo = strcat(ruta, int2str(NN), 'to', int2str(NN+1));
     save(archivo, 'orig', 'fin1', 'fin2', 'ffin1', 'ffin2')
@@ -274,3 +277,19 @@ for qqq = seq_boot
     save(archivo, 'listLL1', 'listLL2', 'listLLR', 'listbic', 'listfp1', 'listfp2', 'listpva')
 
 end
+
+%hold on;
+
+for l = (1:1e2:30e2)
+    figure;
+    hh = length(listLL1);
+    bb = zeros(1, hh);
+    MM = seq_offs;
+    lambda = l;
+    for i = 1:hh
+        MM = MM+1;
+        bb(i) = (listLL1(i) - listLL2(i)) - 0.5 * lambda * (MM-1)+(MM*(MM-1))+(MM*(K-1)) * log(T);
+    end
+    plot(seq_offs+(1:hh), bb);
+end
+%hold off;

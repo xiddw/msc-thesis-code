@@ -30,7 +30,7 @@ for www = kk
     % Variable latente z_n {speakers}
     % Variable observada x_n {diccionario}
        
-    ruta = strcat('pruebas\prb_cuervo1f_boot_', int2str(kk), '\')
+    ruta = strcat('pruebas\prb_cuervo1f_boot2_', int2str(kk), '\')
     arch = strcat('pruebas\cuervo1f_', int2str(kk), '.csv')
     
     %ruta = strcat('mfcc\prb_noct1f_', int2str(kk), '\')
@@ -69,6 +69,8 @@ for www = kk
     %listbic = zeros(1, ss);
     listfp1 = zeros(1, ss);
     listfp2 = zeros(1, ss);
+    
+    listLLRB = zeros(ss, R_SERIES);
 
     for qqq = seq_boot
         NN = seq_offs + qqq;
@@ -217,6 +219,8 @@ for www = kk
 
             llrb = tmaxLL2 - tmaxLL1;
             fprintf('\tlog LR (boot){%3d}: [%f] \n', i, llrb);
+            
+            listLLRB(qqq, i) = llrb;
 
             if llrb > llro
                 b = b+1
@@ -254,10 +258,10 @@ for www = kk
     end
 
     archivo = strcat(ruta, 'lists.mat');
-    save(archivo, 'listLL1', 'listLL2', 'listbic', 'listfp1', 'listfp2')
+    save(archivo, 'listLL1', 'listLL2', 'listfp1', 'listfp2', 'listpva', 'listLLR', 'listLLRB');
     
     close all;
-    tac;
+    toc;
 end
 
         
