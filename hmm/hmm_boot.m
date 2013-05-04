@@ -19,7 +19,7 @@ grnd = 'pruebas\cuervo1f_ground.csv';
 MAX_ITER_ESTIM = 30;
 MAX_ITER_HMM = 340;
 
-R_SERIES = 200;
+R_SERIES = 600;
 
 kk = [120];
 
@@ -136,15 +136,16 @@ for www = kk
                 fin2 = param;
             end 
             
-            fprintf('Iter: %2d; ', ii);
-            fprintf('c1: %f, m1 (%02d): %f; ', LL1(end), maxi1, maxLL1);
-            fprintf('c2: %f, m2 (%02d): %f; ', LL2(end), maxi2, maxLL2);
-            fprintf('\n');   
-            
+            %fprintf('Iter: %2d; ', ii);
+            %fprintf('c1: %f, m1 (%02d): %f; ', LL1(end), maxi1, maxLL1);
+            %fprintf('c2: %f, m2 (%02d): %f; ', LL2(end), maxi2, maxLL2);
+            %fprintf('\n');   
+            fprintf('------------\n');
         end
 
         % Estimar log LikelihoodRatio (Observed)
         llro = maxLL2 - maxLL1;
+        fprintf('maxLL1: [%f], maxLL2: [%f]\n', maxLL1, maxLL2);
         fprintf('log LR (obs): [%f] \n', llro);
 
         toc; 
@@ -210,20 +211,22 @@ for www = kk
 
                     fin2 = param;
                 end 
-
-                fprintf('\t\tIter: %2d; ', ii);
-                fprintf('c: %f, m1 (%02d): %f; ', LL1(end), maxi1, tmaxLL1);
-                fprintf('c: %f, m2 (%02d): %f; ', LL2(end), maxi2, tmaxLL2);
-                fprintf('\n');      
+                
+                fprintf('*');
+                % fprintf('\t\tIter: %2d; ', ii);
+                % fprintf('c: %f, m1 (%02d): %f; ', LL1(end), maxi1, tmaxLL1);
+                % fprintf('c: %f, m2 (%02d): %f; ', LL2(end), maxi2, tmaxLL2);
+                % fprintf('\n');      
             end   
 
             llrb = tmaxLL2 - tmaxLL1;
+            fprintf('\nraxLL1: [%f], raxLL2: [%f]\n', tmaxLL1, tmaxLL2);
             fprintf('\tlog LR (boot){%3d}: [%f] \n', i, llrb);
             
             listLLRB(qqq, i) = llrb;
 
             if llrb > llro
-                b = b+1
+                b = b+1;
             end   
 
             if maxLLRB < llrb
