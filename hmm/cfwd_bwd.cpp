@@ -86,7 +86,7 @@ void mexFunction(int nlhs, mxArray* plhs[], 			// Variables de entrada
 	}
 
 	if(nlhs != 5) {
-		mexErrMsgTxt("Se deben recibir 4 parametros de salida");
+		mexErrMsgTxt("Se deben recibir 5 parametros de salida");
 	}
 
 	const int 
