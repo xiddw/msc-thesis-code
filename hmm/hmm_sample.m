@@ -13,4 +13,3 @@ function [ data ] = hmm_sample( param, N, K, T )
 
     % params.data = key(data);
 end
-

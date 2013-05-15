@@ -3,29 +3,30 @@
 cd 'E:\ESCUELA\CIMAT\4 Semestre\ST2\prog\'
 
 cd 'C:\Users\Estudiante\Documents\Github\msc-thesis-code'
+% cd 'C:\Users\xiddw\Documents\Github\msc-thesis-code'
 addpath('hmm\')
 addpath('pruebas\')
 addpath('voice\')
 mex -O -outdir hmm hmm/cfwd_bwd.cpp hmm\cpptipos\matriz.cpp hmm\cpptipos\vector.cpp
 %}
 
-ruta = 'pruebas/prb_203/';
+ruta = 'pruebas/prb_206/';
 
 tic;
 
 MAX_ITER_ESTIM = 30; % 50
 MAX_ITER_HMM = 200; % 300
 
-R_SERIES = 200; % 200
+R_SERIES = 300; % 200
 
 % Variable latente z_n {speakers}
 % Variable observada x_n {diccionario}
 K = 120;	% Numero de 'palabras' en diccionario
 
-T = 600;  	% Numero de muestras en el tiempo
+T = 500;  	% Numero de muestras en el tiempo
 EX = 1; 	% Numero de ejemplos
 
-NN = 6;     % Numero de speakers
+NN = 5;     % Numero de speakers
 
 %disp(strcat(', arch));
 fprintf('Iniciando simulación para (K -> %d), (N -> %d), (T -> %d)\n', K, NN, T);
@@ -57,16 +58,17 @@ orig = oorig;
 
 %figure; imagesc(orig.obs);
 %figure; imagesc(orig.hid);
-
-orig.tid = ceil(medfilt2(orig.hid, [1, 4]));
+%%{
+orig.tid = ceil(medfilt2(orig.hid, [1, 5]));
 
 xx = orig.tid ~= orig.hid;
 vv = orig.tid(xx);
 
 orig.obs(xx) = (vv-1) * double(KN1) + 1;
 orig.hid = key1(orig.obs);
+%%}
 
-sum(orig.tid ~= orig.hid);
+% sum(orig.tid ~= orig.hid);
 
 %figure; imagesc(orig.obs);
 %figure; imagesc(orig.hid);
@@ -76,16 +78,17 @@ sum(orig.tid ~= orig.hid);
 seq_boot = 1:5;    
 seq_offs = 2;
 ss = length(seq_boot);
-
+%%{
 listLL1 = zeros(1, ss);
 listLL2 = zeros(1, ss);
+
 listLLR = zeros(1, ss);
-
 listpva = zeros(1, ss);
-listbic = zeros(1, ss);
-
+%listbic = zeros(1, ss);
 listfp1 = zeros(1, ss);
-listfp2 = zeros(1, ss);  
+listfp2 = zeros(1, ss);
+%%}
+listLLRB = zeros(ss, R_SERIES);
 
 
 for qqq = seq_boot
@@ -150,8 +153,10 @@ for qqq = seq_boot
         %fprintf('Iter: %2d; ', ii);
         %fprintf('c1: %f, m1 (%02d): %f; ', LL1(end), maxi1, maxLL1);
         %fprintf('c2: %f, m2 (%02d): %f; ', LL2(end), maxi2, maxLL2);
-        %fprintf('\n');      
+        %fprintf('\n');     
+        fprintf('-');
     end
+    fprintf('\n');
 
     % Estimar log LikelihoodRatio (Observed)
     llro = maxLL2 - maxLL1;
@@ -229,8 +234,9 @@ for qqq = seq_boot
                 maxi2 = ii;
 
                 fin2 = param;
-            end 
-
+            end
+            
+            fprintf('*');
             %fprintf('\t\tIter: %2d; ', ii);
             %fprintf('c: %f, m1 (%02d): %f; ', LL1(end), maxi1, raxLL1);
             %fprintf('c: %f, m2 (%02d): %f; ', LL2(end), maxi2, raxLL2);
@@ -238,10 +244,10 @@ for qqq = seq_boot
         end   
 
         llrb = raxLL2 - raxLL1;
-        fprintf('raxLL1: [%f], raxLL2: [%f]\n', raxLL1, raxLL2);
+        fprintf('\nraxLL1: [%f], raxLL2: [%f]\n', raxLL1, raxLL2);
         fprintf('log LR (boot){%3d}: [%f] \n', i, llrb);
         
-        listLLRr(i) = llrb;
+        listLLRB(qqq, i) = llrb;
 
         if llrb > llro
             b = b+1;
@@ -261,35 +267,40 @@ for qqq = seq_boot
     listLL2(qqq) = maxLL2;
     listLLR(qqq) = maxLLRB;
     
-    listbic(qqq) = bic;
-    listpva(qqq) = pvalue;
-    
+    %listbic(qqq) = bic;    
     listfp1(qqq) = fp1;
     listfp2(qqq) = fp2;
+    
+    listpva(qqq) = pvalue;
     
     archivo = strcat(ruta,'RSeries', int2str(NN));
     save(archivo, 'listLLRr', 'llro')
 
     archivo = strcat(ruta, int2str(NN), 'to', int2str(NN+1));
     save(archivo, 'orig', 'fin1', 'fin2', 'ffin1', 'ffin2')
-
-    archivo = strcat(ruta, 'lists.mat');
-    save(archivo, 'listLL1', 'listLL2', 'listLLR', 'listbic', 'listfp1', 'listfp2', 'listpva')
-
 end
 
-%hold on;
+archivo = strcat(ruta, 'lists.mat');
 
-for l = (1:1e2:30e2)
-    figure;
-    hh = length(listLL1);
-    bb = zeros(1, hh);
+save(archivo, 'K', 'T', 'NN', 'seq_offs', 'seq_boot', ...
+    'listLL1', 'listLL2', 'listLLR', 'listLLRB', ...
+    'listfp1', 'listfp2', 'listpva')
+
+%hold on;
+lll = (1:1e2:30e2);
+hh = length(listLL1);
+bb = zeros(hh, length(lll));
+j = 1;
+for l = lll
     MM = seq_offs;
     lambda = l;
     for i = 1:hh
         MM = MM+1;
-        bb(i) = (listLL1(i) - listLL2(i)) - 0.5 * lambda * (MM-1)+(MM*(MM-1))+(MM*(K-1)) * log(T);
+        bb(i, j) = (listLL1(i) - listLL2(i)) - 0.5 * lambda * (MM-1)+(MM*(MM-1))+(MM*(K-1)) * log(T);
     end
-    plot(seq_offs+(1:hh), bb);
+    %figure;
+    %plot(seq_offs+(1:hh), bb(:, j));
+    j = j+1;
 end
+clcmesh(1:length(lll), seq_offs+(1:hh), bb)
 %hold off;
