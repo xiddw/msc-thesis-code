@@ -10,7 +10,7 @@
 int main() {
 
   HMM hmm(20, 15);
-  hmm.genKeys(6);
+  HMM::generateKeys(6, 20);
 
   uint nn = 3;
   uint kk = 5;  
@@ -25,8 +25,8 @@ int main() {
   std::cout << std::endl << "R: " << r << std::endl;
 
   std::cout << "Hola" << std::endl;
-  auto d = hmm.sample(r, 100);
-  std::cout << d << std::endl;
+  r.observ = hmm.sample(r, 100);
+  std::cout << r.observ << std::endl;
   
   getchar();
   return 0;

@@ -12,22 +12,52 @@
 #include <utility>
 
 typedef unsigned int uint;
+using namespace boost::numeric::ublas;
+
+template class matrix<double>;
 
 // Normalize a boost::vector to sum up to one
-template<typename V> 
-void normalize_row(V &v) { 
-   v /= sum(v); 
+template<typename V>
+double normalize_row(V &v) { 
+   double a = sum(v);
+   v /= a;
+   return a;
 } 
 
 // Normalize a boost::matrix in order to have its rows/columns to sum up to one
-template<typename M> 
-void normalize(M &m, bool byrow = true) { 
-  using namespace boost::numeric::ublas;
+template<typename M>
+vector<double> normalize(M &m, bool byrow = true) { 
+  
+
+  vector<double> s(m.size1());
 
   for(uint i = 0; i<m.size1(); ++i) { 
      auto r = row(m, i);
-     normalize_row(r);
+     s(i) = normalize_row(r);
    }
+
+  return s;
+} 
+
+// Normalize a boost::matrix in order to have its rows/columns to sum up to one
+template<typename M>
+double norm2sum(M &m) { 
+  //using namespace boost::numeric::ublas;
+  
+  double s = 0.0;
+  
+  for(uint i = 0; i<m.size1(); ++i) { 
+    for(uint j = 0; j<m.size2(); ++j) { 
+     s += m(i, j);
+    }
+  }
+
+  for(uint i = 0; i<m.size1(); ++i) { 
+    for(uint j = 0; j<m.size2(); ++j) { 
+     m(i, j) /= s;
+    }
+  }
+  return s;
 } 
 
 // Resize two vectors to have the same lenght repeating and/or truncating some values.

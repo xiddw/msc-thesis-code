@@ -298,9 +298,9 @@ for l = lll
         MM = MM+1;
         bb(i, j) = (listLL1(i) - listLL2(i)) - 0.5 * lambda * (MM-1)+(MM*(MM-1))+(MM*(K-1)) * log(T);
     end
-    %figure;
-    %plot(seq_offs+(1:hh), bb(:, j));
+    figure;
+    plot(seq_offs+(1:hh), bb(:, j));
     j = j+1;
 end
-clcmesh(1:length(lll), seq_offs+(1:hh), bb)
+mesh(1:length(lll), seq_offs+(1:hh), bb)
 %hold off;
