@@ -9,6 +9,7 @@
 #include <boost/random.hpp>
 #include <boost/random/discrete_distribution.hpp>
 
+#include <fstream>
 #include <utility>
 
 typedef unsigned int uint;
@@ -91,6 +92,46 @@ std::pair< vector<D>, vector<D> > resize(vector<D> a, vector<D> b) {
 
   return make_pair(alessthanb ? tt : bb, alessthanb ? bb : tt);
 } 
+
+template<typename U>
+vector<U> readCSV(std::string file) {
+  std::ifstream csvfile;
+  csvfile.open(file);
+
+  std::vector<uint> data;
+
+  std::string value;
+  while (csvfile.good()) {
+    getline(csvfile, value, ',');
+
+    data.push_back(std::stoi(value));
+  }     
+
+  csvfile.close();
+
+  uint T = data.size();
+  vector<U> res(T);
+
+  for(int t=0; t<T; ++t) {
+    res(t) = data.at(t);
+  }
+
+  return res;
+}
+
+template<typename U>
+void writeCSV(vector<U> data, std::string file) {
+  std::ofstream csvfile;
+  csvfile.open(file);
+
+  uint T = data.size();
+
+  for(int t=0; t<T-1; ++t) {
+    csvfile << data(t); << ", ";
+  }
+  csvfile << data(T-1);
+  csvfile.close();
+}
 
 struct random01 {
     boost::mt19937 &_state;

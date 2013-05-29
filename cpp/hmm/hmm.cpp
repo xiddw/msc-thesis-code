@@ -131,9 +131,40 @@ vector<uint> HMM::sample(params p, uint T) {
 void HMM::EM(params &p, uint MAX_ITER_HMM) {
   if(MAX_ITER_HMM != 0) this->MAX_ITER_HMM = MAX_ITER_HMM;
 
-  for(uint i=0; i<MAX_ITER_HMM; ++i) {
+  double ll0, ll1;
+  ll0 = -LONG_MAX;
+  ll1 = 0.0;
 
+  vector<double> LL = vector<double>(MAX_ITER_HMM);
+  matrix<double> gamma;
+
+  for(uint i=0; i<MAX_ITER_HMM; ++i) {
+    params q = p;
+
+    double ll1 = CalculateValues(p, data, q, gamma);
+
+    if(ConvergedEM(ll0, ll1)) {
+      break;
+    }
+
+    normalize(q.priori);
+    normalize(q.mtrans);
+    normalize(q.memisn);
+
+    p = q;
+    ll0 = ll1;
+
+    LL(i) = ll0;
   }
+
+  p.hidden = vector<double>(T);
+  for(uint t=0; t<T; ++t) {
+    auto cg = column(gamma, t);
+
+    uint k = distance(cg.begin(), max_element(cg.begin(), cg.end()));
+    p.hidden(t) = k;
+  }
+
 }
 
 bool HMM::ConvergedEM(double ll1, double ll0, double threshold, bool HasIncresed) {
@@ -149,12 +180,41 @@ bool HMM::ConvergedEM(double ll1, double ll0, double threshold, bool HasIncresed
   return (delta / averg < threshold);  
 }
 
-double HMM::CalculateValues(params p, vector<uint> data, params &q) {
+double HMM::CalculateValues(params p, vector<uint> data, params &q, matrix<double> &gamma) {
   q = params(p.N, p.K);
 
+  uint N = p.N;
+  uint K = p.K;
+  uint T = data.size();
 
+  double ll = 0.0;
 
-  return 0.0;
+  // if it would be multiple series then cycle over them
+  matrix<double> alpha = zero_matrix<double>(N, T);
+  matrix<double> beta  = zero_matrix<double>(N, T);
+                 gamma = zero_matrix<double>(N, T);  
+  matrix<double> xi    = zero_matrix<double>(N, N);
+  // matrix<double> gamma = zero_matrix<double>(N, T);
+
+  ll = BackwardForward(p, data, alpha, beta, gamma, xi);
+
+  // update priori matrix
+  matrix_range<matrix<double> > g1(gamma, range(0, 0), range(0, N));
+  q.priori = g1;  
+
+  // update transition matrix
+  q.mtrans = xi;
+
+  // update emision matrix
+  uint k;
+  for(uint t=0; t<T; ++t) {
+    k = data(t);
+    for(uint n=0; n<N; ++n) {
+      q.memisn(n, k) += gamma(n, t);
+    }
+  }
+
+  return ll;
 }
 
 double HMM::BackwardForward(params p, vector<uint> data, 

@@ -54,7 +54,8 @@ class HMM {
     // vector<uint> keys;
 
     bool ConvergedEM(double ll1, double ll0, double threshold = 1e-10, bool HasIncresed = true);
-    double CalculateValues(params in, vector<uint> data, params &out);
+
+    double CalculateValues(params in, vector<uint> data, params &out, matrix<double> &gamma);
     double BackwardForward(params in, vector<uint> data, 
                            matrix<double> &alpha, matrix <double> &beta,
                            matrix<double> &gamma, matrix <double> &xi);

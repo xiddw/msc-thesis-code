@@ -24,10 +24,12 @@ int main() {
   HMM::params r(nn, kk, true);
   std::cout << std::endl << "R: " << r << std::endl;
 
+  /*
   std::cout << "Hola" << std::endl;
   r.observ = hmm.sample(r, 100);
   std::cout << r.observ << std::endl;
-  
+  */
+
   getchar();
   return 0;
 }
