@@ -61,10 +61,15 @@ double fwd_back(Vector &priori, Matriz &mtrans, Matriz &memisn, Vector &data,
 
 	///////////// Log Propability /////////////
 	sum = 0.0;
+	mexPrintf("AAAAAA: \n");
 	for(int t=0; t<T; ++t) {
 		sum += log(cn(t));
+		mexPrintf("%f, ", cn(t));
 	}
 	loglike = sum;
+	mexPrintf("\n:BBBBBB \n");
+	
+	
 
 	///////////// Gamma calc /////////////
 	for(int t=0; t<T; ++t) {		

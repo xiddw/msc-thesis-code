@@ -129,6 +129,7 @@ vector<uint> HMM::sample(params p, uint T) {
 }
 
 void HMM::EM(params &p, uint MAX_ITER_HMM) {
+  // if MAX_ITER_HMM != 0, then assing it. Otherwise, use constructor (default) value
   if(MAX_ITER_HMM != 0) this->MAX_ITER_HMM = MAX_ITER_HMM;
 
   double ll0, ll1;
@@ -138,14 +139,12 @@ void HMM::EM(params &p, uint MAX_ITER_HMM) {
   vector<double> LL = vector<double>(MAX_ITER_HMM);
   matrix<double> gamma;
 
-  for(uint i=0; i<MAX_ITER_HMM; ++i) {
+  for(uint i=0; i<this->MAX_ITER_HMM; ++i) {
     params q = p;
 
     double ll1 = CalculateValues(p, data, q, gamma);
 
-    if(ConvergedEM(ll0, ll1)) {
-      break;
-    }
+    if(ConvergedEM(ll0, ll1)) break;
 
     normalize(q.priori);
     normalize(q.mtrans);
@@ -153,11 +152,10 @@ void HMM::EM(params &p, uint MAX_ITER_HMM) {
 
     p = q;
     ll0 = ll1;
-
     LL(i) = ll0;
   }
 
-  p.hidden = vector<double>(T);
+  p.hidden = vector<uint>(T);
   for(uint t=0; t<T; ++t) {
     auto cg = column(gamma, t);
 
@@ -208,7 +206,7 @@ double HMM::CalculateValues(params p, vector<uint> data, params &q, matrix<doubl
   // update emision matrix
   uint k;
   for(uint t=0; t<T; ++t) {
-    k = data(t);
+    k = data(t) - 1;
     for(uint n=0; n<N; ++n) {
       q.memisn(n, k) += gamma(n, t);
     }
@@ -225,16 +223,16 @@ double HMM::BackwardForward(params p, vector<uint> data,
   uint K = p.K;
   uint T = data.size();
 
-  alpha = matrix<double>(N, T);
-  beta  = matrix<double>(N, T);
-  gamma = matrix<double>(N, T);
-  xi    = matrix<double>(N, N);
+  alpha = zero_matrix<double>(N, T);
+  beta  = zero_matrix<double>(N, T);
+  gamma = zero_matrix<double>(N, T);
+  xi    = zero_matrix<double>(N, N);
 
 	double sum, llk;
 	double aa, bb;
 
-	vector<double> cn = vector<double>(T);
-	matrix<double> xx = matrix<double>(N, N);
+	vector<double> cn = zero_vector<double>(T);
+	matrix<double> xx = zero_matrix<double>(N, N);
 
 	///////////// Forward step /////////////
 	for(int n=0; n<N; ++n) {
@@ -276,16 +274,17 @@ double HMM::BackwardForward(params p, vector<uint> data,
 			}
 			beta(m, t) = sum;
 		}
-		//xx.Norm();
-    norm2sum(xx);
+    norm2sum(xx); 
 		xi = xi + xx;
 
     auto bc = column(beta, t);
 		normalize_row(bc);
 	}
-
-	// xi.Norm();
+  
   norm2sum(xi);
+
+  std::cout << "AAAAAAAAA:" << std::endl;
+  std::cout << cn << std::endl;
 
 	///////////// Log Propability /////////////
 	sum = 0.0;

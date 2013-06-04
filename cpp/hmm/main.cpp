@@ -9,26 +9,19 @@
 
 int main() {
 
-  HMM hmm(20, 15);
-  HMM::generateKeys(6, 20);
+  auto data = readCSV<uint>("E:\\ESCUELA\\CIMAT\\4 Semestre\\ST2\\prog\\pruebas\\cuervo1f_120.csv");
 
-  uint nn = 3;
-  uint kk = 5;  
-  
-  HMM::params p = HMM::generateParams(nn, kk);
-  std::cout << std::endl << "P: " << p << std::endl;
+  uint nn = 6;
+  uint kk = 120;    
+  uint tt = data.size();
 
-  HMM::params q(nn, kk);
-  std::cout << std::endl << "Q: " << q << std::endl;
+  HMM::params p(nn, kk, true);
 
-  HMM::params r(nn, kk, true);
-  std::cout << std::endl << "R: " << r << std::endl;
+  HMM h(data);
+  h.EM(p);
 
-  /*
-  std::cout << "Hola" << std::endl;
-  r.observ = hmm.sample(r, 100);
-  std::cout << r.observ << std::endl;
-  */
+  auto res = p.hidden;
+  writeCSV<uint>(res, "E:\\ESCUELA\\CIMAT\\4 Semestre\\ST2\\prog\\pruebas\\cuervo1f_mground.csv");
 
   getchar();
   return 0;

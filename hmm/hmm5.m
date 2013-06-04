@@ -287,7 +287,7 @@ save(archivo, 'K', 'T', 'NN', 'seq_offs', 'seq_boot', ...
     'listfp1', 'listfp2', 'listpva')
 
 %hold on;
-lll = (1:1e2:30e2);
+lll = (1:2e1:30e2);
 hh = length(listLL1);
 bb = zeros(hh, length(lll));
 j = 1;
@@ -296,11 +296,10 @@ for l = lll
     lambda = l;
     for i = 1:hh
         MM = MM+1;
-        bb(i, j) = (listLL1(i) - listLL2(i)) - 0.5 * lambda * (MM-1)+(MM*(MM-1))+(MM*(K-1)) * log(T);
+        bb(i, j) = (listLL1(i)) - 0.5 * lambda * (MM-1)+(MM*(MM-1))+(MM*(K-1)) * log(T);
     end
-    figure;
-    plot(seq_offs+(1:hh), bb(:, j));
+    %figure; plot(seq_offs+(1:hh), bb(:, j));
     j = j+1;
 end
-mesh(1:length(lll), seq_offs+(1:hh), bb)
+figure; mesh(1:length(lll), seq_offs+(1:hh), bb)
 %hold off;
