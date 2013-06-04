@@ -30,7 +30,7 @@ for www = kk
     % Variable latente z_n {speakers}
     % Variable observada x_n {diccionario}
        
-    ruta = strcat('pruebas\prb_cuervo1f_boot2_', int2str(kk), '\')
+    ruta = strcat('pruebas\prb_cuervo1f_boot3_', int2str(kk), '\')
     arch = strcat('pruebas\cuervo1f_', int2str(kk), '.csv')
     
     %ruta = strcat('mfcc\prb_noct1f_', int2str(kk), '\')
