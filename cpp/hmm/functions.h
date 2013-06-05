@@ -20,7 +20,7 @@ template class matrix<double>;
 // Normalize a boost::vector to sum up to one
 /// TODO: check if...
 template<typename V>
-double normalize_row(V &v) { 
+double normalize_vector(V &v) { 
    double a = sum(v);
    a += (a == 0.0);
    v /= a;
@@ -34,7 +34,7 @@ vector<double> normalize(M &m, bool byrow = true) {
 
   for(uint i = 0; i<m.size1(); ++i) { 
      auto r = row(m, i);
-     s(i) = normalize_row(r);
+     s(i) = normalize_vector(r);
    }
 
   return s;
@@ -52,6 +52,8 @@ double norm2sum(M &m) {
      s += m(i, j);
     }
   }
+
+	s += (s == 0.0);
 
   for(uint i = 0; i<m.size1(); ++i) { 
     for(uint j = 0; j<m.size2(); ++j) { 

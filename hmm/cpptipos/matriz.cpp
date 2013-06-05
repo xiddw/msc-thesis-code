@@ -51,7 +51,9 @@ ostream& operator<<(ostream &os, const Matriz &m) {
 		for(uint j=0; j<c; ++j) {
 			os.precision(6);
 			os.width(12);
-			os << m(i, j) << " ";
+			// os << m(i, j) << " ";
+			// os << m.a[m.nRows()*j + i];
+			os << m.a[m.nCols()*i + j];
 		}
 		os << std::endl;
 	}

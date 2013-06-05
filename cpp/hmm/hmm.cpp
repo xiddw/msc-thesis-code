@@ -188,12 +188,8 @@ double HMM::CalculateValues(params p, vector<uint> data, params &q, matrix<doubl
   double ll = 0.0;
 
   // if it would be multiple series then cycle over them
-  matrix<double> alpha = zero_matrix<double>(N, T);
-  matrix<double> beta  = zero_matrix<double>(N, T);
-                 gamma = zero_matrix<double>(N, T);  
-  matrix<double> xi    = zero_matrix<double>(N, N);
-  // matrix<double> gamma = zero_matrix<double>(N, T);
-
+  matrix<double> alpha, beta, xi;
+  
   ll = BackwardForward(p, data, alpha, beta, gamma, xi);
 
   // update priori matrix
@@ -211,6 +207,11 @@ double HMM::CalculateValues(params p, vector<uint> data, params &q, matrix<doubl
       q.memisn(n, k) += gamma(n, t);
     }
   }
+
+	std::cout << "logl:" << std::endl;
+	std::cout << ll << std::endl;
+
+	getchar();
 
   return ll;
 }
@@ -232,15 +233,24 @@ double HMM::BackwardForward(params p, vector<uint> data,
 	double aa, bb;
 
 	vector<double> cn = zero_vector<double>(T);
-	matrix<double> xx = zero_matrix<double>(N, N);
+	matrix<double> xx;
 
 	///////////// Forward step /////////////
 	for(int n=0; n<N; ++n) {
 		alpha(n, 0) = p.priori(0, n) * p.memisn(n, (int)data(0)-1);
 	}
-
-  auto ca = column(alpha, 0);
-	cn(0) = normalize_row(ca);
+	
+	//auto ac = column(alpha, 0);
+	//cn(0) = normalize_vector(ac);
+		sum = 0.0;
+		for(int n=0; n<N; ++n) {
+			sum += alpha(n, 0);
+		}
+		sum += (sum == 0.0);
+		for(int n=0; n<N; ++n) {
+			alpha(n, 0) /= sum;
+		}
+		cn(0) = sum;
 
 	for(int t=1; t<T; ++t) {		
 		for(int m=0; m<N; ++m) {
@@ -252,9 +262,23 @@ double HMM::BackwardForward(params p, vector<uint> data,
 			alpha(m, t) = sum;
 		}
 
-    ca = column(alpha, t);
-		cn(t) = normalize_row(ca);
+    // ac = column(alpha, t);
+		// cn(t) = normalize_vector(ac);
+		sum = 0.0;
+		for(int n=0; n<N; ++n) {
+			sum += alpha(n, t);
+		}
+		sum += (sum == 0.0);
+		for(int n=0; n<N; ++n) {
+			alpha(n, t) /= sum;
+		}
+		cn(t) = sum;
 	}
+
+  //std::cout << "alpha:" << std::endl;
+  //std::cout << alpha << std::endl;
+
+	getchar();
 
 	///////////// Backward step /////////////
 	for(int n=0; n<N; ++n) {
@@ -262,12 +286,12 @@ double HMM::BackwardForward(params p, vector<uint> data,
 	}
 	
 	for(int t=T-2; t>=0; --t) {
-		xx *= 0.0;
+		xx = zero_matrix<double>(N, N);
 
 		for(int m=0; m<N; ++m) {
 			sum = 0.0;
 			for(int n=0; n<N; ++n) {	
-				bb = beta(n, t+1) * p.memisn(n, (int)data(t + 1)-1);			
+				bb = beta(n, t+1) * p.memisn(n, (int)data(t+1)-1);			
 				sum += bb * p.mtrans(m, n);
 
 				xx(m, n) += p.mtrans(m, n) * alpha(m, t) * bb;
@@ -277,21 +301,35 @@ double HMM::BackwardForward(params p, vector<uint> data,
     norm2sum(xx); 
 		xi = xi + xx;
 
-    auto bc = column(beta, t);
-		normalize_row(bc);
+    //auto bc = column(beta, t);
+		//normalize_vector(bc);
+		sum = 0.0;
+		for(int n=0; n<N; ++n) {
+			sum += beta(n, t);
+		}
+		sum += (sum == 0.0);
+		for(int n=0; n<N; ++n) {
+			beta(n, t) /= sum;
+		}
 	}
   
   norm2sum(xi);
 
-  std::cout << "AAAAAAAAA:" << std::endl;
+  std::cout << "CN:" << std::endl;
   std::cout << cn << std::endl;
+
+	getchar();
 
 	///////////// Log Propability /////////////
 	sum = 0.0;
+	int ppp = 0;
 	for(int t=0; t<T; ++t) {
 		sum += log(cn(t));
+		if(cn(t) == 1 && ppp == 0) ppp = t;
 	}
 	llk = sum;
+
+	std::cout << "p: " << ppp << std::endl;
 
 	///////////// Gamma calc /////////////
 	for(int t=0; t<T; ++t) {		
@@ -300,7 +338,7 @@ double HMM::BackwardForward(params p, vector<uint> data,
 		}
 
     auto gc = column(gamma, t);
-		normalize_row(gc);
+		normalize_vector(gc);
 	}
 
 	return llk;	

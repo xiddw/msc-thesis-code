@@ -5,13 +5,13 @@
 #include "cpptipos/tipos.h"
 
 double fwd_back(Vector &priori, Matriz &mtrans, Matriz &memisn, Vector &data,
-			  Matriz &alpha, Matriz &beta, Matriz &gamma, Matriz &xi,
+			  Matriz &alpha, Matriz &beta, Matriz &gamma, Matriz &xi, Vector &cn,
 			  int N, int K, int T) {
 
 	double sum, loglike;
 	double aa, bb;
 
-	Vector cn  = Vector(T);
+	// Vector cn  = Vector(T);
 	Matriz xx  = Matriz(N, N);
 
 	///////////// Forward step /////////////
@@ -61,15 +61,13 @@ double fwd_back(Vector &priori, Matriz &mtrans, Matriz &memisn, Vector &data,
 
 	///////////// Log Propability /////////////
 	sum = 0.0;
-	mexPrintf("AAAAAA: \n");
+	// mexPrintf("AAAAAA: \n");
 	for(int t=0; t<T; ++t) {
 		sum += log(cn(t));
-		mexPrintf("%f, ", cn(t));
+		// mexPrintf("%f, ", cn(t));
 	}
 	loglike = sum;
-	mexPrintf("\n:BBBBBB \n");
-	
-	
+	// mexPrintf("\n:BBBBBB \n");
 
 	///////////// Gamma calc /////////////
 	for(int t=0; t<T; ++t) {		
@@ -90,7 +88,7 @@ void mexFunction(int nlhs, mxArray* plhs[], 			// Variables de entrada
 		mexErrMsgTxt("Se deben recibir 4 parametros de entrada");
 	}
 
-	if(nlhs != 5) {
+	if(nlhs != 5+1) {
 		mexErrMsgTxt("Se deben recibir 5 parametros de salida");
 	}
 
@@ -110,14 +108,18 @@ void mexFunction(int nlhs, mxArray* plhs[], 			// Variables de entrada
 	plhs[2] = mxCreateDoubleMatrix(N, T, mxREAL);	// gamma
 	plhs[3] = mxCreateDoubleMatrix(N, N, mxREAL);	// xi
 	plhs[4] = mxCreateDoubleMatrix(1, 1, mxREAL);	// loglike
+	
+	plhs[5] = mxCreateDoubleMatrix(T, 1, mxREAL);	// cn (temp)
 
 	Matriz alpha = Matriz(N, T, mxGetPr(plhs[0]));
 	Matriz beta  = Matriz(N, T, mxGetPr(plhs[1]));
 	Matriz gamma = Matriz(N, T, mxGetPr(plhs[2]));
 	Matriz xi    = Matriz(N, N, mxGetPr(plhs[3]));
-
+	
+	Vector cn    = Vector(T, mxGetPr(plhs[5]));
+	
 	double loglike = fwd_back(priori, mtrans, memisn, data,
-			 alpha, beta, gamma, xi,  
+			 alpha, beta, gamma, xi, cn,  
 			 N, K, T);
 
 	*mxGetPr(plhs[4]) = loglike;

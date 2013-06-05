@@ -89,12 +89,15 @@ double fwd_back(Vector &priori, Matriz &mtrans, Matriz &memisn, Vector &data,
 int main() {
 	Matriz a, b;
 
-	double r[] = {9, 8, 7, 6, 5, 4, 3, 2, 1};
+	double r[] = {12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
 
-	a = Matriz(3, 3);
+	a = Matriz(4, 3);
 	a.Llenar();
-	b = Matriz(3, 3, r);
-
+	b = Matriz(4, 3, r);
+	
+	a.colNorm(0);
+	a(1, 2) = 500;
+	
 	cout << "a: " << endl << a << endl;
 	cout << "b: " << endl << b << endl;
 	cout << "a+b: " << endl << a+b << endl;

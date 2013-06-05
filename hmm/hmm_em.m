@@ -21,7 +21,7 @@ function [LL, param, iter] = ...
     
 		%%% EM-step
 		[ll1, nmtrans, ~, nmemisn, nmpriori_ini, gamma] = ...
-			calc_values(priori, mtrans, memisn, data);			
+			calc_values(priori, mtrans, memisn, data);			        
         
         finished = em_converged(ll1, ll0);        
         if(finished) 

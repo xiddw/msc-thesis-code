@@ -23,7 +23,10 @@ function [LL, nmtrans, nmpriori_ini, nmemisn, nmpriori_fin, gamma] = ...
 
 		%%% Fordward-Backward
 		%[alpha, beta, gamma, llc, xi] = fwd_bwd(priori, mtrans, ems_like);
-        [~, ~, gamma, xi, llc] = cfwd_bwd(priori, mtrans, memisn, zz);
+        [~, ~, gamma, xi, llc, cn] = cfwd_bwd(priori, mtrans, memisn, zz);
+        
+        cn
+        error('Hola');
 
 		LL = LL + llc;
 		
