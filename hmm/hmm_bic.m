@@ -42,7 +42,7 @@ for www = kk
     kc = csvread(arch);
 
     K = max(kc);    % Numero de 'palabras' en diccionario
-    NN = 2;          % Numero de speakers
+    %N = max(grnd);          % Numero de speakers
 
     if max(size(kc)) == size(kc, 2)
         kc = kc';
@@ -175,6 +175,7 @@ end
 %% T = 7219;
  % T = 6415;
 
+N = max(orig.hid);
 ii = 2;
 hh = length(listLL1);
 bb = zeros(1, hh);
