@@ -211,8 +211,6 @@ double HMM::CalculateValues(params p, vector<uint> data, params &q, matrix<doubl
 	std::cout << "logl:" << std::endl;
 	std::cout << ll << std::endl;
 
-	getchar();
-
   return ll;
 }
 
@@ -240,17 +238,8 @@ double HMM::BackwardForward(params p, vector<uint> data,
 		alpha(n, 0) = p.priori(0, n) * p.memisn(n, (int)data(0)-1);
 	}
 	
-	//auto ac = column(alpha, 0);
-	//cn(0) = normalize_vector(ac);
-		sum = 0.0;
-		for(int n=0; n<N; ++n) {
-			sum += alpha(n, 0);
-		}
-		sum += (sum == 0.0);
-		for(int n=0; n<N; ++n) {
-			alpha(n, 0) /= sum;
-		}
-		cn(0) = sum;
+	auto ac = column(alpha, 0);
+	cn(0) = normalize_vector(ac);
 
 	for(int t=1; t<T; ++t) {		
 		for(int m=0; m<N; ++m) {
@@ -262,23 +251,9 @@ double HMM::BackwardForward(params p, vector<uint> data,
 			alpha(m, t) = sum;
 		}
 
-    // ac = column(alpha, t);
-		// cn(t) = normalize_vector(ac);
-		sum = 0.0;
-		for(int n=0; n<N; ++n) {
-			sum += alpha(n, t);
-		}
-		sum += (sum == 0.0);
-		for(int n=0; n<N; ++n) {
-			alpha(n, t) /= sum;
-		}
-		cn(t) = sum;
+    auto ac = column(alpha, t);
+		cn(t) = normalize_vector(ac);
 	}
-
-  //std::cout << "alpha:" << std::endl;
-  //std::cout << alpha << std::endl;
-
-	getchar();
 
 	///////////// Backward step /////////////
 	for(int n=0; n<N; ++n) {
@@ -301,16 +276,8 @@ double HMM::BackwardForward(params p, vector<uint> data,
     norm2sum(xx); 
 		xi = xi + xx;
 
-    //auto bc = column(beta, t);
-		//normalize_vector(bc);
-		sum = 0.0;
-		for(int n=0; n<N; ++n) {
-			sum += beta(n, t);
-		}
-		sum += (sum == 0.0);
-		for(int n=0; n<N; ++n) {
-			beta(n, t) /= sum;
-		}
+    auto bc = column(beta, t);
+		normalize_vector(bc);
 	}
   
   norm2sum(xi);
@@ -318,18 +285,12 @@ double HMM::BackwardForward(params p, vector<uint> data,
   std::cout << "CN:" << std::endl;
   std::cout << cn << std::endl;
 
-	getchar();
-
 	///////////// Log Propability /////////////
 	sum = 0.0;
-	int ppp = 0;
 	for(int t=0; t<T; ++t) {
 		sum += log(cn(t));
-		if(cn(t) == 1 && ppp == 0) ppp = t;
 	}
 	llk = sum;
-
-	std::cout << "p: " << ppp << std::endl;
 
 	///////////// Gamma calc /////////////
 	for(int t=0; t<T; ++t) {		
