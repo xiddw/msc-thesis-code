@@ -20,7 +20,7 @@ MAX_ITER_HMM = 340;
 
 R_SERIES = 200;
 
-kk = [120];
+kk = [140];
 
 T = 0;
 
@@ -29,13 +29,13 @@ for www = kk
     % Variable latente z_n {speakers}
     % Variable observada x_n {diccionario}
        
-    ruta = strcat('pruebas\prb_cuervo1f1_', int2str(kk), '\')
+    ruta = strcat('pruebas\prb_f1_cuervo1_140_', int2str(kk), '\')
     arch = strcat('pruebas\cuervo1f_', int2str(kk), '.csv')
     
     %ruta = strcat('mfcc\prb_noct1f_', int2str(kk), '\')
     %arch = strcat('mfcc\noct1f_', int2str(kk), '.csv')
        
-    disp(strcat('Iniciando bootstrap para ->   ', arch));
+    disp(strcat('Iniciando BIC para ->   ', arch));
     
     mkdir(ruta);
 
@@ -61,10 +61,10 @@ for www = kk
     ss = length(seq_boot);
     
     listLL1 = zeros(ss);
-    listLL2 = zeros(ss);
-    listbic = zeros(ss);
+    listLL2 = zeros(ss);    
     listfp1 = zeros(ss);
     listfp2 = zeros(ss);
+    % listbic = zeros(ss);
 
     for qqq = seq_boot
         NN = 1 + qqq;
@@ -141,8 +141,8 @@ for www = kk
         llro = maxLL2 - maxLL1;
         fprintf('log LR (obs): [%f] \n', llro);
 
-        lambda = 1.0;
-        bic = maxLL1 - 0.5 * lambda * (N1-1)+(N1*(N1-1))+(N1*(K-1)) * log(T) ;
+        % lambda = 1.0;
+        % bic = maxLL1 - 0.5 * lambda * (N1-1)+(N1*(N1-1))+(N1*(K-1)) * log(T) ;
 
         ffin1 = sort_params(orig, fin1);
         ffin2 = sort_params(orig, fin2);
@@ -155,7 +155,7 @@ for www = kk
         listLL1(qqq) = maxLL1;
         listLL2(qqq) = maxLL2;
 
-        listbic(qqq) = bic;
+        %listbic(qqq) = bic;
         listfp1(qqq) = fp1;
         listfp2(qqq) = fp2;
 
@@ -165,10 +165,10 @@ for www = kk
     end
 
     archivo = strcat(ruta, 'lists.mat');
-    save(archivo, 'listLL1', 'listLL2', 'listbic', 'listfp1', 'listfp2')
+    save(archivo, 'listLL1', 'listLL2', 'listfp1', 'listfp2')
     
     close all;
-    tac;
+    toc;
 end
 
  % N  = 120;
