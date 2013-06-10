@@ -12,7 +12,7 @@ kk = [45:15:90, 100:20:200];
 
 %grnd = 'mfcc\calderon5_ground.csv';
 
-grnd = 'pruebas\cuervo1f_ground.csv';
+grnd = 'pruebas\noct1f_ground.csv';
 %grnd = 'pruebas\noct1f_ground.csv';
 
 MAX_ITER_ESTIM = 30;
@@ -20,7 +20,7 @@ MAX_ITER_HMM = 340;
 
 R_SERIES = 200;
 
-kk = [140];
+kk = [120];
 
 T = 0;
 
@@ -29,8 +29,8 @@ for www = kk
     % Variable latente z_n {speakers}
     % Variable observada x_n {diccionario}
        
-    ruta = strcat('pruebas\prb_f1_cuervo1_140_', int2str(kk), '\')
-    arch = strcat('pruebas\cuervo1f_', int2str(kk), '.csv')
+    ruta = strcat('pruebas\prb_f1_noct1f_', int2str(kk), '\')
+    arch = strcat('pruebas\noct1f_', int2str(kk), '.csv')
     
     %ruta = strcat('mfcc\prb_noct1f_', int2str(kk), '\')
     %arch = strcat('mfcc\noct1f_', int2str(kk), '.csv')
@@ -65,9 +65,10 @@ for www = kk
     listfp1 = zeros(ss);
     listfp2 = zeros(ss);
     % listbic = zeros(ss);
-
+    
+    seq_offs = 1;
     for qqq = seq_boot
-        NN = 1 + qqq;
+        NN = seq_offs + qqq;
         %%% Primer modelo
         N1 = NN;	% Numero de speakers
         KN1 = int32(K/N1); % Numero de palabras por speaker
@@ -163,41 +164,37 @@ for www = kk
         save(archivo, 'orig', 'fin1', 'fin2', 'ffin1', 'ffin2')
 
     end
+    
+    N = max(orig.hid);
 
     archivo = strcat(ruta, 'lists.mat');
-    save(archivo, 'listLL1', 'listLL2', 'listfp1', 'listfp2')
+    save(archivo, 'K', 'T', 'N', 'seq_offs', 'seq_boot', ...
+                  'listLL1', 'listLL2', 'listfp1', 'listfp2')
     
     close all;
     toc;
+    
+    %%%%%%%%%%%%%$$$$$$$$$$$$$$
+    %%%%%%%%%%%%%$$$$$$$$$$$$$$
+    
+    lll = (1:2e1:40e2);
+    hh = length(listLL1);
+    bb = zeros(hh, length(lll));
+    j = 1;
+    for l = lll
+        MM = seq_offs;
+        lambda = l;
+        for i = 1:hh
+            MM = MM+1;
+            bb(i, j) = (listLL1(i)) - 0.5 * lambda * (MM-1)+(MM*(MM-1))+(MM*(K-1)) * log(T);
+        end
+        %figure; plot(seq_offs+(1:hh), bb(:, j));
+        j = j+1;
+    end
+    figure; mesh(1:length(lll), seq_offs+(1:hh), bb)
 end
+
 
  % N  = 120;
 %% T = 7219;
  % T = 6415;
-
-N = max(orig.hid);
-ii = 2;
-hh = length(listLL1);
-bb = zeros(1, hh);
-MM = 1;
-lambda = 2.8e3;
-for i = 1:hh
-    MM = MM+1;
-    bb(i) = (listLL1(i) - listLL2(i)) - 0.5 * lambda * (MM-1)+(MM*(MM-1))+(MM*(N-1)) * log(T);
-end
-
-f0 = figure; 
-
-sp(1) = plot(ii:(hh+1), bb, 'b');
-hold on;
-sp(2) = plot(ii:(hh+1), bb, 'or', 'MarkerFaceColor', 'r');
-t1 = title('Selección de modelo con BIC');
-
-set(t1, 'FontSize', 16)
-set(gca, 'FontSize', 12);
-set(gca, 'box', 'off');
-set(sp(2),'MarkerSize', 7);
-set(sp, 'linewidth', 2)
-
-legend(strcat('lambda= ', int2str(lambda)))
-hold off;

@@ -13,7 +13,7 @@ kk = [45:15:90, 100:20:200];
 
 %grnd = 'mfcc\calderon5_ground.csv';
 
-grnd = 'pruebas\cuervo1f_ground.csv';
+grnd = 'pruebas\lear3_ground.csv';
 %grnd = 'pruebas\noct1f_ground.csv';
 
 MAX_ITER_ESTIM = 30;
@@ -21,7 +21,7 @@ MAX_ITER_HMM = 340;
 
 R_SERIES = 600;
 
-kk = [120];
+kk = [160];
 
 T = 0;
 
@@ -30,8 +30,8 @@ for www = kk
     % Variable latente z_n {speakers}
     % Variable observada x_n {diccionario}
        
-    ruta = strcat('pruebas\temp_', int2str(kk), '\')
-    arch = strcat('pruebas\cuervo1f_', int2str(kk), '.csv')
+    ruta = strcat('pruebas\prb_b1_lear3_', int2str(kk), '\')
+    arch = strcat('pruebas\lear3_', int2str(kk), '.csv')
     
     %ruta = strcat('mfcc\prb_noct1f_', int2str(kk), '\')
     %arch = strcat('mfcc\noct1f_', int2str(kk), '.csv')
@@ -43,7 +43,7 @@ for www = kk
     kc = csvread(arch);
 
     K = max(kc);    % Numero de 'palabras' en diccionario
-    NN = 2;          % Numero de speakers
+    % NN = 2;          % Numero de speakers
 
     if max(size(kc)) == size(kc, 2)
         kc = kc';
@@ -59,7 +59,7 @@ for www = kk
     data = kc';
     
     seq_boot = 1:3;    
-    seq_offs = 4;
+    seq_offs = 2;
     ss = length(seq_boot);
     
     listLL1 = zeros(1, ss);
@@ -254,17 +254,40 @@ for www = kk
         listfp2(qqq) = fp2;
         
         listpva(qqq) = pvalue;
-
+        
         archivo = strcat(ruta, int2str(NN), 'to', int2str(NN+1));
         save(archivo, 'orig', 'fin1', 'fin2', 'ffin1', 'ffin2')
 
     end
 
+    N = max(orig.hid);
+    
     archivo = strcat(ruta, 'lists.mat');
-    save(archivo, 'listLL1', 'listLL2', 'listfp1', 'listfp2', 'listpva', 'listLLR', 'listLLRB');
+    save(archivo, 'K', 'T', 'N', 'seq_offs', 'seq_boot', ...
+                  'listLL1', 'listLL2', 'listLLR', 'listLLRB',  ...
+                  'listfp1', 'listfp2', 'listpva');
     
     close all;
     toc;
+    
+    %%%%%%%%%%%%%$$$$$$$$$$$$$$
+    %%%%%%%%%%%%%$$$$$$$$$$$$$$
+    
+    lll = (1:2e1:30e2);
+    hh = length(listLL1);
+    bb = zeros(hh, length(lll));
+    j = 1;
+    for l = lll
+        MM = seq_offs;
+        lambda = l;
+        for i = 1:hh
+            MM = MM+1;
+            bb(i, j) = (listLL1(i)) - 0.5 * lambda * (MM-1)+(MM*(MM-1))+(MM*(K-1)) * log(T);
+        end
+        %figure; plot(seq_offs+(1:hh), bb(:, j));
+        j = j+1;
+    end
+    figure; mesh(1:length(lll), seq_offs+(1:hh), bb)
 end
 
         

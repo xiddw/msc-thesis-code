@@ -282,6 +282,8 @@ end
 
 archivo = strcat(ruta, 'lists.mat');
 
+N = max(orig.hid);
+
 save(archivo, 'K', 'T', 'NN', 'seq_offs', 'seq_boot', ...
     'listLL1', 'listLL2', 'listLLR', 'listLLRB', ...
     'listfp1', 'listfp2', 'listpva')

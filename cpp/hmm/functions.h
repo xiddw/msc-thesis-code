@@ -20,7 +20,7 @@ template class matrix<double>;
 // Normalize a boost::vector to sum up to one
 /// TODO: check if...
 template<typename V>
-double normalize_vector(V &v) { 
+inline double normalize_vector(V &v) { 
    double a = sum(v);
    a += (a == 0.0);
    v /= a;
@@ -29,7 +29,7 @@ double normalize_vector(V &v) {
 
 // Normalize a boost::matrix in order to have its rows/columns to sum up to one
 template<typename M>
-vector<double> normalize(M &m, bool byrow = true) { 
+inline vector<double> normalize(M &m, bool byrow = true) { 
   vector<double> s(m.size1());
 
   for(uint i = 0; i<m.size1(); ++i) { 
@@ -42,7 +42,7 @@ vector<double> normalize(M &m, bool byrow = true) {
 
 // Normalize a boost::matrix in order to have its rows/columns to sum up to one
 template<typename M>
-double norm2sum(M &m) { 
+inline double norm2sum(M &m) { 
   //using namespace boost::numeric::ublas;
   
   double s = 0.0;
@@ -112,7 +112,7 @@ vector<U> readCSV(std::string file) {
   uint T = data.size();
   vector<U> res(T);
 
-  for(int t=0; t<T; ++t) {
+  for(uint t=0; t<T; ++t) {
     res(t) = data.at(t);
   }
 
@@ -126,7 +126,7 @@ void writeCSV(vector<U> data, std::string file) {
 
   uint T = data.size();
 
-  for(int t=0; t<T-1; ++t) {
+  for(uint t=0; t<T-1; ++t) {
     csvfile << data(t) << ", ";
   }
   csvfile << data(T-1);
