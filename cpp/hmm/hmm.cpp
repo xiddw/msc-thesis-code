@@ -6,8 +6,8 @@
 #include "hmm.h"
 #include "functions.h"
 
-const uint HMM::DEF_MAX_ITER_ESTIM = 30;
-const uint HMM::DEF_MAX_ITER_HMM = 300;
+const uint HMM::DEF_MAX_ITER_ESTIM = 350;
+const uint HMM::DEF_MAX_ITER_HMM = 30;
 
 HMM::HMM(uint K, uint T, uint EX, uint MAX_ITER_ESTIM, uint MAX_ITER_HMM) {
   this->K = K;
@@ -128,23 +128,23 @@ vector<uint> HMM::sample(params p, uint T) {
   return data;
 }
 
-void HMM::EM(params &p, uint MAX_ITER_HMM) {
+double HMM::EM(params &p, uint MAX_ITER_ESTIM) {
   // if MAX_ITER_HMM != 0, then assing it. Otherwise, use constructor (default) value
-  if(MAX_ITER_HMM != 0) this->MAX_ITER_HMM = MAX_ITER_HMM;
+  if(MAX_ITER_ESTIM != 0) this->MAX_ITER_ESTIM = MAX_ITER_ESTIM;
 
   double ll0, ll1;
   ll0 = -LONG_MAX;
   ll1 = 0.0;
 
-  vector<double> LL = vector<double>(this->MAX_ITER_HMM);
+  // vector<double> LL = vector<double>(this->MAX_ITER_ESTIM);
   matrix<double> gamma;
 
-  std::cout << "total iter: " << this->MAX_ITER_HMM << std::endl;
+  std::cout << "total iter: " << this->MAX_ITER_ESTIM << std::endl;
 
-  for(uint i=0; i< this->MAX_ITER_HMM; ++i) {
+  for(uint i=0; i< this->MAX_ITER_ESTIM; ++i) {
     params q = p;
 
-    double ll1 = CalculateValues(p, data, q, gamma);
+    ll1 = CalculateValues(p, data, q, gamma);
 
     //if(ConvergedEM(ll0, ll1)) break;
 
@@ -153,14 +153,15 @@ void HMM::EM(params &p, uint MAX_ITER_HMM) {
     normalize(q.memisn);
 
     p = q;
-    ll0 = ll1;
-    LL(i) = ll0;
+    // ll0 = ll1;
+    // LL(i) = ll0;
 
     // std::cout << "iter: " << i << std::endl;
     // std::cout << "ll(" << i << "): " << LL(i) << std::endl;
-    // std::cout << ".";
+    std::cout << ".";
   }
-  std::cout << std::endl << "ll: " << LL(this->MAX_ITER_HMM-1) << std::endl;
+  std::cout << std::endl << "ll: " << ll1 << std::endl;
+  // std::cout << std::endl << "ll: " << LL(this->MAX_ITER_ESTIM-1) << std::endl;
 
   p.hidden = vector<uint>(T);
   for(uint t=0; t<T; ++t) {
@@ -170,6 +171,7 @@ void HMM::EM(params &p, uint MAX_ITER_HMM) {
     p.hidden(t) = k;
   }
 
+  return ll1;
 }
 
 bool HMM::ConvergedEM(double ll1, double ll0, double threshold, bool HasIncresed) {

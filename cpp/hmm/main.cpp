@@ -54,13 +54,26 @@ int main() {
   uint kk = 120;    
   uint tt = data.size();
 
-  HMM::params p(nn, kk, true);
+  HMM::params m(nn, kk);
 
   HMM h(data);
   
-  h.EM(p);
+  double ll = -LONG_MAX, mm = -LONG_MAX;
+  uint ii = 0;
+  for(uint i=0; i<30; ++i) {
+    HMM::params p(nn, kk, true);
+    ll = h.EM(p);
 
-  auto res = p.hidden;
+    if(ll > mm) {
+      ii = i;
+      mm = ll;
+      m = p;
+    }
+  }  
+
+  std::cout << "best overal (iter=>" << ii << "): " << mm << std::endl;
+
+  auto res = m.hidden;
   writeCSV<uint>(res, path + "pruebas\\cuervo1f_mground.csv");
 
   getchar();

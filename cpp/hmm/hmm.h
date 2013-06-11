@@ -72,7 +72,7 @@ class HMM {
 
     vector<uint> sample(params p, uint T);
 
-    void EM(params &p, uint MAX_ITER_HMM = 0);
+    double EM(params &p, uint MAX_ITER_ESTIM = 0);
 
     static vector<uint> generateKeys(uint N, uint K);
     static params generateParams(uint N, uint K);
