@@ -139,7 +139,7 @@ double HMM::EM(params &p, uint MAX_ITER_ESTIM) {
   // vector<double> LL = vector<double>(this->MAX_ITER_ESTIM);
   matrix<double> gamma;
 
-  std::cout << "total iter: " << this->MAX_ITER_ESTIM << std::endl;
+  // std::cout << "total iter: " << this->MAX_ITER_ESTIM << std::endl;
 
   for(uint i=0; i< this->MAX_ITER_ESTIM; ++i) {
     params q = p;
@@ -158,9 +158,9 @@ double HMM::EM(params &p, uint MAX_ITER_ESTIM) {
 
     // std::cout << "iter: " << i << std::endl;
     // std::cout << "ll(" << i << "): " << LL(i) << std::endl;
-    std::cout << ".";
+    // std::cout << ".";
   }
-  std::cout << std::endl << "ll: " << ll1 << std::endl;
+  // std::cout << std::endl << "ll: " << ll1 << std::endl;
   // std::cout << std::endl << "ll: " << LL(this->MAX_ITER_ESTIM-1) << std::endl;
 
   p.hidden = vector<uint>(T);

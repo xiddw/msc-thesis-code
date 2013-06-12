@@ -28,6 +28,7 @@ class HMM {
         vector<uint> observ;
         vector<uint> hidden;
 
+				params() {};
         params(uint N, uint K, bool rand=false);
 
         friend class HMM;
@@ -69,6 +70,8 @@ class HMM {
     HMM(vector<uint> data,
         uint MAX_ITER_ESTIM = HMM::DEF_MAX_ITER_ESTIM, 
         uint MAX_ITER_HMM = HMM::DEF_MAX_ITER_HMM);
+
+		uint MaxIterHMM(void) { return this->MAX_ITER_HMM; };
 
     vector<uint> sample(params p, uint T);
 

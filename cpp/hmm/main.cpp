@@ -4,51 +4,19 @@
 #include <process.h>
 #include <boost/random.hpp> 
 
+#include <ctime>
+#include <omp.h>
+
 #include "hmm.h"
 #include "functions.h"
 
+
+
 int main() {
-  /*
-	using namespace boost::numeric::ublas;
-  matrix<double> m (3, 4);
-  for (unsigned i = 0; i < m.size1 (); ++ i)
-      for (unsigned j = 0; j < m.size2 (); ++ j)
-          m (i, j) = 4 * i + j;
-
-  std::cout << "original: " << std::endl;
-  std::cout << m << std::endl;
-
-  std::cout << "range: " << std::endl;
-  matrix_range<matrix<double> > g1(m, range(0, 0), range(0, 4));
-  std::cout << g1 << std::endl;
-
-  std::cout << "row: " << std::endl;
-  auto mr = row(m, 1);
-  matrix<double> g2(4, 1);
-  copy(mr.begin(), mr.end(), g2.begin1());
-  std::cout << g2 << std::endl;
-
-  getchar();
-  
-  auto rr = column(m, 2);
-  std::cout << "RR: " << std::endl;
-  std::cout << rr << std::endl;
-  std::cout << "sum(RR): " << std::endl;
-  std::cout << sum(rr) << std::endl;
-  std::cout << "norm(RR): " << std::endl;
-  std::cout << rr / sum(rr) << std::endl;
-  std::cout << "norm(RR): " << std::endl;
-  std::cout << normalize_vector(rr) << std::endl;
-  std::cout << "RR2: " << std::endl;
-  std::cout << rr << std::endl;
-  //*/
-
-  //std::string path = "C:\\Users\\Estudiante\\Documents\\GitHub\\msc-thesis-code\\";
-  std::string path = "E:\\ESCUELA\\CIMAT\\4 Semestre\\ST2\\prog\\";
+  std::string path = "C:\\Users\\Estudiante\\Documents\\GitHub\\msc-thesis-code\\";
+  // std::string path = "E:\\ESCUELA\\CIMAT\\4 Semestre\\ST2\\prog\\";
 	
   auto data = readCSV<uint>(path + "pruebas\\cuervo1f_120.csv");
-
-	//data.resize(4, true);
 
   uint nn = 6;
   uint kk = 120;    
@@ -58,23 +26,63 @@ int main() {
 
   HMM h(data);
   
-  double ll = -LONG_MAX, mm = -LONG_MAX;
-  uint ii = 0;
-  for(uint i=0; i<30; ++i) {
-    HMM::params p(nn, kk, true);
-    ll = h.EM(p);
+	int max = h.MaxIterHMM();
 
-    if(ll > mm) {
-      ii = i;
-      mm = ll;
-      m = p;
-    }
-  }  
+	int i, tid, nthreads;
 
-  std::cout << "best overal (iter=>" << ii << "): " << mm << std::endl;
+	// Auxiliar variables for omp process :)
+	double *ll1 = new double[max], 
+				 *ll2 = new double[max], 
+					mm1, mm2;
 
-  auto res = m.hidden;
-  writeCSV<uint>(res, path + "pruebas\\cuervo1f_mground.csv");
+	HMM::params *pp1 = new HMM::params[max], 
+							*pp2 = new HMM::params[max], 
+							 oo1, oo2;
+
+	clock_t ts = clock();
+
+	#pragma omp parallel for private(tid, i) shared(ll1, ll2, pp1, pp2) 
+	for(i=0; i<max; ++i) {
+		HMM::params p(nn, kk, true);
+		ll1[i] = h.EM(p);
+		pp1[i] = p;
+
+		HMM::params q(nn+1, kk, true);
+		ll2[i] = h.EM(q);
+		pp2[i] = q;
+
+		std::cout << "."; 
+	}
+
+	mm1 = ll1[0];
+	mm2 = ll2[0];
+
+	int ii1 = 0, ii2;
+	for(i=1; i<max; ++i) {
+		if(ll1[i] > mm1) {
+			mm1 = ll1[i];
+			ii1 = i;
+		}
+
+		if(ll2[i] > mm2) {
+			mm2 = ll2[i];
+			ii2 = i;
+		}
+	}
+	oo1 = pp1[ii1];
+	oo2 = pp2[ii2];
+
+	clock_t te = clock();
+
+	printf("\n Time taken: %.2fs\n", (double)(te -ts)/CLOCKS_PER_SEC);
+
+  std::cout << "best overal [model 1] (iter=>" << ii1 << "): " << mm1 << std::endl;
+	std::cout << "best overal [model 2] (iter=>" << ii2 << "): " << mm2 << std::endl;
+
+  auto res1 = oo1.hidden;
+	auto res2 = oo2.hidden;
+  writeCSV<uint>(res1, path + "pruebas\\cuervo1f_" + std::to_string(kk) + "mground.csv");
+	writeCSV<uint>(res2, path + "pruebas\\cuervo1f_" + std::to_string(kk+1) + "mground.csv");
 
   getchar();
   return 0;
