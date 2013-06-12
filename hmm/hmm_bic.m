@@ -12,7 +12,7 @@ kk = [45:15:90, 100:20:200];
 
 %grnd = 'mfcc\calderon5_ground.csv';
 
-grnd = 'pruebas\noct1f_ground.csv';
+grnd = 'pruebas\cuervo1f_ground.csv';
 %grnd = 'pruebas\noct1f_ground.csv';
 
 MAX_ITER_ESTIM = 30;
@@ -20,7 +20,7 @@ MAX_ITER_HMM = 340;
 
 R_SERIES = 200;
 
-kk = [120];
+kk = [140];
 
 T = 0;
 
@@ -29,8 +29,8 @@ for www = kk
     % Variable latente z_n {speakers}
     % Variable observada x_n {diccionario}
        
-    ruta = strcat('pruebas\prb_f1_noct1f_', int2str(kk), '\')
-    arch = strcat('pruebas\noct1f_', int2str(kk), '.csv')
+    ruta = strcat('pruebas\prb_tt_cuervo1f_', int2str(kk), '\')
+    arch = strcat('pruebas\cuervo1f_', int2str(kk), '.csv')
     
     %ruta = strcat('mfcc\prb_noct1f_', int2str(kk), '\')
     %arch = strcat('mfcc\noct1f_', int2str(kk), '.csv')
@@ -57,7 +57,7 @@ for www = kk
 
     data = kc';
     
-    seq_boot = 1:8;    
+    seq_boot = 6; %1:8;    
     ss = length(seq_boot);
     
     listLL1 = zeros(ss);
@@ -66,7 +66,7 @@ for www = kk
     listfp2 = zeros(ss);
     % listbic = zeros(ss);
     
-    seq_offs = 1;
+    seq_offs = 0;
     for qqq = seq_boot
         NN = seq_offs + qqq;
         %%% Primer modelo

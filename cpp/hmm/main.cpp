@@ -13,8 +13,8 @@
 
 
 int main() {
-  std::string path = "C:\\Users\\Estudiante\\Documents\\GitHub\\msc-thesis-code\\";
-  // std::string path = "E:\\ESCUELA\\CIMAT\\4 Semestre\\ST2\\prog\\";
+  // std::string path = "C:\\Users\\Estudiante\\Documents\\GitHub\\msc-thesis-code\\";
+  std::string path = "E:\\ESCUELA\\CIMAT\\4 Semestre\\ST2\\prog\\";
 	
   auto data = readCSV<uint>(path + "pruebas\\cuervo1f_120.csv");
 
