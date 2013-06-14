@@ -5,8 +5,8 @@ function gener_dics( )
     
     %numc = 5;
     
-    fpath = 'E:/ESCUELA/CIMAT/4 Semestre/ST2/prog/mfcc/';
-    ffile = 'cuervo1f';
+    fpath = 'E:/ESCUELA/CIMAT/4 Semestre/ST2/prog/pruebas/';
+    ffile = 'cats1f';
     fext  = '.csv';
     
     disp(strcat('Input: ', ffile, fext));

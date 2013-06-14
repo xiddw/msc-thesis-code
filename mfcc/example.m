@@ -22,8 +22,8 @@
     L = 22;                 % cepstral sine lifter parameter
     LF = 300;               % lower frequency limit (Hz)
     HF = 3700;              % upper frequency limit (Hz)
-    wav_file = 'mfcc\cuervo1f.wav';  % input audio filename    
-    mfcc_file = 'mfcc\cuervo1f_ceps.csv';
+    wav_file  = 'voice\aud\cats1f.wav';  % input audio filename    
+    mfcc_file = 'voice\aud\cats1f_ceps.csv';
     
     disp(strcat('Input: ', wav_file));
     disp(strcat('Output: ', mfcc_file));
