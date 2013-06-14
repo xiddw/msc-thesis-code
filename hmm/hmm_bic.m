@@ -10,7 +10,7 @@ mex -O -outdir hmm hmm/cfwd_bwd.cpp hmm\cpptipos\matriz.cpp hmm\cpptipos\vector.
 
 kk = [45:15:90, 100:20:200];
 
-grnd = 'pruebas\soledad1f_ground.csv';
+grnd = 'pruebas\cats1f_ground.csv';
 
 MAX_ITER_ESTIM = 30;
 MAX_ITER_HMM = 340;
@@ -20,7 +20,7 @@ R_SERIES = 200;
 % kk = [160];
 
 seq_offs = 1;
-seq_boot = 1:8;    
+seq_boot = 1:7;    
 ss = length(seq_boot);
 
 T = 0;
@@ -30,8 +30,8 @@ for www = kk
     % Variable latente z_n {speakers}
     % Variable observada x_n {diccionario}
        
-    ruta = strcat('pruebas\prb_tt_soledad1f_', int2str(www), '\')
-    arch = strcat('pruebas\soledad1f_', int2str(www), '.csv')
+    ruta = strcat('pruebas\prb_tt_cats1f_', int2str(www), '\')
+    arch = strcat('pruebas\cats1f_', int2str(www), '.csv')
     
     disp(strcat('Iniciando BIC para ->   ', arch));
     
