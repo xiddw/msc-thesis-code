@@ -185,7 +185,7 @@ for www = kk
         %figure; plot(seq_offs+(1:hh), bb(:, j));
         j = j+1;
     end
-    figure; mesh(1:length(lll), seq_offs+(1:hh), bb)
+    figure; mesh(lll, seq_offs+(1:hh), bb)
 end
 
 
