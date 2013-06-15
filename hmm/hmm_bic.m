@@ -185,10 +185,20 @@ for www = kk
         %figure; plot(seq_offs+(1:hh), bb(:, j));
         j = j+1;
     end
-    figure; mesh(lll, seq_offs+(1:hh), bb)
+    figure; surfc(lll, seq_offs+(1:hh), bb); colormap cool;
 end
 
+resol = '-r400';
+lp = 100;
 
- % N  = 120;
-%% T = 7219;
- % T = 6415;
+figure;
+sp(1) = plot(seq_offs+(1:hh), bb(:, lp), '-b');
+hold on;
+sp(2) = plot(seq_offs+(1:hh), bb(:, lp), 'or', 'MarkerFaceColor', 'r');
+tt = title(sprintf('Selección BIC con lambda=%d',lll(lp)-1));
+box off;
+set(sp, 'linewidth', 2)
+set(0, 'DefaultAxesFontSize', 13)
+set(tt, 'FontSize', 16)
+
+print('-dpng', 'cats11.png', resol);
