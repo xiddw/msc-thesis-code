@@ -257,6 +257,12 @@ for www = kk
         
         archivo = strcat(ruta, int2str(NN), 'to', int2str(NN+1));
         save(archivo, 'orig', 'fin1', 'fin2', 'ffin1', 'ffin2')
+        
+        %% FOR THE LOLZ (en caso de que se interrumpa ejecución o algo u,u)
+        archivo = strcat(ruta, 'lists.mat');
+        save(archivo, 'K', 'T', 'N', 'seq_offs', 'seq_boot', ...
+                  'listLL1', 'listLL2', 'listLLR', 'listLLRB',  ...
+                  'listfp1', 'listfp2', 'listpva');        
 
     end
 
