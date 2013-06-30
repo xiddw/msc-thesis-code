@@ -11,7 +11,7 @@ mex -O -outdir hmm hmm/cfwd_bwd.cpp hmm\cpptipos\matriz.cpp hmm\cpptipos\vector.
 
 kk = [45:15:90, 100:20:200];
 
-stem = 'cats1f';
+stem = 'soledad1f';
 
 grnd = strcat('pruebas\', stem, '_ground.csv');
 
@@ -23,7 +23,7 @@ R_SERIES = 700;
 kk = 90;
 
 seq_boot = 1:4;    
-seq_offs = 3;
+seq_offs = 1;
 ss = length(seq_boot);
 
 for www = kk
@@ -258,6 +258,7 @@ for www = kk
         save(archivo, 'orig', 'fin1', 'fin2', 'ffin1', 'ffin2')
         
         %% FOR THE LOLZ (en caso de que se interrumpa ejecución o algo u,u)
+        N = max(orig.hid);
         archivo = strcat(ruta, 'lists.mat');
         save(archivo, 'K', 'T', 'N', 'seq_offs', 'seq_boot', ...
                   'listLL1', 'listLL2', 'listLLR', 'listLLRB',  ...
