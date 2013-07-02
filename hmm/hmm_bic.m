@@ -203,16 +203,19 @@ set(tt, 'FontSize', 16)
 
 print('-dpng', 'cats11.png', resol);
 
-index = 2;
-set(0, 'DefaultAxesFontSize', 13)
-a = ksdensity(listLLRB(index, :));
-figure; 
-sp(1) = plot(a);
-hold on; 
-sp(2) = plot([listLLR(index); listLLR(index)], [min(a); 1.1*max(a)], '--r');
-tt = title(sprintf('Prueba de hipótesis para m_%d vs m_%d interlocutores',...
-            index+seq_offs+seq_boot(index), ...
-            index+seq_offs+seq_boot(index+1)));
-box off;
-set(sp, 'linewidth', 2)
-set(tt, 'FontSize', 16)
+%%%%%%%%%%%%%%%%%%%%%%
+for index = 1:(length(seq_boot))
+% index = 2;
+    set(0, 'DefaultAxesFontSize', 13)
+    a = ksdensity(listLLRB(index, :));
+    figure; 
+    sp(1) = plot(a);
+    hold on; 
+    sp(2) = plot([listLLR(index); listLLR(index)], [min(a); 1.1*max(a)], '--r');
+    tt = title(sprintf('Prueba de hipótesis para m_%d vs m_%d interlocutores',...
+                seq_offs+seq_boot(index), ...
+                seq_offs+seq_boot(index)+1));
+    box off;
+    set(sp, 'linewidth', 2)
+    set(tt, 'FontSize', 16)
+end
