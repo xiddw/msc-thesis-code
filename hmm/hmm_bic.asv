@@ -204,7 +204,6 @@ set(tt, 'FontSize', 16)
 print('-dpng', 'cats11.png', resol);
 
 %%%%%%%%%%%%%%%%%%%%%%
-resol = '-r400';
 for index = 1:(length(seq_boot))
     set(0, 'DefaultAxesFontSize', 13)
     dd = listLLRB(index, :);
@@ -212,7 +211,7 @@ for index = 1:(length(seq_boot))
     [yy, xx] = ksdensity(dd, 'npoints', nd);
     figure; 
     
-    zvalue = listLL2(index) - listLL1(index);
+zvalue = listLL2(index) - listLL1(index);
     signif = xx(int16(0.95*nd));    
     
     xmin = 0.9*min(xx);
@@ -222,11 +221,12 @@ for index = 1:(length(seq_boot))
     ymax = 1.1*max(yy);    
     
     rectangle('Position', [signif, ymin, xmax, ymax], ...
-              'FaceColor', [235, 255, 235]/255, ...
-              'LineStyle', 'none');        
-    hold on; 
-        
+              'FaceColor', [255, 220, 220]/255);        
+    
     sp(1) = plot(xx, yy, 'LineWidth', 2);
+    hold on; 
+
+    
 
     
     sp(2) = plot([zvalue; zvalue], [min(yy); 1.1*max(yy)], '--r', 'LineWidth', 2);          
@@ -234,13 +234,11 @@ for index = 1:(length(seq_boot))
     xlim([xmin, xmax]);
     ylim([ymin, ymax]);    
     
-    %sum(dd > zvalue), ...
-    tt = title(sprintf('Prueba de hipótesis para m_%d vs m_%d interlocutores',...
+    tt = title(sprintf('(%03d) - Prueba de hipótesis para m_%d vs m_%d interlocutores',...
+                sum(dd > zvalue), ...
                 seq_offs+seq_boot(index), ...
                 seq_offs+seq_boot(index)+1));
     box off;
     
     set(tt, 'FontSize', 16)
-    
-    % print('-dpng', sprintf(''), resol);
 end
