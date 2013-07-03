@@ -293,16 +293,19 @@ for www = kk
         %figure; plot(seq_offs+(1:hh), bb(:, j));
         j = j+1;
     end
-    figure; mesh(1:length(lll), seq_offs+(1:hh), bb)
-    
+    figure; surfc(1:length(lll), seq_offs+(1:hh), bb); colormap('cool');
     
     x = 1:length(lll);
     xx = lll;
     y = seq_offs+(1:hh);
     z = bb;
     
-    clearvars -except x y z xx
-    [px, py] = gradient(z, 2, 2);contour(x, y, z); hold on; quiver(xx, y, px, py);
+    figure;
+    [px, py] = gradient(z, 2, 2);
+    contour(x, y, z, 15, 'LineWidth', 2); 
+    colormap('cool');
+    hold on; 
+    quiver(x, y, px, py, 'k', 'LineWidth', 2);
 end
 
         
