@@ -279,7 +279,7 @@ for www = kk
     %%%%%%%%%%%%%$$$$$$$$$$$$$$
     %%%%%%%%%%%%%$$$$$$$$$$$$$$
     
-    lll = (1:2e1:30e2);
+    lll = (1:1e2:30e2);
     hh = length(listLL1);
     bb = zeros(hh, length(lll));
     j = 1;
@@ -294,6 +294,15 @@ for www = kk
         j = j+1;
     end
     figure; mesh(1:length(lll), seq_offs+(1:hh), bb)
+    
+    
+    x = 1:length(lll);
+    xx = lll;
+    y = seq_offs+(1:hh);
+    z = bb;
+    
+    clearvars -except x y z xx
+    [px, py] = gradient(z, 2, 2);contour(x, y, z); hold on; quiver(xx, y, px, py);
 end
 
         

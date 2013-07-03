@@ -205,14 +205,26 @@ print('-dpng', 'cats11.png', resol);
 
 %%%%%%%%%%%%%%%%%%%%%%
 for index = 1:(length(seq_boot))
-% index = 2;
     set(0, 'DefaultAxesFontSize', 13)
-    a = ksdensity(listLLRB(index, :));
+    dd = listLLRB(index, :);
+    nd = length(dd);
+    [yy, xx] = ksdensity(dd, 'npoints', nd);
     figure; 
-    sp(1) = plot(a);
+    %H = histfit(dd, 100);
+    %hold on; 
+    %sp(1) = H(2);
+    %figure; 
+    sp(1) = plot(xx, yy);
     hold on; 
-    sp(2) = plot([listLLR(index); listLLR(index)], [min(a); 1.1*max(a)], '--r');
-    tt = title(sprintf('Prueba de hipótesis para m_%d vs m_%d interlocutores',...
+    
+    zvalue = listLLR(index);
+    signif = xx(int16(0.95*nd)); %quantile(dd, 0.95);
+    sp(2) = plot([signif; signif], [min(yy); 1.1*max(yy)], '--k');
+    sp(3) = plot([zvalue; zvalue], [min(yy); 1.1*max(yy)], '--r');
+    %xlim([min(xx), max(xx)]);
+    %ylim([min(yy), max(yy)]);
+    tt = title(sprintf('(%03d) - Prueba de hipótesis para m_%d vs m_%d interlocutores',...
+                sum(dd > zvalue), ...
                 seq_offs+seq_boot(index), ...
                 seq_offs+seq_boot(index)+1));
     box off;
