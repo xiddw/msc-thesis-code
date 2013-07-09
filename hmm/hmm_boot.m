@@ -11,7 +11,7 @@ mex -O -outdir hmm hmm/cfwd_bwd.cpp hmm\cpptipos\matriz.cpp hmm\cpptipos\vector.
 
 kk = [45:15:90, 100:20:200];
 
-stem = 'cuervo1f';
+stem = 'noct1f';
 
 grnd = strcat('pruebas\', stem, '_ground.csv');
 
@@ -20,10 +20,10 @@ MAX_ITER_HMM = 340;
 
 R_SERIES = 700;
 
-kk = 140;
+kk = 120;
 
-seq_boot = 1:4;    
-seq_offs = 3;
+seq_boot = 1:3;    
+seq_offs = 1;
 ss = length(seq_boot);
 
 for www = kk
