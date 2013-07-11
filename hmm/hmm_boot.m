@@ -293,7 +293,13 @@ for www = kk
         %figure; plot(seq_offs+(1:hh), bb(:, j));
         j = j+1;
     end
-    figure; surfc(1:length(lll), seq_offs+(1:hh), bb); colormap('cool');
+    figure; 
+    set(0, 'DefaultAxesFontSize', 13)
+    
+    surfc(lll, seq_offs+(1:hh), bb); colormap('cool');
+    tt = title(sprintf('Superficie de curvas BIC para ' + ..
+                'distintos valores de lambda'));
+    set(tt, 'FontSize', 16)
     
     x = 1:length(lll);
     xx = lll;
@@ -301,11 +307,13 @@ for www = kk
     z = bb;
     
     figure;
-    [px, py] = gradient(z, 2, 2);
-    contour(x, y, z, 15, 'LineWidth', 2); 
+    [px, py] = gradient(z, 1, 2);
+    pc = contour(x, y, z, 15, 'LineWidth', 2); 
     colormap('cool');
     hold on; 
     quiver(x, y, px, py, 'k', 'LineWidth', 2);
+    
+    set(gca,'XTickLabel',{xx(2:end)-1})
 end
 
         
