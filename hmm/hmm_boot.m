@@ -11,7 +11,7 @@ mex -O -outdir hmm hmm/cfwd_bwd.cpp hmm\cpptipos\matriz.cpp hmm\cpptipos\vector.
 
 kk = [45:15:90, 100:20:200];
 
-stem = 'noct1f';
+stem = 'lear3';
 
 grnd = strcat('pruebas\', stem, '_ground.csv');
 
@@ -20,10 +20,10 @@ MAX_ITER_HMM = 340;
 
 R_SERIES = 700;
 
-kk = 120;
+kk = 160;
 
-seq_boot = 1:3;    
-seq_offs = 1;
+seq_boot = 3:5;
+seq_offs = 3;
 ss = length(seq_boot);
 
 for www = kk
@@ -31,7 +31,7 @@ for www = kk
     % Variable latente z_n {speakers}
     % Variable observada x_n {diccionario}
        
-    ruta = strcat('pruebas\prb_b1_', stem, '_', int2str(kk), '\');
+    ruta = strcat('pruebas\prb_b2_', stem, '_', int2str(kk), '\');
     arch = strcat('pruebas\', stem, '_', int2str(kk), '.csv');
     disp(ruta);disp(arch);
     
