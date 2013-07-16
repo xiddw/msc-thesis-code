@@ -11,7 +11,7 @@ mex -O -outdir hmm hmm/cfwd_bwd.cpp hmm\cpptipos\matriz.cpp hmm\cpptipos\vector.
 
 kk = [45:15:90, 100:20:200];
 
-stem = 'lear3';
+stem = 'soledad1f';
 
 grnd = strcat('pruebas\', stem, '_ground.csv');
 
@@ -20,10 +20,10 @@ MAX_ITER_HMM = 340;
 
 R_SERIES = 700;
 
-kk = 160;
+kk = 90;
 
-seq_boot = 3:5;
-seq_offs = 3;
+seq_boot = 4:5;
+seq_offs = 1;
 ss = length(seq_boot);
 
 for www = kk
@@ -297,8 +297,7 @@ for www = kk
     set(0, 'DefaultAxesFontSize', 13)
     
     surfc(lll, seq_offs+(1:hh), bb); colormap('cool');
-    tt = title(sprintf('Superficie de curvas BIC para ' + ..
-                'distintos valores de lambda'));
+    tt = title(sprintf('Superficie de curvas BIC para distintos valores de lambda'));
     set(tt, 'FontSize', 16)
     
     x = 1:length(lll);
