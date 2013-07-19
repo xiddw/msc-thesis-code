@@ -11,7 +11,7 @@ mex -O -outdir hmm hmm/cfwd_bwd.cpp hmm\cpptipos\matriz.cpp hmm\cpptipos\vector.
 
 kk = [45:15:90, 100:20:200];
 
-stem = 'soledad1f';
+stem = 'cuervo1f';
 
 grnd = strcat('pruebas\', stem, '_ground.csv');
 
@@ -20,9 +20,9 @@ MAX_ITER_HMM = 340;
 
 R_SERIES = 700;
 
-kk = 90;
+kk = 140;
 
-seq_boot = 4:5;
+seq_boot = 3:6;
 seq_offs = 1;
 ss = length(seq_boot);
 
@@ -278,8 +278,13 @@ for www = kk
     
     %%%%%%%%%%%%%$$$$$$$$$$$$$$
     %%%%%%%%%%%%%$$$$$$$$$$$$$$
+    resol = '-r400';
     
-    lll = (1:1e2:30e2);
+    K = max(orig.obs);
+    N = max(orig.hid);
+    T = length(orig.obs);
+    
+    lll = (1:1e2:50e2);
     hh = length(listLL1);
     bb = zeros(hh, length(lll));
     j = 1;
@@ -307,12 +312,18 @@ for www = kk
     
     figure;
     [px, py] = gradient(z, 1, 2);
-    pc = contour(x, y, z, 15, 'LineWidth', 2); 
+    pc = contour(x, y, z, 30, 'LineWidth', 1); 
     colormap('cool');
     hold on; 
-    quiver(x, y, px, py, 'k', 'LineWidth', 2);
+    quiver(x, y, px, py, 'k', 'LineWidth', 1);
     
-    set(gca,'XTickLabel',{xx(2:end)-1})
+    st = max(diff(xx));
+    %xt = str2num(get(gca, 'XTickLabel'));
+    %set(gca,'XTickLabel', xt*st);
+    
+    tt = title(sprintf('Curva de nivel de superficie BIC para distintos valores de lambda'));
+    set(tt, 'FontSize', 16)
+    
 end
 
         
