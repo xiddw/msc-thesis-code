@@ -20,7 +20,7 @@ MAX_ITER_HMM = 340;
 
 R_SERIES = 700;
 
-kk = 140;
+kk = 160;
 
 seq_boot = 1:4;
 seq_offs = 1;
@@ -31,7 +31,7 @@ for www = kk
     % Variable latente z_n {speakers}
     % Variable observada x_n {diccionario}
        
-    ruta = strcat('pruebas\prb_b3_', stem, '_', int2str(kk), '\');
+    ruta = strcat('pruebas\prb_b4_', stem, '_', int2str(kk), '\');
     arch = strcat('pruebas\', stem, '_', int2str(kk), '.csv');
     disp(ruta);disp(arch);
     
