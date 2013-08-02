@@ -1,80 +1,44 @@
-function [fp1, fp2] = myplot(a, archivo1, b, archivo2, c)
+function [fp1, fp2] = myplot(objects, archivo1, archivo2)
     resol = '-r400';
+    
+    titles = fieldnames(objects);
     nrows = 4;
-    
-    ns = [max(a.hid), max(b.hid)];
-    if nargin < 4
-        error('Se requieren al menos cuatro parametros.')
-    elseif nargin == 4
-        ncols = 2;        
-    else
-        ns(3) = max(c.hid);
-        ncols = 3;
-    end
-    
-    i = 1;
-    
+    ncols = numel(titles);
+        
 	sf = figure;
-	sp(i) = subplot(nrows, ncols, i);    
-	imagesc(a.priori)
-    tt(1) = title('Ground truth');
-    ll(1) = ylabel('Priori');
-    i = i+1;
+    sp = zeros(ncols*nrows, 1);
+    tt = zeros(ncols);
     
-	sp(i) = subplot(nrows, ncols, i);    
-	imagesc(b.priori)
-    tt(2) = title(strcat('Modelo para k=', int2str(ns(2))));
-    i = i+1;
-    
-    if ncols == 3
-        sp(i) = subplot(nrows, ncols, i);                
-        imagesc(c.priori)
-        tt(3) = title(strcat('Modelo para k=', int2str(ns(3))));
-        i = i+1;
-    end
+    k = 1;    
+    for i = 1:ncols
+        j = 1;
+        name = titles{i};
+        t = objects.(name);
 
-	sp(i) = subplot(nrows, ncols, i);    
-	imagesc(a.mtrans)
-    ll(2) = ylabel('M. Transición');
-    i = i+1;    
+        sp(k) = subplot(nrows, ncols, (j-1)*ncols + i);
+        imagesc(t.priori)
+        tt(i) = title(name);
+        ll(1) = ylabel('Priori');
+        j = j+1;
+        k = k+1;
 
-	sp(i) = subplot(nrows, ncols, i);    
-	imagesc(b.mtrans)
-    i = i+1;
-    
-    if ncols == 3
-        sp(i) = subplot(nrows, ncols, i);        
-        imagesc(c.mtrans)
-        i = i+1;
-    end
+        sp(k) = subplot(nrows, ncols, (j-1)*ncols + i);
+        imagesc(t.mtrans)
+        ll(2) = ylabel('M. Transición');
+        j = j+1;
+        k = k+1;
 
-	sp(i) = subplot(nrows, ncols, i);
-    imagesc(a.memisn)
-    ll(3) = ylabel('M. Emisión');
-    i = i+1;
+        sp(k) = subplot(nrows, ncols, (j-1)*ncols + i);
+        imagesc(t.memisn)
+        ll(3) = ylabel('M. Emisión');
+        j = j+1;
+        k = k+1;
 
-	sp(i) = subplot(nrows, ncols, i);    
-	imagesc(b.memisn)
-    i = i+1;
-    
-    if ncols == 3        
-        sp(i) = subplot(nrows, ncols, i);        
-        imagesc(c.memisn)
-        i = i+1;
-    end
-    
-	sp(i) = subplot(nrows, ncols, i);    
-	imagesc(a.hid)
-    ll(4) = ylabel('Secuencia');
-    i = i+1;
-
-	sp(i) = subplot(nrows, ncols, i);    
-	imagesc(b.hid)    
-    i = i+1;
-    
-    if ncols == 3
-        sp(i) = subplot(nrows, ncols, i);
-        imagesc(c.hid)
+        sp(k) = subplot(nrows, ncols, (j-1)*ncols + i);
+        imagesc(t.hid)
+        ll(4) = ylabel('Secuencia');
+        j = j+1;
+        k = k+1;
     end
     
     set(sp, 'FontSize', 13)
@@ -100,6 +64,8 @@ function [fp1, fp2] = myplot(a, archivo1, b, archivo2, c)
         print('-dpng', archivo1, resol);
     end
     %% 
+    
+    return;
     
     %%%
     if numel(a.hid) < numel(b.hid)
