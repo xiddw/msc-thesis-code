@@ -276,54 +276,6 @@ for www = kk
     close all;
     toc;
     
-    %%%%%%%%%%%%%$$$$$$$$$$$$$$
-    %%%%%%%%%%%%%$$$$$$$$$$$$$$
-    resol = '-r400';
-    
-    K = max(orig.obs);
-    N = max(orig.hid);
-    T = length(orig.obs);
-    
-    lll = (1:1e2:50e2);
-    hh = length(listLL1);
-    bb = zeros(hh, length(lll));
-    j = 1;
-    for l = lll
-        MM = seq_offs;
-        lambda = l;
-        for i = 1:hh
-            MM = MM+1;
-            bb(i, j) = (listLL1(i)) - 0.5 * lambda * (MM-1)+(MM*(MM-1))+(MM*(K-1)) * log(T);
-        end
-        %figure; plot(seq_offs+(1:hh), bb(:, j));
-        j = j+1;
-    end
-    figure; 
-    set(0, 'DefaultAxesFontSize', 13)
-    
-    surfc(lll, seq_offs+(1:hh), bb); colormap('cool');
-    tt = title(sprintf('Superficie de curvas BIC para distintos valores de lambda'));
-    set(tt, 'FontSize', 16)
-    
-    x = 1:length(lll);
-    xx = lll;
-    y = seq_offs+(1:hh);
-    z = bb;
-    
-    figure;
-    [px, py] = gradient(z, 1, 2);
-    pc = contour(x, y, z, 30, 'LineWidth', 1); 
-    colormap('cool');
-    hold on; 
-    quiver(x, y, px, py, 'k', 'LineWidth', 1);
-    
-    st = max(diff(xx));
-    %xt = str2num(get(gca, 'XTickLabel'));
-    %set(gca,'XTickLabel', xt*st);
-    
-    tt = title(sprintf('Curva de nivel de superficie BIC para distintos valores de lambda'));
-    set(tt, 'FontSize', 16)
-    
 end
 
         

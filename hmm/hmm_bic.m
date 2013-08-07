@@ -5,6 +5,7 @@
     addpath('hmm\')
     addpath('mfcc\')
     addpath('voice\')
+    addpath('freezeColors\')
 mex -O -outdir hmm hmm/cfwd_bwd.cpp hmm\cpptipos\matriz.cpp hmm\cpptipos\vector.cpp
 %}
 
@@ -188,59 +189,3 @@ for www = kk
     figure; surfc(lll, seq_offs+(1:hh), bb); colormap cool;
 end
 
-resol = '-r400';
-lp = 100;
-
-figure;
-sp(1) = plot(seq_offs+(1:hh), bb(:, lp), '-b');
-hold on;
-sp(2) = plot(seq_offs+(1:hh), bb(:, lp), 'or', 'MarkerFaceColor', 'r');
-tt = title(sprintf('Selección BIC con lambda=%d',lll(lp)-1));
-box off;
-set(sp, 'linewidth', 2)
-set(0, 'DefaultAxesFontSize', 13)
-set(tt, 'FontSize', 16)
-
-print('-dpng', 'cats11.png', resol);
-
-%%%%%%%%%%%%%%%%%%%%%%
-resol = '-r400';
-for index = 1:(length(seq_boot))
-    set(0, 'DefaultAxesFontSize', 13)
-    dd = listLLRB(index, :);
-    nd = length(dd);
-    [yy, xx] = ksdensity(dd, 'npoints', nd);
-    figure; 
-    
-    zvalue = listLL2(index) - listLL1(index);
-    signif = xx(int16(0.95*nd));    
-    
-    xmin = 0.9*min(xx);
-    xmax = 1.1*max([xx, zvalue]);
-    
-    ymin = min(yy);
-    ymax = 1.1*max(yy);    
-    
-    rectangle('Position', [signif, ymin, xmax, ymax], ...
-              'FaceColor', [235, 255, 235]/255, ...
-              'LineStyle', 'none');        
-    hold on; 
-        
-    sp(1) = plot(xx, yy, 'LineWidth', 2);
-
-    
-    sp(2) = plot([zvalue; zvalue], [min(yy); 1.1*max(yy)], '--r', 'LineWidth', 2);          
-    
-    xlim([xmin, xmax]);
-    ylim([ymin, ymax]);    
-    
-    %sum(dd > zvalue), ...
-    tt = title(sprintf('Prueba de hipótesis para m_%d vs m_%d interlocutores',...
-                seq_offs+seq_boot(index), ...
-                seq_offs+seq_boot(index)+1));
-    box off;
-    
-    set(tt, 'FontSize', 16)
-    
-    % print('-dpng', sprintf(''), resol);
-end
