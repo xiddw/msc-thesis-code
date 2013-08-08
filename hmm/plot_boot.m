@@ -22,6 +22,8 @@ for index = 1:(length(seq_boot))
     hold on; 
         
     sp(1) = plot(xx, yy, 'LineWidth', 2);
+    xlabel('log-likelihood ratio observada');
+    ylabel('Densidad de probabilidad');
 
     
     sp(2) = plot([zvalue; zvalue], [min(yy); 1.1*max(yy)], '--r', 'LineWidth', 2);          
@@ -36,6 +38,11 @@ for index = 1:(length(seq_boot))
     box off;
     
     set(tt, 'FontSize', 16)
+    
+    if exist('archivo', 'var') 
+        arch = strcat(archivo, '_', int2str(index));
+        print('-dpng', arch, resol); close;
+    end    
     
     % print('-dpng', sprintf(''), resol);
 end

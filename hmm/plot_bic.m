@@ -93,6 +93,40 @@ set(gca,'YTickLabel', yt/st);
 tt = title(sprintf('Curva de nivel de superficie BIC para distintos valores de lambda'));
 set(tt, 'FontSize', 16)
 
+%%
+figure;
+mp = mp;
+lambda = xx(mp);
+
+ll = bb(:, mp);
+[~, ml] = max(ll);
+
+sp(1) = plot(y, ll, 'b');
+xlabel('Modelo seleccionado')
+ylabel('log-verosimilitud')
+
+hold on;
+sp(2) = plot(y, ll, 'or', 'MarkerFaceColor', 'r');
+sp(3) = plot(y(ml), ll(ml), 'og', 'MarkerFaceColor', 'g');
+t1 = title('Selección de modelo con BIC');
+
+set(t1, 'FontSize', 16)
+set(gca, 'FontSize', 12);
+set(gca, 'box', 'off');
+set(sp(2:3),'MarkerSize', 7);
+set(sp, 'linewidth', 2)
+
+legend(strcat('lambda= ', int2str(lambda)))
+
+if exist('archivo', 'var') 
+    arch1 = strcat(archivo, '_1');
+    arch2 = strcat(archivo, '_2');
+    arch3 = strcat(archivo, '_3');
+    
+    print('-dpng', arch1, resol); close;
+    print('-dpng', arch2, resol); close;
+    print('-dpng', arch3, resol); %close;
+end
 %{
 print('-dpng', '', resol);
 %}
