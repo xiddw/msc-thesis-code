@@ -1,7 +1,8 @@
 %%%%%%%%%%%%%%%%%%%%%%
 resol = '-r400';
+font = 14;
 for index = seq_boot
-    set(0, 'DefaultAxesFontSize', 13)
+    set(0, 'DefaultAxesFontSize', font)
     dd = listLLRB(index, :);
     nd = length(dd);
     [yy, xx] = ksdensity(dd, 'npoints', nd);
@@ -37,7 +38,7 @@ for index = seq_boot
                 seq_offs+ index));%%seq_boot(index)+1));
     box off;
     
-    set(tt, 'FontSize', 16)
+    set(tt, 'FontSize', font+3)
     
     if exist('archivo', 'var') 
         arch = strcat(archivo, '_', int2str(index));
