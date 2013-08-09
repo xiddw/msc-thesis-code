@@ -6,6 +6,7 @@
     addpath('hmm\')
     addpath('mfcc\')
     addpath('voice\')
+    addpath('freezeColors\')
 mex -O -outdir hmm hmm/cfwd_bwd.cpp hmm\cpptipos\matriz.cpp hmm\cpptipos\vector.cpp
 %}
 
@@ -22,7 +23,7 @@ R_SERIES = 700;
 
 kk = 160;
 
-seq_boot = 1:3;
+seq_boot = 2:3;
 seq_offs = 1;
 ss = length(seq_boot);
 
@@ -241,7 +242,9 @@ for www = kk
         %%{       
         img1 = strcat(ruta, int2str(NN), 'to', int2str(NN+1));
         img2 = strcat(ruta, int2str(NN), 'to', int2str(NN+1), '_');
-        [fp1, fp2] = myplot(orig, img1, ffin1, img2, ffin2);
+        %[fp1, fp2] = myplot(orig, img1, ffin1, img2, ffin2);
+        fp1 = 1;
+        fp2 = 2;
         %%}
         
         %%
