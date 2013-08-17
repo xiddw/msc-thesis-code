@@ -19,7 +19,9 @@ for index = seq_boot
     
     rectangle('Position', [signif, ymin, xmax, ymax], ...
               'FaceColor', [235, 255, 235]/255, ...
-              'LineStyle', 'none');        
+              'LineStyle', 'none');    
+          
+          
     hold on; 
         
     sp(1) = plot(xx, yy, 'LineWidth', 2);
@@ -33,16 +35,23 @@ for index = seq_boot
     ylim([ymin, ymax]);    
     
     %sum(dd > zvalue), ...
+    %{
     tt = title(sprintf('Prueba de hipótesis para m_%d vs m_%d interlocutores',...
-                seq_offs+ index-1, ...%%seq_boot(index), ...
-                seq_offs+ index));%%seq_boot(index)+1));
+                seq_offs+ index, ...%%seq_boot(index), ...
+                seq_offs+ index+1));%%seq_boot(index)+1));
+    %}
     box off;
     
-    set(tt, 'FontSize', font+3)
+    %set(tt, 'FontSize', font+3)
     
     if exist('archivo', 'var') 
+        set(gcf, 'PaperPositionMode', 'manual');
+        set(gcf, 'PaperUnits', 'inches');
+        set(gcf, 'PaperSize', [8 3]);
+        set(gcf, 'PaperPosition', [0 0 8 3]);
+        
         arch = strcat(archivo, '_', int2str(index));
-        print('-dpng', arch, resol); close;
+        print('-dpdf', arch, resol); close;
     end    
     
     % print('-dpng', sprintf(''), resol);

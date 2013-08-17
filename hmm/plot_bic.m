@@ -36,8 +36,20 @@ surfc(lll, seq_offs+(1:hh), bb); colormap('cool');
 xlabel('lambda')
 ylabel('Modelo seleccionado')
 zlabel('log-verosimilitud')
-tt = title(sprintf('Superficie de curvas BIC para distintos valores de lambda'));
-set(tt, 'FontSize', 16)
+
+%tt = title(sprintf('Superficie de curvas BIC para distintos valores de lambda'));
+%set(tt, 'FontSize', 16)
+if exist('archivo', 'var') 
+    set(gcf, 'PaperPositionMode', 'manual');
+    set(gcf, 'PaperUnits', 'inches');
+    set(gcf, 'PaperSize', [6 6]);
+    set(gcf, 'PaperPosition', [0 0 6 6]);
+
+    arch1 = strcat(archivo, '_1');
+    print('-dpdf', arch1, resol); 
+    close;
+end
+
 
 %%% TEMP %%%
 %%% xt = str2num(get(gca, 'XTickLabel'));
@@ -90,8 +102,17 @@ quiver(xx, yy, px, py, 'k', 'LineWidth', 1);
 yt = str2num(get(gca, 'YTickLabel'));
 set(gca,'YTickLabel', yt/st);
 
-tt = title(sprintf('Curva de nivel de superficie BIC para distintos valores de lambda'));
-set(tt, 'FontSize', 16)
+%tt = title(sprintf('Curva de nivel de superficie BIC para distintos valores de lambda'));
+%set(tt, 'FontSize', 16)
+if exist('archivo', 'var') 
+    set(gcf, 'PaperPositionMode', 'manual');
+    set(gcf, 'PaperUnits', 'inches');
+    set(gcf, 'PaperSize', [8 5]);
+    set(gcf, 'PaperPosition', [0 0 8 5])
+    
+    arch2 = strcat(archivo, '_2');
+    print('-dpdf', arch2, resol); close;
+end
 
 %%
 figure;
@@ -108,9 +129,9 @@ ylabel('log-verosimilitud')
 hold on;
 sp(2) = plot(y, ll, 'or', 'MarkerFaceColor', 'r');
 sp(3) = plot(y(ml), ll(ml), 'og', 'MarkerFaceColor', 'g');
-t1 = title('Selección de modelo con BIC');
+% t1 = title('Selección de modelo con BIC');
 
-set(t1, 'FontSize', 16)
+% set(t1, 'FontSize', 16)
 set(gca, 'FontSize', 12);
 set(gca, 'box', 'off');
 set(sp(2:3),'MarkerSize', 7);
@@ -119,13 +140,14 @@ set(sp, 'linewidth', 2)
 legend(strcat('lambda= ', int2str(lambda)))
 
 if exist('archivo', 'var') 
-    arch1 = strcat(archivo, '_1');
-    arch2 = strcat(archivo, '_2');
-    arch3 = strcat(archivo, '_3');
+    set(gcf, 'PaperPositionMode', 'manual');
+    set(gcf, 'PaperUnits', 'inches');
+    set(gcf, 'PaperSize', [8 5]);
+    set(gcf, 'PaperPosition', [0 0 8 5]);
     
-    print('-dpng', arch1, resol); close;
-    print('-dpng', arch2, resol); close;
-    print('-dpng', arch3, resol); %close;
+    arch3 = strcat(archivo, '_3');
+    print('-dpdf', arch3, resol); %close;
+    close;
 end
 %{
 print('-dpng', '', resol);
