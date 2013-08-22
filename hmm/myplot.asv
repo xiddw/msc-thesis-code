@@ -1,8 +1,14 @@
-function [fp1, fp2] = myplot(objects, archivo1, archivo2)
+function [fp1, fp2] = myplot(objects, archivo)
+    cm = colormap(hsv(10));
+    
+    
+    set(0, 'DefaultAxesFontSize', 30);
+    tit_fs = 34;
+    
     resol = '-r400';
     
     titles = fieldnames(objects);
-    nrows = 4;
+    nrows = 7;
     ncols = numel(titles);
         
 	sf = figure;
@@ -14,62 +20,96 @@ function [fp1, fp2] = myplot(objects, archivo1, archivo2)
         j = 1;
         name = titles{i};
         t = objects.(name);
-
-        sp(k) = subplot(nrows, ncols, (j-1)*ncols + i);
-        imagesc(t.priori)
-        tt(i) = title(name);
-        ll(1) = ylabel('Priori');
+        
+        mrows = nrows;
+        %sp(k) = subplot(mrows, );                        
+        figure;
+        stem(t.priori, 'filled', 'LineWidth', 4, 'MarkerSize', 6);
+        mm = numel(t.priori);
+        box off;        
+        set(gca,'XTick',1:mm)
+        set(gca,'XLim',[0.5, mm+0.5])
+        xlabel('Interlocutores', 'FontSize', tit_fs);
+        
+        if i == 1 
+            ylabel('Prob. a priori', 'FontSize', tit_fs);
+        end
+        
+        set(gcf, 'PaperPositionMode', 'manual');
+        set(gcf, 'PaperUnits', 'inches');
+        set(gcf, 'PaperSize', [8 4]);
+        set(gcf, 'PaperPosition', [0 0 8 4]);
+        
+        print('-dpng', sprintf('%s%c_%d_%d', archivo, 'p', i, j), '-r400');
+        
+        %continue;
+        
         j = j+1;
         k = k+1;
 
-        sp(k) = subplot(nrows, ncols, (j-1)*ncols + i);
-        imagesc(t.mtrans)
-        ll(2) = ylabel('M. Transición');
-        j = j+1;
-        k = k+1;
+        %sp(k) = subplot(mrows, ncols, (j-1)*ncols + i);        
+        figure;
+        imagesc(t.mtrans);      
+        
+        [spk, ~] = size(t.mtrans);        
+        set(gca,'XTick', 1:spk);
+        set(gca,'YTick', 1:spk);
+        xlabel('Interlocutores', 'FontSize', tit_fs);
+        ylabel('Interlocutores', 'FontSize', tit_fs);
 
-        sp(k) = subplot(nrows, ncols, (j-1)*ncols + i);
-        imagesc(t.memisn)
-        ll(3) = ylabel('M. Emisión');
-        j = j+1;
-        k = k+1;
+        set(gcf, 'PaperPositionMode', 'manual');
+        set(gcf, 'PaperUnits', 'inches');
+        set(gcf, 'PaperSize', [8 5]);
+        set(gcf, 'PaperPosition', [0 0 8 5]);
+        
+        print('-dpng', sprintf('%s%c_%d_%d', archivo, 'p', i, j), '-r400');
 
-        sp(k) = subplot(nrows, ncols, (j-1)*ncols + i);
-        imagesc(t.hid)
-        ll(4) = ylabel('Secuencia');
-        j = j+1;
-        k = k+1;
+        sy = max(t.memisn(:));
+        sy = str2double(sprintf('%5.2f', sy)) + 0.01;
+        s = 1;
+        
+        %cm = colormap(jet(spk));
+        
+        for s = 1:spk        
+            [sa, sb] = size(t.memisn);
+            % sp(k) = subplot(mrows, ncols, (j-1)*ncols + i);
+            figure;    
+            
+            stem(t.memisn(s, :), s, 'filled', 'LineWidth', 4, 'MarkerSize', 5);
+            box off;
+            set(gca,'XLim', [1, sb]);
+            set(gca,'YLim', [0, sy]);
+            xlabel('Diccionario', 'FontSize', tit_fs);
+            ylabel('Probabilidad', 'FontSize', tit_fs);        
+
+            j = j+1;
+            k = k+1;
+            
+            set(gcf, 'PaperPositionMode', 'manual');
+            set(gcf, 'PaperUnits', 'inches');
+            set(gcf, 'PaperSize', [8 3]);
+            set(gcf, 'PaperPosition', [0 0 8 3]);
+            
+            print('-dpng', sprintf('%s%c_%d_%d', archivo, 'p', i, j), '-r400');
+        end      
     end
     
-    set(sp, 'FontSize', 13)
-    set(sp, 'box', 'off')
-    set(sp, 'color', 'white')
-    set(sp, 'linewidth', 1)      
-    
-    %set(tt, 'FontSize', 16)
-    set(ll, 'FontSize', 15)
-    
-    set(sp(end-ncols:end), 'yticklabel', []);
-    
     % Graficas de cambio entre speakers
+
+    %% 
+    close all;
+    return;
+    
     nrows = ncols;
     ncols = 1;   
     
-    sp = [];
-    tt = [];
-    
-    %% set(sf, 'Position', get(0,'Screensize')); 
-    %% saveas(sf, archivo1);
-    if ~strcmp(archivo1, '')
-        print('-dpng', archivo1, resol);
-    end
-    %% 
-    
-    %return;
     grd = titles{1};
     a = objects.(grd);
     
     for j = 2:nrows
+        sp = [];
+        tt = [];
+    
         seq = titles{j};
         b = objects.(seq);
         i = j-1;
@@ -92,57 +132,58 @@ function [fp1, fp2] = myplot(objects, archivo1, archivo2)
 
         idx = offset + (1:(int32(n/frac)));
 
-        sp(i) = subplot(nrows, ncols, i);    
+        sp(i) = subplot(2, ncols, i);    
         sl(i) = plot(a.hid, '-b');
-        ylim([1, ns(1)+1])
-        tt(1) = title(grd);
+        mm = max(a.hid);
+        ll = length(a.hid);
+        set(gca,'YTick', 1:mm);
+        set(gca,'YLim', [0.5, mm+0.5]);
+        set(gca,'XLim', [1, ll]);
+        la(1) = xlabel('Tiempo (ms)');
+        la(2) = ylabel('Interlocutores');
+        
         i = i+1;    
 
-        sp(i) = subplot(nrows, ncols, i);
+        sp(i) = subplot(2, ncols, i);
         hold on;        
         sl(i) = plot(b.hid, '-b');
-        ylim([1, ns(2)+1])
-        tt(2) = title(strcat('Secuencia recuperada para k=', int2str(ns(2))));
-
+        mm = max(b.hid);
+        ll = length(b.hid);
+        set(gca,'YTick', 1:mm);
+        set(gca,'YLim', [0.5, mm+0.5]);
+        set(gca,'XLim', [1, ll]);
+        la(3) = xlabel('Tiempo (ms)');
+        la(4) = ylabel('Interlocutores');
+        
         p = abs(a.hid - b.hid);
         p(p == 0) = nan;    
         plot(p, '.r');
 
         fp1 = sum(p > 0);    
-        fprintf('(Modelo 1) FP + FN = %d\n', fp1);
+        fprintf('(Modelo %d) FP + FN = %d [%0.5f]\n', ...
+            max(b.hid), fp1, fp1/length(a.hid));
 
         i = i+1;
-
-        if nrows == 3
-            sp(i) = subplot(nrows, ncols, i);
-            hold on;        
-
-            sl(i) = plot(c.hid(idx), '-b');
-            ylim([1, ns(3)+1])
-            tt(3) = title(strcat('Secuencia recuperada para k=', int2str(ns(3))));
-
-            q = abs(a.hid - c.hid);  
-            q(q == 0) = nan;        
-            plot(q, '.r');
-
-            fp2 = sum(q > 0);        
-            fprintf('(Modelo 2) FP + FN = %d\n', fp2);        
-        end
 
         set(sp, 'FontSize', 13)
         set(sp, 'box', 'off')
         set(sp, 'color', 'white')
-        set(sp, 'linewidth', 1)
+        set(sp, 'linewidth', 1)        
+        set(la, 'FontSize', 15)
 
         set(sl, 'linewidth', 2)
-
-        set(tt, 'FontSize', 16)
+        set(tt, 'FontSize', 16)           
         
-        if ~strcmp(archivo2, '')
-            print('-dpng', archivo2, resol);
-        end
+        set(gcf, 'PaperPositionMode', 'manual');
+        set(gcf, 'PaperUnits', 'inches');
+        set(gcf, 'PaperSize', [16 5]);
+        set(gcf, 'PaperPosition', [0 0 16 5]);  
+               
+        print('-dpng', sprintf('%s%c_%d', archivo, 's', j), '-r400');    
     end
     %%%
+    
+    close all;
 
     %%%
 
