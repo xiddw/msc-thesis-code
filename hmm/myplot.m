@@ -2,8 +2,8 @@ function [fp1, fp2] = myplot(objects, archivo)
     cm = colormap(hsv(10));
     
     colormap('default');
-    set(0, 'DefaultAxesFontSize', 30);
-    tit_fs = 34;
+    set(0, 'DefaultAxesFontSize', 28);
+    tit_fs = 30;
     
     resol = '-r400';
     
@@ -15,11 +15,18 @@ function [fp1, fp2] = myplot(objects, archivo)
     sp = zeros(ncols*nrows, 1);
     tt = zeros(ncols);
     
-    k = 1;    
+    k = 1;  
     for i = 1:ncols
         j = 1;
         name = titles{i};
-        t = objects.(name);
+        
+        if i > 1
+            o = objects.(titles{1});
+            t = objects.(name);
+            t = sort_params(o, t);
+        else
+            t = objects.(name);            
+        end
         
         mrows = nrows;
         %sp(k) = subplot(mrows, );                        
@@ -29,6 +36,8 @@ function [fp1, fp2] = myplot(objects, archivo)
         box off;        
         set(gca,'XTick',1:mm)
         set(gca,'XLim',[0.5, mm+0.5])
+        set(get(gcf,'CurrentAxes'), 'LineWidth', 4);
+        
         xlabel('Interlocutores', 'FontSize', tit_fs);
         
         if i == 1 
@@ -79,6 +88,7 @@ function [fp1, fp2] = myplot(objects, archivo)
             box off;
             set(gca,'XLim', [1, sb]);
             set(gca,'YLim', [0, sy]);
+            set(get(gcf,'CurrentAxes'), 'LineWidth', 4);
             xlabel('Diccionario', 'FontSize', tit_fs);
             ylabel('Probabilidad', 'FontSize', tit_fs);        
 
