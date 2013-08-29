@@ -17,8 +17,10 @@ function [ param ] = sort_params(orig, dest, collapse)
     per = zeros(n, 1);
     
     for i = 1:n
-        per(i) = mean(orig.hid(dest.hid == i));
+        per(i) = mode(orig.hid(dest.hid == i));
     end
+    %[~, per] = max(dest.mtrans, [], 1);
+    %disp(per);
     
     if difsize && collapse
         dd = dist(per');
@@ -42,8 +44,10 @@ function [ param ] = sort_params(orig, dest, collapse)
         [ignor, per] = sort(per);
 
         param = dest;
-
-        param.mtrans = param.mtrans(per, :);
+        disp(per);
+        
+        %
+        param.mtrans = param.mtrans(per, :);        
         param.memisn = param.memisn(per, :);
 
         for i = 1:n
