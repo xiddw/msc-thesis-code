@@ -1,5 +1,5 @@
 function [fp1, fp2] = myplot(objects, archivo)
-    cm = colormap(hsv(10));
+    cm = ametrine(7);
     
     colormap('default');
     set(0, 'DefaultAxesFontSize', 28);
@@ -11,10 +11,6 @@ function [fp1, fp2] = myplot(objects, archivo)
     nrows = 7;
     ncols = numel(titles);
         
-	sf = figure;
-    sp = zeros(ncols*nrows, 1);
-    tt = zeros(ncols);
-    
     k = 1;  
     for i = 1:ncols
         j = 1;
@@ -31,18 +27,15 @@ function [fp1, fp2] = myplot(objects, archivo)
         mrows = nrows;
         %sp(k) = subplot(mrows, );                        
         figure;
-        stem(t.priori, 'filled', 'LineWidth', 4, 'MarkerSize', 6);
+        stem(t.priori, 'filled', 'LineWidth', 6, 'MarkerSize', 8);
         mm = numel(t.priori);
         box off;        
         set(gca,'XTick',1:mm)
         set(gca,'XLim',[0.5, mm+0.5])
-        set(get(gcf,'CurrentAxes'), 'LineWidth', 4);
+        set(get(gcf,'CurrentAxes'), 'LineWidth', 3);
         
         xlabel('Interlocutores', 'FontSize', tit_fs);
-        
-        if i == 1 
-            ylabel('Prob. a priori', 'FontSize', tit_fs);
-        end
+        ylabel('Prob. a priori', 'FontSize', tit_fs);
         
         set(gcf, 'PaperPositionMode', 'manual');
         set(gcf, 'PaperUnits', 'inches');
@@ -59,6 +52,12 @@ function [fp1, fp2] = myplot(objects, archivo)
         %sp(k) = subplot(mrows, ncols, (j-1)*ncols + i);        
         figure;
         imagesc(t.mtrans);      
+        wp = 8;
+        if i == ncols
+            colorbar();
+            wp = 9;
+        end
+        colormap(ametrine);
         
         [spk, ~] = size(t.mtrans);        
         set(gca,'XTick', 1:spk);
@@ -68,8 +67,8 @@ function [fp1, fp2] = myplot(objects, archivo)
 
         set(gcf, 'PaperPositionMode', 'manual');
         set(gcf, 'PaperUnits', 'inches');
-        set(gcf, 'PaperSize', [8 5]);
-        set(gcf, 'PaperPosition', [0 0 8 5]);
+        set(gcf, 'PaperSize', [wp 5]);
+        set(gcf, 'PaperPosition', [0 0 wp 5]);
         
         print('-dpng', sprintf('%s%c_%d_%d', archivo, 'p', i, j), '-r400');
 
@@ -84,11 +83,11 @@ function [fp1, fp2] = myplot(objects, archivo)
             % sp(k) = subplot(mrows, ncols, (j-1)*ncols + i);
             figure;    
             
-            stem(t.memisn(s, :), 'filled', 'Color', cm(s, :), 'LineWidth', 4, 'MarkerSize', 5);
+            stem(t.memisn(s, :), 'filled', 'Color', cm(s, :), 'LineWidth', 6, 'MarkerSize', 8);
             box off;
             set(gca,'XLim', [1, sb]);
             set(gca,'YLim', [0, sy]);
-            set(get(gcf,'CurrentAxes'), 'LineWidth', 4);
+            set(get(gcf,'CurrentAxes'), 'LineWidth', 3);
             xlabel('Diccionario', 'FontSize', tit_fs);
             ylabel('Probabilidad', 'FontSize', tit_fs);        
 

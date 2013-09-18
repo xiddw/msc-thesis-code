@@ -1,7 +1,0 @@
-function [ output_args ] = estim_mtrans( grd )
-    nsp = max(grd);
-    spk = zeros(nsp, 1);
-    
-    for i = 1:
-end
-
