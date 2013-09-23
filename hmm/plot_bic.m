@@ -3,6 +3,9 @@
 
 resol = '-r400';
 
+set(0, 'DefaultAxesFontSize', 14);
+tit_fs = 18;
+
 if ~exist('K', 'var') && exist('orig', 'var')
     K = max(orig.obs);
 end
@@ -30,24 +33,41 @@ for l = lll
     j = j+1;
 end
 figure; 
-set(0, 'DefaultAxesFontSize', 13)
+% set(0, 'DefaultAxesFontSize', 28);
 
-surfc(lll, seq_offs+(1:hh), bb); colormap('cool');
-xlabel('lambda')
-ylabel('Modelo seleccionado')
-zlabel('log-verosimilitud')
+h = surfc(lll, seq_offs+(1:hh), bb, 'EdgeColor', 'white'); 
+sx = lll(:);
+sy = seq_offs+(1:hh);
+sz = bb(:);
+stez = range(sz)/5;
+minz = str2double(sprintf('%.1f', min(sz)));
+maxz = str2double(sprintf('%.1f', max(sz)));
+stez = str2double(sprintf('%.1f', stez));
 
-%tt = title(sprintf('Superficie de curvas BIC para distintos valores de lambda'));
-%set(tt, 'FontSize', 16)
+set(gca, 'XTick', min(sx):range(sx)/5:max(sx));
+set(gca, 'YTick', 0:2:10);
+set(gca, 'ZTick', minz:stez:maxz);
+%rotate(h, [1 1 0], -0.5);
+colormap(ametrine);
+
+%shading interp;
+xlabel('A', 'FontSize', tit_fs);
+ylabel('B', 'FontSize', tit_fs);
+zlabel('C', 'FontSize', tit_fs);
+    
+%xlabel('lambda', 'FontSize', tit_fs);
+%ylabel('Modelo seleccionado', 'FontSize', tit_fs);
+%zlabel('log-verosimilitud', 'FontSize', tit_fs);
+
+%title(sprintf('Superficie de curvas BIC para distintos valores de lambda'));
 if exist('archivo', 'var') 
     set(gcf, 'PaperPositionMode', 'manual');
     set(gcf, 'PaperUnits', 'inches');
-    set(gcf, 'PaperSize', [6 6]);
-    set(gcf, 'PaperPosition', [0 0 6 6]);
+    set(gcf, 'PaperSize', [8 5]);
+    set(gcf, 'PaperPosition', [0 0 8 5]);
 
     arch1 = strcat(archivo, '_1');
-    print('-dpdf', arch1, resol); 
-    close;
+    print('-dpng', arch1, resol);
 end
 
 
@@ -68,10 +88,9 @@ figure;
 pp = (abs(px) + abs(py)); % sqrt(abs(px.* py)); % min(abs(px), abs(py));
 tot = sum(pp, 1);
 [~, mp] = min(tot);
-% ar = colormap('cool');
-ar = [1, 0.8, 1; 1, 1, 1; 0.9, 1, 1];
-% ar = ar(end:-1:1, :);
-
+ar = cool(3);
+%%{
+%ar = [1, 0.8, 1; 1, 1, 1; 0.9, 1, 1];
 n = 256; % size of new color map
 m = size(ar,1);
 t0 = linspace(0,1,m)';
@@ -80,42 +99,45 @@ r = interp1(t0,ar(:,1),t);
 g = interp1(t0,ar(:,2),t);
 b = interp1(t0,ar(:,3),t);
 rar = [r,g,b];
+%}
 
-imagesc(xx, yy, pp);
-colormap(rar)
-xlabel('lambda')
-ylabel('Modelo seleccionado')
+%imagesc(xx, yy, pp);
+%colormap(ametrine(100));
+%colorbar();
 
 set(gca,'YDir','normal')
 box off;
 freezeColors 
 hold on;
 
-pc = contour(xx, yy, z, 30, 'LineWidth', 2); 
+pc = contour(xx, yy, z, 30, 'LineWidth', 3); 
 plot([xx(mp), xx(mp)], [min(yy)-2, max(yy)+2], '--p', 'LineWidth', 3);
-colormap('cool');
+colormap(ametrine(100, 'invert', 1));
 caxis auto
 
+xlabel('lambda', 'FontSize', tit_fs)
+ylabel('Modelo seleccionado', 'FontSize', tit_fs)
+
 %figure;
-quiver(xx, yy, px, py, 'k', 'LineWidth', 1);
+quiver(xx, yy, px, py, 'k', 'LineWidth', 2);
 
 yt = str2num(get(gca, 'YTickLabel'));
 set(gca,'YTickLabel', yt/st);
 
 %tt = title(sprintf('Curva de nivel de superficie BIC para distintos valores de lambda'));
-%set(tt, 'FontSize', 16)
 if exist('archivo', 'var') 
     set(gcf, 'PaperPositionMode', 'manual');
     set(gcf, 'PaperUnits', 'inches');
-    set(gcf, 'PaperSize', [8 5]);
-    set(gcf, 'PaperPosition', [0 0 8 5])
+    set(gcf, 'PaperSize', [16 5]);
+    set(gcf, 'PaperPosition', [0 0 16 5])
     
     arch2 = strcat(archivo, '_2');
-    print('-dpdf', arch2, resol); close;
+    print('-dpng', arch2, resol);
 end
 
 %%
 figure;
+%set(0, 'DefaultAxesFontSize', 28);
 mp = mp;
 lambda = xx(mp);
 
@@ -123,21 +145,21 @@ ll = bb(:, mp);
 [~, ml] = max(ll);
 
 sp(1) = plot(y, ll, 'b');
-xlabel('Modelo seleccionado')
-ylabel('log-verosimilitud')
+xlabel('Modelo seleccionado', 'FontSize', tit_fs)
+ylabel('log-verosimilitud', 'FontSize', tit_fs)
 
 hold on;
-sp(2) = plot(y, ll, 'or', 'MarkerFaceColor', 'r');
-sp(3) = plot(y(ml), ll(ml), 'og', 'MarkerFaceColor', 'g');
-% t1 = title('Selección de modelo con BIC');
+sp(2) = plot(y, ll, 'og', 'MarkerFaceColor', 'g');
+sp(3) = plot(y(ml), ll(ml), 'or', 'MarkerFaceColor', 'r');
+% title('Selección de modelo con BIC');
 
-% set(t1, 'FontSize', 16)
-set(gca, 'FontSize', 12);
 set(gca, 'box', 'off');
 set(sp(2:3),'MarkerSize', 7);
+set(sp(3),'MarkerSize', 10);
 set(sp, 'linewidth', 2)
 
-legend(strcat('lambda= ', int2str(lambda)))
+l = legend(strcat('lambda= ', int2str(lambda)), 'Location', 'SouthEast');
+set(l, 'Box', 'off');
 
 if exist('archivo', 'var') 
     set(gcf, 'PaperPositionMode', 'manual');
@@ -146,9 +168,10 @@ if exist('archivo', 'var')
     set(gcf, 'PaperPosition', [0 0 8 5]);
     
     arch3 = strcat(archivo, '_3');
-    print('-dpdf', arch3, resol); %close;
-    close;
+    print('-dpng', arch3, resol);
 end
+
+close all;
 %{
 print('-dpng', '', resol);
 %}

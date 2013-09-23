@@ -106,8 +106,6 @@ function [fp1, fp2] = myplot(objects, archivo)
     % Graficas de cambio entre speakers
 
     %% 
-    close all;
-    return;
     
     nrows = ncols;
     ncols = 1;   
