@@ -1,6 +1,9 @@
 %%%%%%%%%%%%%%%%%%%%%%
-resol = '-r400';
-font = 14;
+resol = '-r100';
+typef = '-depsc';
+
+font = 16;
+tit_fs = 18;
 for index = seq_boot
     set(0, 'DefaultAxesFontSize', font)
     dd = listLLRB(index, :);
@@ -18,18 +21,18 @@ for index = seq_boot
     ymax = 1.1*max(yy);    
     
     rectangle('Position', [signif, ymin, xmax, ymax], ...
-              'FaceColor', [235, 255, 235]/255, ...
+              'FaceColor', [225, 240, 225]/255, ...
               'LineStyle', 'none');    
           
           
     hold on; 
         
-    sp(1) = plot(xx, yy, 'LineWidth', 2);
-    xlabel('log-likelihood ratio observada');
-    ylabel('Densidad de probabilidad');
+    plot(xx, yy, 'LineWidth', 2);
+    xlabel('log-likelihood ratio observada', 'FontSize', tit_fs);
+    ylabel('Densidad de prob.', 'FontSize', tit_fs);
 
     
-    sp(2) = plot([zvalue; zvalue], [min(yy); 1.1*max(yy)], '--r', 'LineWidth', 2);          
+    plot([zvalue; zvalue], [min(yy); 1.1*max(yy)], '--r', 'LineWidth', 3);
     
     xlim([xmin, xmax]);
     ylim([ymin, ymax]);    
@@ -45,13 +48,19 @@ for index = seq_boot
     %set(tt, 'FontSize', font+3)
     
     if exist('archivo', 'var') 
+        name = archivo;
+        if exist('farchivo', 'var') 
+            name = farchivo;
+        end
+        
         set(gcf, 'PaperPositionMode', 'manual');
         set(gcf, 'PaperUnits', 'inches');
-        set(gcf, 'PaperSize', [8 3]);
-        set(gcf, 'PaperPosition', [0 0 8 3]);
+        set(gcf, 'PaperSize', [9 3]);
+        set(gcf, 'PaperPosition', [0 0 9 3]);
         
-        arch = strcat(archivo, '_', int2str(index));
-        print('-dpdf', arch, resol); close;
+        arch = strcat(name, 'boot', int2str(index));
+        print(typef, arch, resol); 
+        close;
     end    
     
     % print('-dpng', sprintf(''), resol);

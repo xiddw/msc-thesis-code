@@ -62,15 +62,16 @@ zlabel('C', 'FontSize', tit_fs);
 
 %title(sprintf('Superficie de curvas BIC para distintos valores de lambda'));
 if exist('archivo', 'var') 
+    name = archivo;
     if exist('farchivo', 'var') 
-        archivo = farchivo;
+        name = farchivo;
     end
     set(gcf, 'PaperPositionMode', 'manual');
     set(gcf, 'PaperUnits', 'inches');
     set(gcf, 'PaperSize', [8 5]);
     set(gcf, 'PaperPosition', [0 0 8 5]);
 
-    arch1 = strcat(archivo, 'bic1');
+    arch1 = strcat(name, 'bic1');
     print(typef, arch1, resol);
 end
 
@@ -131,8 +132,9 @@ plot([xx(mp), xx(mp)], [min(yy)-2, max(yy)+2], '--b', 'LineWidth', 3);
 
 %tt = title(sprintf('Curva de nivel de superficie BIC para distintos valores de lambda'));
 if exist('archivo', 'var') 
+    name = archivo;
     if exist('farchivo', 'var') 
-        archivo = farchivo;
+        name = farchivo;
     end
     
     set(gcf, 'PaperPositionMode', 'manual');
@@ -140,7 +142,7 @@ if exist('archivo', 'var')
     set(gcf, 'PaperSize', [16 5]);
     set(gcf, 'PaperPosition', [0 0 16 5])
     
-    arch2 = strcat(archivo, 'bic2');
+    arch2 = strcat(name, 'bic2');
     print(typef, arch2, resol);
 end
 
@@ -170,9 +172,10 @@ set(sp, 'linewidth', 2)
 l = legend(strcat('lambda= ', int2str(lambda)), 'Location', 'SouthEast');
 set(l, 'Box', 'off');
 
-if exist('archivo', 'var') 
+if exist('archivo', 'var')
+    name = archivo;
     if exist('farchivo', 'var') 
-        archivo = farchivo;
+        name = farchivo;
     end
     
     set(gcf, 'PaperPositionMode', 'manual');
@@ -180,7 +183,7 @@ if exist('archivo', 'var')
     set(gcf, 'PaperSize', [8 5]);
     set(gcf, 'PaperPosition', [0 0 8 5]);
     
-    arch3 = strcat(archivo, 'bic3');
+    arch3 = strcat(name, 'bic3');
     print(typef, arch3, resol);
 end
 
