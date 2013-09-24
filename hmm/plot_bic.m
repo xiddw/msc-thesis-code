@@ -1,7 +1,8 @@
 %%%%%%%%%%%%%$$$$$$$$$$$$$$
 %%%%%%%%%%%%%$$$$$$$$$$$$$$
 
-resol = '-r400';
+resol = '-r100';
+typef = '-deps';
 
 set(0, 'DefaultAxesFontSize', 14);
 tit_fs = 18;
@@ -61,13 +62,16 @@ zlabel('C', 'FontSize', tit_fs);
 
 %title(sprintf('Superficie de curvas BIC para distintos valores de lambda'));
 if exist('archivo', 'var') 
+    if exist('farchivo', 'var') 
+        archivo = farchivo;
+    end
     set(gcf, 'PaperPositionMode', 'manual');
     set(gcf, 'PaperUnits', 'inches');
     set(gcf, 'PaperSize', [8 5]);
     set(gcf, 'PaperPosition', [0 0 8 5]);
 
-    arch1 = strcat(archivo, '_1');
-    print('-dpng', arch1, resol);
+    arch1 = strcat(archivo, 'bic1');
+    print(typef, arch1, resol);
 end
 
 
@@ -110,8 +114,7 @@ box off;
 freezeColors 
 hold on;
 
-pc = contour(xx, yy, z, 30, 'LineWidth', 3); 
-plot([xx(mp), xx(mp)], [min(yy)-2, max(yy)+2], '--p', 'LineWidth', 3);
+pc = contour(xx, yy, z, 30, 'LineWidth', 2); 
 colormap(ametrine(100, 'invert', 1));
 caxis auto
 
@@ -124,15 +127,21 @@ quiver(xx, yy, px, py, 'k', 'LineWidth', 2);
 yt = str2num(get(gca, 'YTickLabel'));
 set(gca,'YTickLabel', yt/st);
 
+plot([xx(mp), xx(mp)], [min(yy)-2, max(yy)+2], '--b', 'LineWidth', 3);
+
 %tt = title(sprintf('Curva de nivel de superficie BIC para distintos valores de lambda'));
 if exist('archivo', 'var') 
+    if exist('farchivo', 'var') 
+        archivo = farchivo;
+    end
+    
     set(gcf, 'PaperPositionMode', 'manual');
     set(gcf, 'PaperUnits', 'inches');
     set(gcf, 'PaperSize', [16 5]);
     set(gcf, 'PaperPosition', [0 0 16 5])
     
-    arch2 = strcat(archivo, '_2');
-    print('-dpng', arch2, resol);
+    arch2 = strcat(archivo, 'bic2');
+    print(typef, arch2, resol);
 end
 
 %%
@@ -162,13 +171,17 @@ l = legend(strcat('lambda= ', int2str(lambda)), 'Location', 'SouthEast');
 set(l, 'Box', 'off');
 
 if exist('archivo', 'var') 
+    if exist('farchivo', 'var') 
+        archivo = farchivo;
+    end
+    
     set(gcf, 'PaperPositionMode', 'manual');
     set(gcf, 'PaperUnits', 'inches');
     set(gcf, 'PaperSize', [8 5]);
     set(gcf, 'PaperPosition', [0 0 8 5]);
     
-    arch3 = strcat(archivo, '_3');
-    print('-dpng', arch3, resol);
+    arch3 = strcat(archivo, 'bic3');
+    print(typef, arch3, resol);
 end
 
 close all;

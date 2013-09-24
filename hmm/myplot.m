@@ -5,7 +5,8 @@ function [fp1, fp2] = myplot(objects, archivo)
     set(0, 'DefaultAxesFontSize', 28);
     tit_fs = 30;
     
-    resol = '-r400';
+    resol = '-r100';
+    typef = '-dpng';
     
     titles = fieldnames(objects);
     nrows = 7;
@@ -42,7 +43,7 @@ function [fp1, fp2] = myplot(objects, archivo)
         set(gcf, 'PaperSize', [8 4]);
         set(gcf, 'PaperPosition', [0 0 8 4]);
         
-        print('-dpng', sprintf('%s%c_%d_%d', archivo, 'p', i, j), '-r400');
+        print(typef, sprintf('%s%c_%d_%d', archivo, 'p', i, j), resol);
         
         %continue;
         
@@ -70,7 +71,7 @@ function [fp1, fp2] = myplot(objects, archivo)
         set(gcf, 'PaperSize', [wp 5]);
         set(gcf, 'PaperPosition', [0 0 wp 5]);
         
-        print('-dpng', sprintf('%s%c_%d_%d', archivo, 'p', i, j), '-r400');
+        print(typef, sprintf('%s%c_%d_%d', archivo, 'p', i, j), resol);
 
         sy = max(t.memisn(:));
         sy = str2double(sprintf('%5.2f', sy)) + 0.01;
@@ -99,7 +100,7 @@ function [fp1, fp2] = myplot(objects, archivo)
             set(gcf, 'PaperSize', [8 3]);
             set(gcf, 'PaperPosition', [0 0 8 3]);
             
-            print('-dpng', sprintf('%s%c_%d_%d', archivo, 'p', i, j), '-r400');
+            print(typef, sprintf('%s%c_%d_%d', archivo, 'p', i, j), resol);
         end      
     end
     
@@ -138,55 +139,60 @@ function [fp1, fp2] = myplot(objects, archivo)
         offset = 0; int64(n / 1);
 
         idx = offset + (1:(int32(n/frac)));
+        
+        %%%%%%%%%%%% STARTS SEQ %%%%%%%%%%%%
 
-        sp(i) = subplot(2, ncols, i);    
-        sl(i) = plot(a.hid, '-b');
+        %sp(i) = subplot(2, ncols, i);    
+        plot(a.hid, '-b', 'LineWidth', 2);
         mm = max(a.hid);
         ll = length(a.hid);
+        
+        set(gca,'FontSize', 16);
         set(gca,'YTick', 1:mm);
         set(gca,'YLim', [0.5, mm+0.5]);
         set(gca,'XLim', [1, ll]);
-        la(1) = xlabel('Tiempo (ms)');
-        la(2) = ylabel('Interlocutores');
+        box off;
         
-        i = i+1;    
-
-        sp(i) = subplot(2, ncols, i);
-        hold on;        
-        sl(i) = plot(b.hid, '-b');
+        xlabel('Tiempo (ms)', 'FontSize', 18);
+        ylabel('Interlocutores', 'FontSize', 18);
+        
+        set(gcf, 'PaperPositionMode', 'manual');
+        set(gcf, 'PaperUnits', 'inches');
+        set(gcf, 'PaperSize', [16 3]);
+        set(gcf, 'PaperPosition', [0 0 16 3]);  
+               
+        print(typef, sprintf('%s%c_%d_1', archivo, 's', j), resol);            
+        
+        %sp(i) = subplot(2, ncols, i);
+        plot(b.hid, '-b', 'LineWidth', 2);
         mm = max(b.hid);
         ll = length(b.hid);
+        
+        set(gca,'FontSize', 16);
         set(gca,'YTick', 1:mm);
         set(gca,'YLim', [0.5, mm+0.5]);
         set(gca,'XLim', [1, ll]);
-        la(3) = xlabel('Tiempo (ms)');
-        la(4) = ylabel('Interlocutores');
+        box off;
         
+        xlabel('Tiempo (ms)', 'FontSize', 18);
+        ylabel('Interlocutores', 'FontSize', 18);
+        
+        hold on;
         p = abs(a.hid - b.hid);
-        p(p == 0) = nan;    
-        plot(p, '.r');
+        q = b.hid;
+        q(p == 0) = nan;    
+        plot(q, '.r');
 
         fp1 = sum(p > 0);    
         fprintf('(Modelo %d) FP + FN = %d [%0.5f]\n', ...
             max(b.hid), fp1, fp1/length(a.hid));
-
-        i = i+1;
-
-        set(sp, 'FontSize', 13)
-        set(sp, 'box', 'off')
-        set(sp, 'color', 'white')
-        set(sp, 'linewidth', 1)        
-        set(la, 'FontSize', 15)
-
-        set(sl, 'linewidth', 2)
-        set(tt, 'FontSize', 16)           
         
         set(gcf, 'PaperPositionMode', 'manual');
         set(gcf, 'PaperUnits', 'inches');
-        set(gcf, 'PaperSize', [16 5]);
-        set(gcf, 'PaperPosition', [0 0 16 5]);  
+        set(gcf, 'PaperSize', [16 3]);
+        set(gcf, 'PaperPosition', [0 0 16 3]);  
                
-        print('-dpng', sprintf('%s%c_%d', archivo, 's', j), '-r400');    
+        print(typef, sprintf('%s%c_%d_2', archivo, 's', j), resol);        
     end
     %%%
     
