@@ -6,7 +6,7 @@ function [fp1, fp2] = myplot(objects, archivo)
     tit_fs = 30;
     
     resol = '-r100';
-    typef = '-dpng';
+    typef = '-depsc';
     
     titles = fieldnames(objects);
     nrows = 7;
@@ -28,7 +28,7 @@ function [fp1, fp2] = myplot(objects, archivo)
         mrows = nrows;
         %sp(k) = subplot(mrows, );                        
         figure;
-        stem(t.priori, 'filled', 'LineWidth', 6, 'MarkerSize', 8);
+        stem(t.priori, 'filled', 'Marker', 's', 'LineWidth', 6, 'MarkerSize', 8);
         mm = numel(t.priori);
         box off;        
         set(gca,'XTick',1:mm)
@@ -84,7 +84,7 @@ function [fp1, fp2] = myplot(objects, archivo)
             % sp(k) = subplot(mrows, ncols, (j-1)*ncols + i);
             figure;    
             
-            stem(t.memisn(s, :), 'filled', 'Color', cm(s, :), 'LineWidth', 6, 'MarkerSize', 8);
+            stem(t.memisn(s, :), 'filled', 'Marker', 's', 'Color', cm(s, :), 'LineWidth', 6, 'MarkerSize', 8);
             box off;
             set(gca,'XLim', [1, sb]);
             set(gca,'YLim', [0, sy]);
@@ -181,7 +181,7 @@ function [fp1, fp2] = myplot(objects, archivo)
         p = abs(a.hid - b.hid);
         q = b.hid;
         q(p == 0) = nan;    
-        plot(q, '.r');
+        plot(q, 'or', 'MarkerSize', 8, 'MarkerFaceColor', 'r');
 
         fp1 = sum(p > 0);    
         fprintf('(Modelo %d) FP + FN = %d [%0.5f]\n', ...

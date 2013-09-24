@@ -2,7 +2,7 @@
 %%%%%%%%%%%%%$$$$$$$$$$$$$$
 
 resol = '-r100';
-typef = '-deps';
+typef = '-depsc';
 
 set(0, 'DefaultAxesFontSize', 14);
 tit_fs = 18;

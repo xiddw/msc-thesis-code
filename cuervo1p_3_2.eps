@@ -1,9 +1,10 @@
 %!PS-Adobe-2.0 EPSF-1.2
 %%Creator: MATLAB, The MathWorks, Inc. Version 7.12.0.635 (R2011a). Operating System: Microsoft Windows 7.
 %%Title: .\cuervo1p_3_2.eps
-%%CreationDate: 09/23/2013  19:56:59
+%%CreationDate: 09/24/2013  02:31:10
 %%DocumentNeededFonts: Helvetica
 %%DocumentProcessColors: Cyan Magenta Yellow Black
+%%Extensions: CMYK
 %%Pages: 1
 %%BoundingBox:    15    -1   526   335
 %%EndComments
@@ -143,12 +144,14 @@ ISOLatin1Encoding WindowsLatin1Encoding copy pop
   smat stri tri_to_matrix tmat2 concatmatrix } bdef
 /ds {stri astore pop} bdef
 /dt {dtri astore pop} bdef
-/db {2 copy /cols xdef /rows xdef mul dup string
+/db {2 copy /cols xdef /rows xdef mul dup 3 mul string
   currentfile exch readhexstring pop
-  /bmap xdef pop pop} bdef
+  dup 0 3 index getinterval /rbmap xdef
+  dup 2 index dup getinterval /gbmap xdef
+  1 index dup 2 mul exch getinterval /bbmap xdef pop pop}bdef
 /it {gs np dtri aload pop moveto lineto lineto cp c
   cols rows 8 compute_transform 
-  {bmap} image gr}bdef
+  rbmap gbmap bbmap true 3 colorimage gr}bdef
 /il {newpath moveto lineto stroke}bdef
 currentdict end def
 %%EndProlog
@@ -195,9 +198,12 @@ PP
 gs 104 37 621 376 MR c np
 gs np 104 37 mt 0 375 rl 620 0 rl 0 -375 rl cp c np
 [620 0 0 375 104 37] cc
-/picstr 6 string def
-6 6 8 [6.000000 0 0 6.000000 0 0] L1i
-C33D3C3C3C3C3CC03D3C3C3F3C3CC33C3C3C3C3C3CC33C3C3C3C3C3CC33C3C3F3C3C3CC0
+/picstr 18 string def
+6 6 8
+[6.000000 0 0 6.000000 0 0] {currentfile picstr readhexstring pop} false 3 colorimage
+DCDC001F3C961E3C961E3C961E3C961E3C961E3C96DCD5031F3C961E3C961E3C96233D961E3C961E
+3C96DCDC001E3C961E3C961E3C961E3C961E3C961E3C96DCDC001E3C961E3C961E3C961E3C961E3C
+961E3C96DCDC001E3C961E3C96253D961E3C961E3C961E3C96DCD503
 gr
 gr
 

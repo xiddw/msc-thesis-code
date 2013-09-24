@@ -1,9 +1,10 @@
 %!PS-Adobe-2.0 EPSF-1.2
 %%Creator: MATLAB, The MathWorks, Inc. Version 7.12.0.635 (R2011a). Operating System: Microsoft Windows 7.
 %%Title: .\cuervo1p_3_3.eps
-%%CreationDate: 09/23/2013  19:56:59
+%%CreationDate: 09/24/2013  02:31:10
 %%DocumentNeededFonts: Helvetica
 %%DocumentProcessColors: Cyan Magenta Yellow Black
+%%Extensions: CMYK
 %%Pages: 1
 %%BoundingBox:     0     0   550   219
 %%EndComments
@@ -143,12 +144,14 @@ ISOLatin1Encoding WindowsLatin1Encoding copy pop
   smat stri tri_to_matrix tmat2 concatmatrix } bdef
 /ds {stri astore pop} bdef
 /dt {dtri astore pop} bdef
-/db {2 copy /cols xdef /rows xdef mul dup string
+/db {2 copy /cols xdef /rows xdef mul dup 3 mul string
   currentfile exch readhexstring pop
-  /bmap xdef pop pop} bdef
+  dup 0 3 index getinterval /rbmap xdef
+  dup 2 index dup getinterval /gbmap xdef
+  1 index dup 2 mul exch getinterval /bbmap xdef pop pop}bdef
 /it {gs np dtri aload pop moveto lineto lineto cp c
   cols rows 8 compute_transform 
-  {bmap} image gr}bdef
+  rbmap gbmap bbmap true 3 colorimage gr}bdef
 /il {newpath moveto lineto stroke}bdef
 currentdict end def
 %%EndProlog
@@ -175,7 +178,7 @@ bplot
 portraitMode 0000 0300 csm
 
     0    -5   765   305 MR c np
-85 dict begin %Colortable dictionary
+86 dict begin %Colortable dictionary
 /c0 { 0.000000 0.000000 0.000000 sr} bdef
 /c1 { 1.000000 1.000000 1.000000 sr} bdef
 /c2 { 0.900000 0.000000 0.000000 sr} bdef
@@ -234,289 +237,709 @@ gs 136 23 589 190 MR c np
 gr
 
 8.33333 w
-gs 114 76 632 158 MR c np
-   5    5  136  201 PO
-   5    5  140  207 PO
-   5    5  144  203 PO
-   5    5  148  115 PO
-   5    5  152  108 PO
-   5    5  157  212 PO
-   5    5  161  163 PO
-   5    5  165  167 PO
-   5    5  169  185 PO
-   5    5  174  205 PO
-   5    5  178  205 PO
-   5    5  182  207 PO
-   5    5  186  117 PO
-   5    5  190  207 PO
-   5    5  195  191 PO
-   5    5  199  166 PO
-   5    5  203  191 PO
-   5    5  207  207 PO
-   5    5  212  212 PO
-   5    5  216  205 PO
-   5    5  220  212 PO
-   5    5  224  209 PO
-   5    5  229  195 PO
-   5    5  233  212 PO
-   5    5  237  212 PO
-   5    5  241  212 PO
-   5    5  245  205 PO
-   5    5  250  212 PO
-   5    5  254   97 PO
-   5    5  258  212 PO
-   5    5  262  209 PO
-   5    5  267  201 PO
-   5    5  271  212 PO
-   5    5  275  212 PO
-   5    5  279  212 PO
-   5    5  284  212 PO
-   5    5  288  151 PO
-   5    5  292  212 PO
-   5    5  296  203 PO
-   5    5  300  183 PO
-   5    5  305  121 PO
-   5    5  309  201 PO
-   5    5  313  212 PO
-   5    5  317  212 PO
-   5    5  322  200 PO
-   5    5  326  199 PO
-   5    5  330  174 PO
-   5    5  334  182 PO
-   5    5  339  212 PO
-   5    5  343  212 PO
-   5    5  347  205 PO
-   5    5  351  200 PO
-   5    5  355  209 PO
-   5    5  360  212 PO
-   5    5  364  197 PO
-   5    5  368  165 PO
-   5    5  372  189 PO
-   5    5  377  212 PO
-   5    5  381  212 PO
-   5    5  385  165 PO
-   5    5  389  212 PO
-   5    5  394  205 PO
-   5    5  398  134 PO
-   5    5  402  212 PO
-   5    5  406  183 PO
-   5    5  410  209 PO
-   5    5  415  209 PO
-   5    5  419  172 PO
-   5    5  423  195 PO
-   5    5  427  158 PO
-   5    5  432  209 PO
-   5    5  436  181 PO
-   5    5  440  212 PO
-   5    5  444  189 PO
-   5    5  449  123 PO
-   5    5  453  195 PO
-   5    5  457  212 PO
-   5    5  461  199 PO
-   5    5  465  174 PO
-   5    5  470  199 PO
-   5    5  474  210 PO
-   5    5  478  155 PO
-   5    5  482  130 PO
-   5    5  487  169 PO
-   5    5  491  212 PO
-   5    5  495  212 PO
-   5    5  499  209 PO
-   5    5  504  205 PO
-   5    5  508  199 PO
-   5    5  512  212 PO
-   5    5  516  206 PO
-   5    5  520  203 PO
-   5    5  525  212 PO
-   5    5  529  212 PO
-   5    5  533  212 PO
-   5    5  537  178 PO
-   5    5  542  206 PO
-   5    5  546  212 PO
-   5    5  550  212 PO
-   5    5  554  162 PO
-   5    5  559  212 PO
-   5    5  563  209 PO
-   5    5  567  212 PO
-   5    5  571  203 PO
-   5    5  575  209 PO
-   5    5  580  202 PO
-   5    5  584  206 PO
-   5    5  588  137 PO
-   5    5  592  201 PO
-   5    5  597  191 PO
-   5    5  601  200 PO
-   5    5  605  204 PO
-   5    5  609  207 PO
-   5    5  614  189 PO
-   5    5  618  149 PO
-   5    5  622  209 PO
-   5    5  626  212 PO
-   5    5  630  212 PO
-   5    5  635  209 PO
-   5    5  639  112 PO
-   5    5  643  212 PO
-   5    5  647  210 PO
-   5    5  652  212 PO
-   5    5  656  195 PO
-   5    5  660  212 PO
-   5    5  664  207 PO
-   5    5  669  191 PO
-   5    5  673  205 PO
-   5    5  677  205 PO
-   5    5  681  192 PO
-   5    5  685  207 PO
-   5    5  690  212 PO
-   5    5  694  204 PO
-   5    5  698  212 PO
-   5    5  702  203 PO
-   5    5  707  212 PO
-   5    5  711  208 PO
-   5    5  715  212 PO
-   5    5  719  205 PO
-   5    5  724  195 PO
-   5    5  136  201 FO
-   5    5  140  207 FO
-   5    5  144  203 FO
-   5    5  148  115 FO
-   5    5  152  108 FO
-   5    5  157  212 FO
-   5    5  161  163 FO
-   5    5  165  167 FO
-   5    5  169  185 FO
-   5    5  174  205 FO
-   5    5  178  205 FO
-   5    5  182  207 FO
-   5    5  186  117 FO
-   5    5  190  207 FO
-   5    5  195  191 FO
-   5    5  199  166 FO
-   5    5  203  191 FO
-   5    5  207  207 FO
-   5    5  212  212 FO
-   5    5  216  205 FO
-   5    5  220  212 FO
-   5    5  224  209 FO
-   5    5  229  195 FO
-   5    5  233  212 FO
-   5    5  237  212 FO
-   5    5  241  212 FO
-   5    5  245  205 FO
-   5    5  250  212 FO
-   5    5  254   97 FO
-   5    5  258  212 FO
-   5    5  262  209 FO
-   5    5  267  201 FO
-   5    5  271  212 FO
-   5    5  275  212 FO
-   5    5  279  212 FO
-   5    5  284  212 FO
-   5    5  288  151 FO
-   5    5  292  212 FO
-   5    5  296  203 FO
-   5    5  300  183 FO
-   5    5  305  121 FO
-   5    5  309  201 FO
-   5    5  313  212 FO
-   5    5  317  212 FO
-   5    5  322  200 FO
-   5    5  326  199 FO
-   5    5  330  174 FO
-   5    5  334  182 FO
-   5    5  339  212 FO
-   5    5  343  212 FO
-   5    5  347  205 FO
-   5    5  351  200 FO
-   5    5  355  209 FO
-   5    5  360  212 FO
-   5    5  364  197 FO
-   5    5  368  165 FO
-   5    5  372  189 FO
-   5    5  377  212 FO
-   5    5  381  212 FO
-   5    5  385  165 FO
-   5    5  389  212 FO
-   5    5  394  205 FO
-   5    5  398  134 FO
-   5    5  402  212 FO
-   5    5  406  183 FO
-   5    5  410  209 FO
-   5    5  415  209 FO
-   5    5  419  172 FO
-   5    5  423  195 FO
-   5    5  427  158 FO
-   5    5  432  209 FO
-   5    5  436  181 FO
-   5    5  440  212 FO
-   5    5  444  189 FO
-   5    5  449  123 FO
-   5    5  453  195 FO
-   5    5  457  212 FO
-   5    5  461  199 FO
-   5    5  465  174 FO
-   5    5  470  199 FO
-   5    5  474  210 FO
-   5    5  478  155 FO
-   5    5  482  130 FO
-   5    5  487  169 FO
-   5    5  491  212 FO
-   5    5  495  212 FO
-   5    5  499  209 FO
-   5    5  504  205 FO
-   5    5  508  199 FO
-   5    5  512  212 FO
-   5    5  516  206 FO
-   5    5  520  203 FO
-   5    5  525  212 FO
-   5    5  529  212 FO
-   5    5  533  212 FO
-   5    5  537  178 FO
-   5    5  542  206 FO
-   5    5  546  212 FO
-   5    5  550  212 FO
-   5    5  554  162 FO
-   5    5  559  212 FO
-   5    5  563  209 FO
-   5    5  567  212 FO
-   5    5  571  203 FO
-   5    5  575  209 FO
-   5    5  580  202 FO
-   5    5  584  206 FO
-   5    5  588  137 FO
-   5    5  592  201 FO
-   5    5  597  191 FO
-   5    5  601  200 FO
-   5    5  605  204 FO
-   5    5  609  207 FO
-   5    5  614  189 FO
-   5    5  618  149 FO
-   5    5  622  209 FO
-   5    5  626  212 FO
-   5    5  630  212 FO
-   5    5  635  209 FO
-   5    5  639  112 FO
-   5    5  643  212 FO
-   5    5  647  210 FO
-   5    5  652  212 FO
-   5    5  656  195 FO
-   5    5  660  212 FO
-   5    5  664  207 FO
-   5    5  669  191 FO
-   5    5  673  205 FO
-   5    5  677  205 FO
-   5    5  681  192 FO
-   5    5  685  207 FO
-   5    5  690  212 FO
-   5    5  694  204 FO
-   5    5  698  212 FO
-   5    5  702  203 FO
-   5    5  707  212 FO
-   5    5  711  208 FO
-   5    5  715  212 FO
-   5    5  719  205 FO
-   5    5  724  195 FO
+0 j
+0 -8 -8 0 0 8 8 0 132 197 5 MP
+/c8 { 0.117647 0.235294 0.588235 sr} bdef
+c8
+gs
+PP
 gr
-
+DP
+0 -8 -8 0 0 8 8 0 136 203 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 140 199 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 144 111 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 148 104 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 153 208 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 157 159 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 161 163 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 165 181 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 170 201 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 174 201 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 178 203 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 182 113 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 186 203 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 191 187 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 195 162 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 199 187 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 203 203 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 208 208 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 212 201 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 216 208 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 220 205 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 225 191 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 229 208 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 233 208 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 237 208 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 241 201 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 246 208 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 250 93 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 254 208 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 258 205 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 263 197 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 267 208 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 271 208 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 275 208 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 280 208 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 284 147 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 288 208 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 292 199 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 296 179 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 301 117 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 305 197 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 309 208 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 313 208 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 318 196 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 322 195 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 326 170 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 330 178 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 335 208 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 339 208 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 343 201 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 347 196 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 351 205 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 356 208 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 360 193 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 364 161 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 368 185 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 373 208 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 377 208 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 381 161 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 385 208 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 390 201 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 394 130 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 398 208 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 402 179 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 406 205 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 411 205 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 415 168 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 419 191 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 423 154 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 428 205 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 432 177 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 436 208 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 440 185 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 445 119 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 449 191 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 453 208 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 457 195 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 461 170 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 466 195 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 470 206 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 474 151 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 478 126 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 483 165 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 487 208 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 491 208 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 495 205 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 500 201 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 504 195 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 508 208 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 512 202 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 516 199 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 521 208 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 525 208 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 529 208 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 533 174 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 538 202 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 542 208 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 546 208 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 550 158 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 555 208 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 559 205 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 563 208 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 567 199 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 571 205 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 576 198 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 580 202 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 584 133 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 588 197 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 593 187 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 597 196 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 601 200 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 605 203 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 610 185 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 614 145 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 618 205 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 622 208 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 626 208 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 631 205 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 635 108 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 639 208 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 643 206 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 648 208 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 652 191 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 656 208 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 660 203 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 665 187 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 669 201 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 673 201 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 677 188 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 681 203 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 686 208 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 690 200 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 694 208 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 698 199 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 703 208 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 707 204 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 711 208 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 715 201 5 MP
+gs
+PP
+gr
+DP
+0 -8 -8 0 0 8 8 0 720 191 5 MP
+gs
+PP
+gr
+DP
 gs 136 23 589 190 MR c np
 0 -11 136 212 2 MP stroke
 0 -5 140 212 2 MP stroke
@@ -659,10 +1082,12 @@ gs 136 23 589 190 MR c np
 0 -7 719 212 2 MP stroke
 0 -17 724 212 2 MP stroke
 0.694444 w
+0 sg
 588 0 136 212 2 MP stroke
 gr
 
 0.694444 w
+0 sg
 %%IncludeResource: font Helvetica
 /Helvetica /WindowsLatin1Encoding 41.6667 FMSR
 

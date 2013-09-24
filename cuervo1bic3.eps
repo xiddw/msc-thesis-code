@@ -1,9 +1,10 @@
 %!PS-Adobe-2.0 EPSF-1.2
 %%Creator: MATLAB, The MathWorks, Inc. Version 7.12.0.635 (R2011a). Operating System: Microsoft Windows 7.
-%%Title: .\cuervobic3.eps
-%%CreationDate: 09/23/2013  19:48:09
+%%Title: .\cuervo1bic3.eps
+%%CreationDate: 09/24/2013  02:08:13
 %%DocumentNeededFonts: Helvetica
 %%DocumentProcessColors: Cyan Magenta Yellow Black
+%%Extensions: CMYK
 %%Pages: 1
 %%BoundingBox:     9    -1   532   357
 %%EndComments
@@ -143,12 +144,14 @@ ISOLatin1Encoding WindowsLatin1Encoding copy pop
   smat stri tri_to_matrix tmat2 concatmatrix } bdef
 /ds {stri astore pop} bdef
 /dt {dtri astore pop} bdef
-/db {2 copy /cols xdef /rows xdef mul dup string
+/db {2 copy /cols xdef /rows xdef mul dup 3 mul string
   currentfile exch readhexstring pop
-  /bmap xdef pop pop} bdef
+  dup 0 3 index getinterval /rbmap xdef
+  dup 2 index dup getinterval /gbmap xdef
+  1 index dup 2 mul exch getinterval /bbmap xdef pop pop}bdef
 /it {gs np dtri aload pop moveto lineto lineto cp c
   cols rows 8 compute_transform 
-  {bmap} image gr}bdef
+  rbmap gbmap bbmap true 3 colorimage gr}bdef
 /il {newpath moveto lineto stroke}bdef
 currentdict end def
 %%EndProlog
@@ -175,7 +178,7 @@ bplot
 portraitMode 0000 0498 csm
 
    13     2   727   498 MR c np
-85 dict begin %Colortable dictionary
+86 dict begin %Colortable dictionary
 /c0 { 0.000000 0.000000 0.000000 sr} bdef
 /c1 { 1.000000 1.000000 1.000000 sr} bdef
 /c2 { 0.900000 0.000000 0.000000 sr} bdef
@@ -259,10 +262,14 @@ SO
 (4) s
 gs 104 37 621 409 MR c np
 2.77778 w
+/c8 { 0.000000 0.000000 1.000000 sr} bdef
+c8
 89 57 89 70 88 34 89 -32 88 -63 89 -91 88 -207 104 430 8 MP stroke
 gr
 
 2.77778 w
+c8
+0 sg
 %%IncludeResource: font Helvetica
 /Helvetica /WindowsLatin1Encoding 25 FMSR
 
@@ -275,6 +282,8 @@ gs 104 37 621 409 MR c np
 gr
 
 gs 89 23 650 422 MR c np
+/c9 { 0.000000 1.000000 0.000000 sr} bdef
+c9
    4    4  104  430 PO
    4    4  192  223 PO
    4    4  281  132 PO
@@ -293,17 +302,22 @@ gs 89 23 650 422 MR c np
    4    4  724  198 FO
 gr
 
+c9
 gs 104 37 621 409 MR c np
 gr
 
 gs 439 18 38 39 MR c np
+/c10 { 1.000000 0.000000 0.000000 sr} bdef
+c10
    6    6  458   37 PO
    6    6  458   37 FO
 gr
 
+c10
 gs 104 37 621 409 MR c np
 gr
 
+0 sg
 %%IncludeResource: font Helvetica
 /Helvetica /WindowsLatin1Encoding 13.8889 FMSR
 
@@ -319,10 +333,12 @@ gr
 (lambda=3200) s
 gs 539 410 180 31 MR c np
 2.77778 w
+c8
 41 0 547 425 2 MP stroke
 0.694444 w
 gr
 
+c8
 
 end %%Color Dict
 
