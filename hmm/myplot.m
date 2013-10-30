@@ -22,7 +22,9 @@ function [fp1, fp2] = myplot(objects, archivo)
             t = objects.(name);
             t = sort_params(o, t);
         else
-            t = objects.(name);            
+            t = objects.(name);
+            t.mtrans = estim_mtrans(t.hid);
+            objects.(name) = t;
         end
         
         mrows = nrows;

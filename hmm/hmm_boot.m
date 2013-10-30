@@ -12,27 +12,34 @@ mex -O -outdir hmm hmm/cfwd_bwd.cpp hmm\cpptipos\matriz.cpp hmm\cpptipos\vector.
 
 kk = [45:15:90, 100:20:200];
 
-stem = 'calderon40';
+stem = secid{II}; %'calderon40';
 
 grnd = strcat('pruebas\', stem, '_ground.csv');
 
 MAX_ITER_ESTIM = 30;
 MAX_ITER_HMM = 340;
 
-R_SERIES = 700;
+R_SERIES = 5;
 
-kk = 160;
+kk = words(II);
+realn = numtr(II);
+fprintf('\n\n');
+disp('%%%%%%%%%%%%%%%%%%%%%%%%%');
+fprintf('Display mod: %s (words: %d) [real: %d]\n', ...
+        stem, kk, realn);
+disp('%%%%%%%%%%%%%%%%%%%%%%%%%');    
+fprintf('\n');
 
-seq_boot = 2:3;
+seq_boot = (realn-2):(realn+1);
 seq_offs = 1;
 ss = length(seq_boot);
 
 for www = kk
-    tic;
+    %tic;
     % Variable latente z_n {speakers}
     % Variable observada x_n {diccionario}
        
-    ruta = strcat('pruebas\prb_b2_', stem, '_', int2str(kk), '\');
+    ruta = strcat('pruebas\prb_zz_', stem, '_', int2str(kk), '\');
     arch = strcat('pruebas\', stem, '_', int2str(kk), '.csv');
     disp(ruta);disp(arch);
     
@@ -71,8 +78,9 @@ for www = kk
     
     listLLRB = zeros(ss, R_SERIES);
 
-    for qqq = seq_boot
+    for qqq = seq_boot        
         NN = seq_offs + qqq;
+        fprintf('\n ------> Simulacion for n=%d <-------- \n', NN);
         
         %%% Primer modelo
         N1 = NN;	% Numero de speakers
@@ -98,7 +106,7 @@ for www = kk
         orig.priori = estim_priori(orig.hid);
         orig.memisn = estim_memisn(orig.hid, orig.obs);
 
-        tic;
+        %tic;
 
         maxLL1 = -1e12;
         maxLL2 = -1e12;
@@ -140,15 +148,16 @@ for www = kk
             %fprintf('c1: %f, m1 (%02d): %f; ', LL1(end), maxi1, maxLL1);
             %fprintf('c2: %f, m2 (%02d): %f; ', LL2(end), maxi2, maxLL2);
             %fprintf('\n');   
-            fprintf('------------\n');
+            fprintf('.');
         end
+        fprintf('\n');
 
         % Estimar log LikelihoodRatio (Observed)
         llro = maxLL2 - maxLL1;
         fprintf('maxLL1: [%f], maxLL2: [%f]\n', maxLL1, maxLL2);
         fprintf('log LR (obs): [%f] \n', llro);
 
-        toc; 
+        %toc; 
         
         %%
         ffin1 = sort_params(orig, fin1);
@@ -182,7 +191,7 @@ for www = kk
             maxi1 = 0;
             maxi2 = 0;
 
-            tic;    
+            %tic;    
             for ii = 1:(MAX_ITER_ESTIM)
                 esti1 = params_rnd(N1, K, KN1);
                 esti1.obs = hmm_sample(esti1, N1, K, T);
@@ -233,7 +242,7 @@ for www = kk
                 maxLLRB = llrb;
             end
 
-            toc;
+            %toc;
         end
 
         pvalue = (b + 1) / (R_SERIES + 1);
@@ -277,7 +286,7 @@ for www = kk
                   'listfp1', 'listfp2', 'listpva');
     
     close all;
-    toc;
+    %toc;
     
 end
 

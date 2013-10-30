@@ -1,0 +1,272 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%% CUERVO %%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+>> length(o.obs) = 7218
+>> length(o.hid) = 72207
+
+%%%%%%%%%%%%%%% PAR %%%%%%%%%%%%%%%
+
+archivo = 'f1_cuervo1_140_140';
+load(strcat('pruebas\prb_', archivo, '\6to7.mat'))
+ffin3 = ffin2;
+o = orig;
+load(strcat('pruebas\prb_', archivo, '\5to6.mat'))
+orig = o;
+
+obj = struct('ground', orig, 's5', ffin1, 's6', ffin2, 's7', ffin3)
+myplot(obj, 'cuervo1');
+
+% (Modelo 5) FP + FN = 48195 [0.66771]
+% (Modelo 6) FP + FN = 2399 [0.03324]
+% (Modelo 7) FP + FN = 11824 [0.16381]
+
+%%%%%%%%%%%%%%% BIC %%%%%%%%%%%%%%%
+
+archivo = 'f1_cuervo1_140_140';
+farchivo = 'cuervo1';
+load(strcat('pruebas\prb_', archivo, '\lists.mat'));
+plot_bic
+
+%%%%%%%%%%%%%%% BOOT %%%%%%%%%%%%%%%
+
+archivo = 'b2_cuervo1f_140';
+farchivo = 'cuervo1';
+load(strcat('pruebas\prb_', archivo, '\lists.mat'))
+plot_boot
+
+(Modelo 1) zvalue : 565.99010 >[reject:  73.12427]
+(Modelo 2) zvalue : 395.10177 >[reject: 104.42451]
+(Modelo 3) zvalue :  68.93120 <[reject:  75.37691]
+(Modelo 4) zvalue : 202.13425 >[reject:  80.44752]
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%% CALDER %%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+>> length(o.obs) = 676
+>> length(o.hid) = 6786
+
+%%%%%%%%%%%%%%% PAR %%%%%%%%%%%%%%%
+
+archivo = 'f1_calderon40_160';
+load(strcat('pruebas\prb_', archivo, '\3to4.mat'))
+ffin3 = ffin2;
+o = orig;
+load(strcat('pruebas\prb_', archivo, '\2to3.mat'))
+orig = o;
+
+obj = struct('ground', orig, 's2', ffin1, 's3', ffin2, 's4', ffin3)
+myplot(obj, 'calderon1');
+
+(Modelo 2) FP + FN = 4505 [0.66642]
+(Modelo 3) FP + FN = 547 [0.08092]
+(Modelo 4) FP + FN = 5343 [0.79038]
+
+%%%%%%%%%%%%%%% BIC %%%%%%%%%%%%%%%
+
+archivo = 'f1_calderon40_160';
+farchivo = 'calderon1';
+load(strcat('pruebas\prb_', archivo, '\lists.mat'));
+plot_bic
+
+%%%%%%%%%%%%%%% BOOT %%%%%%%%%%%%%%%
+
+archivo = 'b1_calderon40_160';
+farchivo = 'calderon1';
+load(strcat('pruebas\prb_', archivo, '\lists.mat'))
+plot_boot
+
+(Modelo 1) zvalue : 100.97198 > [reject:  62.06434]
+(Modelo 2) zvalue :  65.49230 > [reject:  61.72544]
+(Modelo 3) zvalue :  23.25407 < [reject: 161.06197]
+
+archivo = 'b2_calderon40_160';
+farchivo = 'calderon2';
+load(strcat('pruebas\prb_', archivo, '\lists.mat'))
+plot_boot
+
+(Modelo 2) zvalue :  34.35416 < [reject: 134.23067] % 3??
+(Modelo 3) zvalue :  30.30687 < [reject: 206.14360] % 4??
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%% SOLEDA %%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+>> length(o.obs) = 4154
+>> length(o.hid) = 41552
+
+%%%%%%%%%%%%%%% PAR %%%%%%%%%%%%%%%
+
+archivo = 'tt_soledad1f_90';
+load(strcat('pruebas\prb_', archivo, '\4to5.mat'))
+ffin3 = ffin2;
+o = orig;
+load(strcat('pruebas\prb_', archivo, '\3to4.mat'))
+orig = o;
+
+obj = struct('ground', orig, 's3', ffin1, 's4', ffin2, 's5', ffin3)
+myplot(obj, 'soledad1');
+
+(Modelo 3) FP + FN = 8066 [0.19417]
+(Modelo 4) FP + FN = 271 [0.00652]
+(Modelo 5) FP + FN = 15356 [0.36967]
+
+%%%%%%%%%%%%%%% BIC %%%%%%%%%%%%%%%
+
+archivo = 'tt_soledad1f_90';
+farchivo = 'soledad1';
+load(strcat('pruebas\prb_', archivo, '\lists.mat'));
+plot_bic
+
+%%%%%%%%%%%%%%% BOOT %%%%%%%%%%%%%%%
+
+archivo = 'b1_soledad1f_90';
+farchivo = 'soledad1';
+load(strcat('pruebas\prb_', archivo, '\lists.mat'))
+plot_boot
+
+(Modelo 1) zvalue : 523.21651 > [reject:  88.72366]
+(Modelo 2) zvalue : 471.96246 > [reject:  83.24714]
+(Modelo 3) zvalue : 139.02884 > [reject:  44.13669]
+(Modelo 4) zvalue :   0.00000 < [reject:   2.69957]
+
+archivo = 'b2_soledad1f_90';
+farchivo = 'soledad2';
+load(strcat('pruebas\prb_', archivo, '\lists.mat'))
+plot_boot
+
+(Modelo 4) zvalue :  92.54096 < [reject: 225.66277] 3??
+(Modelo 5) zvalue :  86.60423 > [reject:  73.53252] 44??
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%% LEAR3  %%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+>> length(o.obs) = 1636
+>> length(o.hid) = 16372
+
+%%%%%%%%%%%%%%% PAR %%%%%%%%%%%%%%%
+
+archivo = 'tt_lear3_140';
+load(strcat('pruebas\prb_', archivo, '\4to5.mat'))
+ffin3 = ffin2;
+ttin1 = ffin1;
+o = orig;
+load(strcat('pruebas\prb_', archivo, '\3to4.mat'))
+ffin2 = ttin1;
+orig = o;
+
+obj = struct('ground', orig, 's3', ffin1, 's4', ffin2, 's5', ffin3)
+myplot(obj, 'lear3');
+
+(Modelo 3) FP + FN = 10870 [0.66443]
+(Modelo 4) FP + FN = 2021 [0.12353]
+(Modelo 5) FP + FN = 6078 [0.37152]
+
+%%%%%%%%%%%%%%% BIC %%%%%%%%%%%%%%%
+
+archivo = 'tt_lear3_140';
+farchivo = 'lear3';
+load(strcat('pruebas\prb_', archivo, '\lists.mat'));
+plot_bic
+
+%%%%%%%%%%%%%%% BOOT %%%%%%%%%%%%%%%
+
+archivo = 'b4_lear3_160';
+farchivo = 'lear3';
+load(strcat('pruebas\prb_', archivo, '\lists.mat'))
+plot_boot
+
+(Modelo 1) zvalue : 498.81159 > [reject:  72.02802]
+(Modelo 2) zvalue : 143.59239 > [reject:  55.53953]
+(Modelo 3) zvalue :  65.37120 < [reject: 185.57833]
+(Modelo 4) zvalue :  92.76712 < [reject: 192.87263]
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%% NOCT   %%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+>> length(o.obs) = 6414
+>> length(o.hid) = 64165
+
+%%%%%%%%%%%%%%% PAR %%%%%%%%%%%%%%%
+
+archivo = 'f1_noct1f_120';
+load(strcat('pruebas\prb_', archivo, '\3to4.mat'))
+ffin3 = ffin2;
+ttin1 = ffin1;
+o = orig;
+load(strcat('pruebas\prb_', archivo, '\2to3.mat'))
+%ffin2 = ttin1;
+orig = o;
+
+obj = struct('ground', orig, 's2', ffin1, 's3', ffin2, 's4', ffin3)
+myplot(obj, 'noct1');
+
+(Modelo 2) FP + FN = 20504 [0.31968]
+(Modelo 3) FP + FN = 220 [0.00343]
+(Modelo 4) FP + FN = 30206 [0.47094]
+
+%%%%%%%%%%%%%%% BIC %%%%%%%%%%%%%%%
+
+archivo = 'f1_noct1f_120';
+farchivo = 'noct1';
+load(strcat('pruebas\prb_', archivo, '\lists.mat'));
+plot_bic
+
+%%%%%%%%%%%%%%% BOOT %%%%%%%%%%%%%%%
+
+archivo = 'b1_noct1f_120';
+farchivo = 'noct1';
+load(strcat('pruebas\prb_', archivo, '\lists.mat'))
+plot_boot
+
+(Modelo 1) zvalue : 1192.92534 > [reject:  71.03316]
+(Modelo 2) zvalue : 211.00366 < [reject: 822.05829]
+(Modelo 3) zvalue : 210.50292 > [reject:  90.33461]
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%% CATS   %%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+>> length(o.obs) = 4084
+>> length(o.hid) = 40865
+
+%%%%%%%%%%%%%%% PAR %%%%%%%%%%%%%%%
+
+archivo = 'tt_cats1f_90';
+load(strcat('pruebas\prb_', archivo, '\5to6.mat'))
+ffin3 = ffin2;
+ttin1 = ffin1;
+o = orig;
+load(strcat('pruebas\prb_', archivo, '\4to5.mat'))
+%ffin2 = ttin1;
+orig = o;
+
+obj = struct('ground', orig, 's4', ffin1, 's5', ffin2, 's6', ffin3)
+myplot(obj, 'cats1');
+
+(Modelo 4) FP + FN = 24374 [0.59682]
+(Modelo 5) FP + FN = 478 [0.01170]
+(Modelo 6) FP + FN = 21480 [0.52595]
+
+%%%%%%%%%%%%%%% BIC %%%%%%%%%%%%%%%
+
+archivo = 'tt_cats1f_90';
+farchivo = 'cats1';
+load(strcat('pruebas\prb_', archivo, '\lists.mat'));
+plot_bic
+
+%%%%%%%%%%%%%%% BOOT %%%%%%%%%%%%%%%
+
+archivo = 'b1_cats1f_90';
+farchivo = 'cats1';
+load(strcat('pruebas\prb_', archivo, '\lists.mat'))
+plot_boot
+
+(Modelo 1) zvalue : 306.32860 > [reject:  51.53527]
+(Modelo 2) zvalue : 141.84821 > [reject:  56.69761]
+(Modelo 3) zvalue : 150.18539 < [reject: 345.45642]
+(Modelo 4) zvalue :  57.68272 > [reject:  51.49817]

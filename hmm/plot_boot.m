@@ -12,7 +12,8 @@ for index = seq_boot
     figure; 
     
     zvalue = listLL2(index) - listLL1(index);
-    signif = xx(int16(0.95*nd));    
+    ii = int16(0.95*nd);
+    signif = xx(ii);    
     
     xmin = 0.9*min(xx);
     xmax = 1.1*max([xx, zvalue]);
@@ -22,30 +23,26 @@ for index = seq_boot
     
     rectangle('Position', [signif, ymin, xmax, ymax], ...
               'FaceColor', [225, 240, 225]/255, ...
-              'LineStyle', 'none');    
-          
+              'LineStyle', 'none');              
           
     hold on; 
         
     plot(xx, yy, 'LineWidth', 2);
     xlabel('log-likelihood ratio observada', 'FontSize', tit_fs);
     ylabel('Densidad de prob.', 'FontSize', tit_fs);
-
     
     plot([zvalue; zvalue], [min(yy); 1.1*max(yy)], '--r', 'LineWidth', 3);
     
     xlim([xmin, xmax]);
     ylim([ymin, ymax]);    
     
-    %sum(dd > zvalue), ...
-    %{
-    tt = title(sprintf('Prueba de hipótesis para m_%d vs m_%d interlocutores',...
-                seq_offs+ index, ...%%seq_boot(index), ...
-                seq_offs+ index+1));%%seq_boot(index)+1));
-    %}
     box off;
     
-    %set(tt, 'FontSize', font+3)
+    comp = '<';
+    if zvalue > signif; comp = '>'; end;
+    
+    fprintf('(Modelo %d) zvalue : %9.5f %c [reject: %9.5f]\n', ...
+            index, zvalue, comp, signif);    
     
     if exist('archivo', 'var') 
         name = archivo;
@@ -62,6 +59,4 @@ for index = seq_boot
         print(typef, arch, resol); 
         close;
     end    
-    
-    % print('-dpng', sprintf(''), resol);
 end
