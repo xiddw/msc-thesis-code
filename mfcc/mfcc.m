@@ -1,4 +1,4 @@
-function [ CC, FBE, frames ] = mfcc( speech, fs, Tw, Ts, alpha, window, R, M, N, L )
+function [ CC, FBE, frames, H, F] = mfcc( speech, fs, Tw, Ts, alpha, window, R, M, N, L )
 % MFCC Mel frequency cepstral coefficient feature extraction.
 %
 %   MFCC(S,FS,TW,TS,ALPHA,WINDOW,R,M,N,L) returns mel frequency 
@@ -154,7 +154,7 @@ function [ CC, FBE, frames ] = mfcc( speech, fs, Tw, Ts, alpha, window, R, M, N,
     MAG = abs( fft(frames,nfft,1) ); 
 
     % Triangular filterbank with uniformly spaced filters on mel scale
-    H = trifbank( M, K, R, fs, hz2mel, mel2hz ); % size of H is M x K 
+    [H F] = trifbank( M, K, R, fs, hz2mel, mel2hz ); % size of H is M x K 
 
     % Filterbank application to unique part of the magnitude spectrum
     FBE = H * MAG(1:K,:); % FBE( FBE<1.0 ) = 1.0; % apply mel floor
