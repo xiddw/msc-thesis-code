@@ -13,7 +13,7 @@ mex -O -outdir hmm hmm/cfwd_bwd.cpp hmm\cpptipos\matriz.cpp hmm\cpptipos\vector.
 resol = '-r300';
 typef = '-depsc';
 
-font = 12;
+lbl_fs = 16;
 tit_fs = 14;
 
 % EXAMPLE Simple demo of the MFCC function usage.
@@ -27,165 +27,154 @@ tit_fs = 14;
 %   Author: Kamil Wojcicki, September 2011
 
 
-    % Clean-up MATLAB's environment
-    %  clear all; close all; clc;  
-
-    
-    % Define variables
-    Tw = 200;                % analysis frame duration (ms)
-    Ts = 100;                % analysis frame shift (ms)
-    alpha = 0.97;           % preemphasis coefficient
-    M = 30;                 % number of filterbank channels 
-    C = 19;                 % number of cepstral coefficients
-    L = 22;                 % cepstral sine lifter parameter
-    LF = 300;               % lower frequency limit (Hz)
-    HF = 3700;              % upper frequency limit (Hz)
-    wav_file  = 'voice\aud\amorosos_fin.wav';  % input audio filename    
-    mfcc_file = 'voice\aud\amorosos_fin.csv';
-    
-    disp(strcat('Input: ', wav_file));
-    disp(strcat('Output: ', mfcc_file));
-
-    % Read speech samples, sampling rate and precision from file
-    [ speech, fs, nbits ] = wavread( wav_file );
-    % speech = speech(1:int64(length(speech )/10));
-
-    % Feature extraction (feature vectors as columns)
-    [ MFCCs, FBEs, frames, H, F ] = ...
-                    mfcc( speech, fs, Tw, Ts, alpha, @hamming, [LF HF], M, C+1, L );
-           
-	figure;
-        
-    set(0, 'DefaultAxesFontSize', font)
-
-    HH = H';
-	plot(F(1:1000), HH(1:1000, :), 'LineWidth', 2);
-    xlabel('Frecuencia (Hz)', 'FontSize', tit_fs);
-    ylabel('Magnitud', 'FontSize', tit_fs);
-    
-    box off;
-    
-    set(gcf, 'PaperPositionMode', 'manual');
-    set(gcf, 'PaperUnits', 'inches');
-    set(gcf, 'PaperSize', [8 3]);
-    set(gcf, 'PaperPosition', [0 0 8 3]);
-
-    arch = 'mfcc_bankfilter';
-    print(typef, arch, resol);     
-    print('-dpdf', arch, resol);
-      
-    figure;    
-    csvwrite(mfcc_file, MFCCs(2:end, :));
+% Clean-up MATLAB's environment
+%  clear all; close all; clc;  
 
 
-    % Generate data needed for plotting 
-    [ Nw, NF ] = size( frames );                % frame length and number of frames
-    time_frames = (0:(NF-1))*Ts*0.001+0.5*Nw/fs;  % time vector (s) for frames 
-    time = (0:(length(speech)-1))/fs;           % time vector (s) for signal samples 
-    logFBEs = 20*log10( FBEs );                 % compute log FBEs for plotting
-    logFBEs_floor = max(logFBEs(:))-50;         % get logFBE floor 50 dB below max
-    logFBEs( logFBEs<logFBEs_floor ) = logFBEs_floor; % limit logFBE dynamic range
+% Define variables
+Tw = 200;                % analysis frame duration (ms)
+Ts = 100;                % analysis frame shift (ms)
+alpha = 0.97;           % preemphasis coefficient
+M = 30;                 % number of filterbank channels 
+C = 19;                 % number of cepstral coefficients
+L = 22;                 % cepstral sine lifter parameter
+LF = 300;               % lower frequency limit (Hz)
+HF = 3700;              % upper frequency limit (Hz)
+wav_file  = 'voice\aud\amorosos_finf.wav';  % input audio filename    
+mfcc_file = 'voice\aud\amorosos_finf.csv';
 
-    sp = [];
-    sl = [];
-    st = [];
-    
-    num = 400;
-    idx = 1;
+disp(strcat('Input: ', wav_file));
+disp(strcat('Output: ', mfcc_file));
 
-    % Generate plots
-    %{
-    figure('Position', [30 30 800 600], 'PaperPositionMode', 'auto', ... 
-              'color', 'w', 'PaperOrientation', 'landscape', 'Visible', 'on' ); 
-    %}
-    
-    mfilename = 'mfcc_result';
+% Read speech samples, sampling rate and precision from file
+[ speech, fs, nbits ] = wavread( wav_file );
+% speech = speech(1:int64(length(speech )/10));
 
-    % sp(1) = subplot( num + 10 + idx );
-    % idx = idx + 1;
-    plot(time, speech, 'k');
-    box off;
-    ylim([min(speech)-0.5 max(speech)+0.5]);
-    xlim([min(time_frames) max(time_frames)]);
-    xlabel('Tiempo (s)', 'FontSize', tit_fs); 
-    ylabel('Amplitud', 'FontSize', tit_fs); 
-    % st(1) = title('Nueva señal de audio'); 
-    set(gcf, 'PaperPositionMode', 'manual');
-    set(gcf, 'PaperUnits', 'inches');
-    set(gcf, 'PaperSize', [8 3]);
-    set(gcf, 'PaperPosition', [0 0 8 3]);
-    
-    print('-dpdf', sprintf('%s1.pdf', mfilename), resol); 
-    print(typef, sprintf('%s1.eps', mfilename), resol);     
-    
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    
-    figure; 
+% Feature extraction (feature vectors as columns)
+[ MFCCs, FBEs, frames, H, F ] = ...
+                mfcc( speech, fs, Tw, Ts, alpha, @hamming, [LF HF], M, C+1, L );
 
-    % sp(2) = subplot( num + 10 + idx );
-    % idx = idx + 1;
-    imagesc( time_frames, (1:C), logFBEs); 
-    colorbar();
-    axis('xy');
-    xlim([min(time_frames) max(time_frames)]);
-    xlabel('Time (s)', 'FontSize', tit_fs); 
-    ylabel('Num. de Coef.', 'FontSize', tit_fs); 
-    % title( 'Respuesta al banco de filtros Mel (log)', 'FontSize', 16); 
-    set(gcf, 'PaperPositionMode', 'manual');
-    set(gcf, 'PaperUnits', 'inches');
-    set(gcf, 'PaperSize', [8 3]);
-    set(gcf, 'PaperPosition', [0 0 8 3]);
-    
-    print('-dpdf', sprintf('%s2.pdf', mfilename), resol); 
-    print(typef, sprintf('%s2.eps', mfilename), resol);     
-    
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    
-    figure;     
-    % sp(3) = subplot( num + 10 + idx );
-    % idx = idx + 1;
-    imagesc(time_frames, (1:C), MFCCs(2:end,:)); % HTK's TARGETKIND: MFCC
-    colorbar();
-    axis('xy');
-    xlim([ min(time_frames) max(time_frames) ]);
-    xlabel('Tiempo (s)', 'FontSize', tit_fs); 
-    ylabel('Num. de Coef.', 'FontSize', tit_fs);
-    % st(3) = title( 'Mel frequency cepstrum coefficient' );
-    % Print figure to pdf and eps files    
-    set(gcf, 'PaperPositionMode', 'manual');
-    set(gcf, 'PaperUnits', 'inches');
-    set(gcf, 'PaperSize', [8 3]);
-    set(gcf, 'PaperPosition', [0 0 8 3]);
-    
-    print('-dpdf', sprintf('%s3.pdf', mfilename), resol); 
-    print(typef, sprintf('%s3.eps', mfilename), resol);     
-    
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    
-    figure; 
-    % sp(4) = subplot( num + 10 + idx );
-    % idx = idx + 1;
-    aa = kmeans(MFCCs(2:end, :)', 25);
-    imagesc(time_frames, (1:C), aa' );
-    colorbar();
-    % st(4) = title( 'Coeficientes agrupados con k-means' );
-    ylabel('Clusters', 'FontSize', tit_fs);  
-    xlabel('Tiempo (s)', 'FontSize', tit_fs);    
-    box off;
-    set(gca, 'yticklabel', []);
+figure;
 
-    % Print figure to pdf and eps files    
-    set(gcf, 'PaperPositionMode', 'manual');
-    set(gcf, 'PaperUnits', 'inches');
-    set(gcf, 'PaperSize', [8 3]);
-    set(gcf, 'PaperPosition', [0 0 8 3]);
-    
-    print('-dpdf', sprintf('%s4.pdf', mfilename), resol); 
-    print(typef, sprintf('%s4.eps', mfilename), resol); 
-    
-    close all;
-    
+HH = H';
+plot(F(1:1000), HH(1:1000, :), 'LineWidth', 2);
+set(gca, 'FontSize', tit_fs);
+xlabel('Frecuencia (Hz)', 'FontSize', lbl_fs);
+ylabel('Magnitud', 'FontSize', lbl_fs);
+
+box off;
+
+set(gcf, 'PaperPositionMode', 'manual');
+set(gcf, 'PaperUnits', 'inches');
+set(gcf, 'PaperSize', [8 2.5]);
+set(gcf, 'PaperPosition', [0 0 8 2.5]);
+
+arch = 'mfcc_filterbank';
+print(typef, arch, resol);     
+print('-dpdf', arch, resol);
+
+figure;    
+csvwrite(mfcc_file, MFCCs(2:end, :));
+
+
+% Generate data needed for plotting 
+[ Nw, NF ] = size( frames );                % frame length and number of frames
+time_frames = (0:(NF-1))*Ts*0.001+0.5*Nw/fs;  % time vector (s) for frames 
+time = (0:(length(speech)-1))/fs;           % time vector (s) for signal samples 
+logFBEs = 20*log10( FBEs );                 % compute log FBEs for plotting
+logFBEs_floor = max(logFBEs(:))-50;         % get logFBE floor 50 dB below max
+logFBEs( logFBEs<logFBEs_floor ) = logFBEs_floor; % limit logFBE dynamic range
+
+sp = [];
+sl = [];
+st = [];
+
+num = 400;
+idx = 1;
+
+% Generate plots
+
+mfilename = 'mfcc_result';
+
+plot(time, speech, 'k');
+box off;
+set(gca, 'FontSize', tit_fs);
+ylim([min(speech)-0.5 max(speech)+0.5]);
+xlim([min(time_frames) max(time_frames)]);
+xlabel('Tiempo (s)', 'FontSize', lbl_fs); 
+ylabel('Amplitud', 'FontSize', lbl_fs); 
+
+set(gcf, 'PaperPositionMode', 'manual');
+set(gcf, 'PaperUnits', 'inches');
+set(gcf, 'PaperSize', [8 2.5]);
+set(gcf, 'PaperPosition', [0 0 8 2.5]);
+
+print('-dpdf', sprintf('%s1.pdf', mfilename), resol); 
+print(typef, sprintf('%s1.eps', mfilename), resol);     
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+figure; 
+imagesc( time_frames, (1:C), logFBEs); 
+colorbar();
+axis('xy');
+set(gca, 'FontSize', tit_fs);
+xlim([min(time_frames) max(time_frames)]);
+xlabel('Tiempo (s)', 'FontSize', lbl_fs); 
+ylabel('Num. de Coef.', 'FontSize', lbl_fs); 
+
+set(gcf, 'PaperPositionMode', 'manual');
+set(gcf, 'PaperUnits', 'inches');
+set(gcf, 'PaperSize', [8 2.5]);
+set(gcf, 'PaperPosition', [0 0 8 2.5]);
+
+print('-dpdf', sprintf('%s2.pdf', mfilename), resol); 
+print(typef, sprintf('%s2.eps', mfilename), resol);     
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+figure;     
+imagesc(time_frames, (1:C), MFCCs(2:end,:)); % HTK's TARGETKIND: MFCC
+colorbar();
+axis('xy');
+xlim([ min(time_frames) max(time_frames) ]);
+set(gca, 'FontSize', tit_fs);
+xlabel('Tiempo (s)', 'FontSize', lbl_fs); 
+ylabel('Num. de Coef.', 'FontSize', lbl_fs);
+
+% Print figure to pdf and eps files    
+set(gcf, 'PaperPositionMode', 'manual');
+set(gcf, 'PaperUnits', 'inches');
+set(gcf, 'PaperSize', [8 2.5]);
+set(gcf, 'PaperPosition', [0 0 8 2.5]);
+
+print('-dpdf', sprintf('%s3.pdf', mfilename), resol); 
+print(typef, sprintf('%s3.eps', mfilename), resol);     
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+figure; 
+aa = kmeans(MFCCs(2:end, :)', 25);
+imagesc(time_frames, (1:C), aa' );
+colorbar();
+set(gca, 'FontSize', tit_fs);
+ylabel('Clusters', 'FontSize', lbl_fs);  
+xlabel('Tiempo (s)', 'FontSize', lbl_fs);    
+box off;
+set(gca, 'yticklabel', []);
+
+% Print figure to pdf and eps files    
+set(gcf, 'PaperPositionMode', 'manual');
+set(gcf, 'PaperUnits', 'inches');
+set(gcf, 'PaperSize', [8 2.5]);
+set(gcf, 'PaperPosition', [0 0 8 2.5]);
+
+print('-dpdf', sprintf('%s4.pdf', mfilename), resol); 
+print(typef, sprintf('%s4.eps', mfilename), resol); 
+
+close all;
+
 % EOF
