@@ -1,3 +1,21 @@
+%{
+    cd 'E:\ESCUELA\CIMAT\4 Semestre\ST2\prog\'
+    
+    cd 'C:\Users\xiddw\Documents\GitHub\msc-thesis-code\'
+    %cd 'C:\Users\Estudiante\Documents\GitHub\msc-thesis-code\'
+    addpath('hmm\')
+    addpath('mfcc\')
+    addpath('voice\')
+    addpath('freezeColors\')
+mex -O -outdir hmm hmm/cfwd_bwd.cpp hmm\cpptipos\matriz.cpp hmm\cpptipos\vector.cpp
+%}
+
+resol = '-r300';
+typef = '-depsc';
+
+lbl_fs = 16;
+tit_fs = 14;
+
 tic;
 
 sp = [];
@@ -7,8 +25,8 @@ st = [];
 %[x fs bps] = wavread("E:/PT1/data/amorosos_fin.wav");
 % [x fs bps] = wavread('track8a.wav');
 
-arch1 = 'mfcc/nocturno1.wav';
-arch2 = 'mfcc/nocturno1f.wav';
+arch1 = 'voice/aud/amorosos_fin.wav';
+arch2 = 'voice/aud/amorosos_finf.wav';
 
 [x fs bps] = wavread(arch1);
 
@@ -33,15 +51,30 @@ cc = jet(num_silence);
 
 tt = (1:length(x))/fs;
 
-sp(1) = subplot(6, 1, 1);
-sl(1) = plot(tt, x, 'k');
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%st(1) = title( 'Señal de audio original'); 
-ll(1) = ylabel('Amplitud');
-%ll(4) = xlabel('Tiempo (s)');
+figure; 
+plot(tt, x, 'k');
+box off; 
+set(gca, 'FontSize', tit_fs);
+ylabel('Amplitud', 'FontSize', lbl_fs);
+xlabel('Tiempo (s)', 'FontSize', lbl_fs);
 
-sp(2) = subplot(6, 1, 2);
-sl(2) = plot(tt, x, 'k');
+% Print figure to pdf and eps files    
+set(gcf, 'PaperPositionMode', 'manual');
+set(gcf, 'PaperUnits', 'inches');
+set(gcf, 'PaperSize', [8 3]);
+set(gcf, 'PaperPosition', [0 0 8 3]);
+
+print('-dpdf', 'signal0', resol); 
+print(typef, 'signal0', resol); 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+figure; 
+plot(tt, x, 'k');
 
 hold on;
 j = 1;
@@ -62,34 +95,51 @@ for i = 1:num_silence
     pq = b - a;
 
     tt = (a:b) / fs;
+    
+    % Erase x-axis :P
+    plot([c, a]/fs, [0, 0], 'color', 'w', ...
+            'linestyle', '-', ...
+            'linewidth', 2.0);    
 	
-    cl(1) = plot([a, a]/fs, [xmin, xmax]);
-    cl(2) = plot([b, b]/fs, [xmin, xmax]);
-    
-    bd = plot([c, a]/fs, [0, 0], '-w', 'linewidth', 2.0);
-    c = b;    
-    
-    %st(2) = title( 'Señal de audio procesada'); 
-    ll(2) = ylabel('Amplitud');
-    
-    set(cl, 'color', 'r', ...
+    % Draw first segment limit
+    plot([a, a]/fs, [xmin, xmax], 'color', 'r', ...
             'linewidth', 3.0, ...
-            'linestyle', '--');      
-        
-    set(bd, 'color', 'w', ...
-            'linewidth', 2.0, ...
-            'linestyle', '-');        
+            'linestyle', '--');
+    
+    % Draw second segment limit
+    plot([b, b]/fs, [xmin, xmax], 'color', 'r', ...
+            'linewidth', 3.0, ...
+            'linestyle', '--');
+    
+    c = b;    
     
     j = j + 1;
     zz(pp: (pp+pq)) = z;
     
     pp = pp + pq;
 end
-%ll(3) = xlabel('Tiempo (s)');
+box off;
+set(gca, 'FontSize', tit_fs);
+ylabel('Amplitud', 'FontSize', lbl_fs);
+xlabel('Tiempo (s)', 'FontSize', lbl_fs);
+
+% Print figure to pdf and eps files    
+set(gcf, 'PaperPositionMode', 'manual');
+set(gcf, 'PaperUnits', 'inches');
+set(gcf, 'PaperSize', [8 3]);
+set(gcf, 'PaperPosition', [0 0 8 3]);
+
+print('-dpdf', 'signal1', resol); 
+print(typef, 'signal1', resol); 
 
 zz = zz(1:pp);
 
 wavwrite(zz, fs, arch2);
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+figure;
 
 min_x = 0;
 max_x = length(zz)/fs;
@@ -97,43 +147,40 @@ max_x = length(zz)/fs;
 max_y = max(ceil(abs(10*[min(zz), max(zz)])) / 10);
 min_y = -max_y;
 
-%{
-sp(3) = subplot(3, 1, 3);
 zz = [zz; zeros(length(x) - length(zz), 1)];
 tt = (1:length(zz))/fs;
-sl(3) = plot(tt, zz, 'k');
+plot(tt, zz, 'k');
 
-st(3) = title( 'Señal de audio segmentada'); 
-ll(4) = ylabel('Amplitud');
-%}
+box off;
+set(gca, 'FontSize', tit_fs);
+ylabel('Amplitud', 'FontSize', lbl_fs);
+xlabel('Tiempo (s)', 'FontSize', lbl_fs);
 
-%set(sp, 'FontSize', 14)
-set(sp, 'box', 'off')
-set(sp, 'color', 'white')
-set(sp, 'linewidth', 1)
-set(sp, 'FontSize', 12)
+% Print figure to pdf and eps files    
+set(gcf, 'PaperPositionMode', 'manual');
+set(gcf, 'PaperUnits', 'inches');
+set(gcf, 'PaperSize', [8 3]);
+set(gcf, 'PaperPosition', [0 0 8 3]);
 
-set(ll, 'fontSize', 12)
+print('-dpdf', 'signal2', resol); 
+print(typef, 'signal2', resol); 
 
-%set(sp([1]), 'xticklabel', []);
-set(sp, 'ycolor', 'black');
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%set(st, 'FontSize', 16)
+toc;
 
-set(sl, 'linewidth', 1.1)
-
-%set(sp, 'color', 'red')
-
+close all;
 return;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-cc = melcepst(zz);
-cc = flipud(cc');
+% cc = melcepst(zz);
+% cc = flipud(cc');
 % subplot(3, 1, 2);
 % imagesc(cc);
 
 
-[ka kb kc] = kmeans(cc', 300);
+% [ka kb kc] = kmeans(cc', 300);
 % hold on;
 % subplot(3, 1, 3);
 
@@ -147,4 +194,3 @@ cc = flipud(cc');
 % hold off;
 % colormap("summer");
 
-toc

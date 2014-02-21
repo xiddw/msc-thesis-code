@@ -1,3 +1,15 @@
+%{
+    cd 'E:\ESCUELA\CIMAT\4 Semestre\ST2\prog\'
+    
+    cd 'C:\Users\xiddw\Documents\GitHub\msc-thesis-code\'
+    %cd 'C:\Users\Estudiante\Documents\GitHub\msc-thesis-code\'
+    addpath('hmm\')
+    addpath('mfcc\')
+    addpath('voice\')
+    addpath('freezeColors\')
+mex -O -outdir hmm hmm/cfwd_bwd.cpp hmm\cpptipos\matriz.cpp hmm\cpptipos\vector.cpp
+%}
+
 resol = '-r300';
 typef = '-depsc';
 
