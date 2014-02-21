@@ -64,8 +64,8 @@ xlabel('Tiempo (s)', 'FontSize', lbl_fs);
 % Print figure to pdf and eps files    
 set(gcf, 'PaperPositionMode', 'manual');
 set(gcf, 'PaperUnits', 'inches');
-set(gcf, 'PaperSize', [8 3]);
-set(gcf, 'PaperPosition', [0 0 8 3]);
+set(gcf, 'PaperSize', [8 2.5]);
+set(gcf, 'PaperPosition', [0 0 8 2.5]);
 
 print('-dpdf', 'signal0', resol); 
 print(typef, 'signal0', resol); 
@@ -126,8 +126,8 @@ xlabel('Tiempo (s)', 'FontSize', lbl_fs);
 % Print figure to pdf and eps files    
 set(gcf, 'PaperPositionMode', 'manual');
 set(gcf, 'PaperUnits', 'inches');
-set(gcf, 'PaperSize', [8 3]);
-set(gcf, 'PaperPosition', [0 0 8 3]);
+set(gcf, 'PaperSize', [8 2.5]);
+set(gcf, 'PaperPosition', [0 0 8 2.5]);
 
 print('-dpdf', 'signal1', resol); 
 print(typef, 'signal1', resol); 
@@ -159,8 +159,8 @@ xlabel('Tiempo (s)', 'FontSize', lbl_fs);
 % Print figure to pdf and eps files    
 set(gcf, 'PaperPositionMode', 'manual');
 set(gcf, 'PaperUnits', 'inches');
-set(gcf, 'PaperSize', [8 3]);
-set(gcf, 'PaperPosition', [0 0 8 3]);
+set(gcf, 'PaperSize', [8 2.5]);
+set(gcf, 'PaperPosition', [0 0 8 2.5]);
 
 print('-dpdf', 'signal2', resol); 
 print(typef, 'signal2', resol); 
