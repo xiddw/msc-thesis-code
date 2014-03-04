@@ -120,7 +120,7 @@ colormap(ametrine(100, 'invert', 1));
 caxis auto
 
 xlabel('lambda', 'FontSize', tit_fs)
-ylabel('Modelo seleccionado', 'FontSize', tit_fs)
+ylabel('Modelos', 'FontSize', tit_fs)
 
 %figure;
 quiver(xx, yy, px, py, 'k', 'LineWidth', 2);
@@ -156,7 +156,7 @@ ll = bb(:, mp);
 [~, ml] = max(ll);
 
 sp(1) = plot(y, ll, 'b');
-xlabel('Modelo seleccionado', 'FontSize', tit_fs)
+xlabel('Modelos', 'FontSize', tit_fs)
 ylabel('log-verosimilitud', 'FontSize', tit_fs)
 
 hold on;

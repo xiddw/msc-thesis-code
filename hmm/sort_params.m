@@ -15,16 +15,18 @@ function [ param ] = sort_params(orig, dest, collapse)
     difsize = (numel(unique(orig.hid)) ~= numel(unique(dest.hid)));
     
     per = zeros(n, 1);
+    % If different number of states between two items
     if(max(orig.hid) ~= max(dest.hid))
         for i = 1:n
             per(i) = mode(orig.hid(dest.hid == i));
         end
     else
         for i = 1:n
-            per(i) = mode(orig.hid(dest.hid == i));
+            % per(i) = mode(orig.hid(dest.hid == i));
+            [~, per] = max(dest.mtrans, [], 1);
         end      
     end
-    %[~, per] = max(dest.mtrans, [], 1);
+    %
     %disp(per);
     
     if difsize && collapse
@@ -45,8 +47,8 @@ function [ param ] = sort_params(orig, dest, collapse)
         
         [param] = sort_params(orig, dest);
     else
-        [ignor, per] = sort(per);
-        [ignor, per] = sort(per);
+        [~, per] = sort(per);
+        [~, per] = sort(per);
 
         param = dest;
         
