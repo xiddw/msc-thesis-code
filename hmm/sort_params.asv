@@ -49,21 +49,17 @@ function [ param ] = sort_params(orig, dest, collapse)
     % normal codex
         % [~, per] = sort(per);
         % [~, per] = sort(per);
-        [simi, pos] = pdist2(orig.memisn, dest.memisn, ...
-                                'cosine', 'smallest', 1);
+        [simi, pos] = pdist2(dest.memisn, orig.memisn, ...
+                                'euclidean', 'smallest', 1);
                         
         [~, per] = sort(pos + simi);
-        %[~, per] = sort(per);
 
         param = dest;
         
-        disp(size(per));
-        disp(size(param.mtrans));
-        
-        param.memisn = param.memisn(per, :);
+        d
         
         param.mtrans = param.mtrans(per, :);        
-        
+        %param.memisn = param.memisn(per, :);
 
         for i = 1:n
             idx = (param.hid == i);

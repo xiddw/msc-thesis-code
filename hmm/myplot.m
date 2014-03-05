@@ -78,8 +78,8 @@ function [fp1, fp2] = myplot(objects, archivo)
 
         sy = max(t.memisn(:));
         sy = str2double(sprintf('%5.2f', sy)) + 0.01;
-        s = 1;
         
+        %s = 1;        
         %cm = colormap(jet(spk));
         
         for s = 1:spk        
