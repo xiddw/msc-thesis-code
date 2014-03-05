@@ -46,9 +46,7 @@ function [ param ] = sort_params(orig, dest, collapse)
         
         [param] = sort_params(orig, dest);
     else
-    % normal codex
-        % [~, per] = sort(per);
-        % [~, per] = sort(per);
+    % normal code
         [simi, pos] = pdist2(orig.memisn, dest.memisn, ...
                                 'cosine', 'smallest', 1);
                         
@@ -57,14 +55,8 @@ function [ param ] = sort_params(orig, dest, collapse)
 
         param = dest;
         
-        disp(size(per));
-        disp(size(param.mtrans));
-        
         param.memisn = param.memisn(per, :);
         
-        param.mtrans = param.mtrans(per, :);        
-        
-
         for i = 1:n
             idx = (param.hid == i);
             param.hid(idx) = per(i) + offset;
