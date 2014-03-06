@@ -1,6 +1,6 @@
 %{
-    cd 'E:\ESCUELA\CIMAT\4 Semestre\ST2\prog\'
-    cd 'C:\Users\Estudiante\Documents\GitHub\msc-thesis-code\'
+    cd 'C:\Users\xiddw\Documents\GitHub\msc-thesis-code\'
+    % cd 'C:\Users\Estudiante\Documents\GitHub\msc-thesis-code\'
     addpath('hmm\')
     % addpath('voicebox\')
     addpath('mfcc\')

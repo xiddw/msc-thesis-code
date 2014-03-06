@@ -54,11 +54,8 @@ disp(strcat('Output: ', mfcc_file));
 [ MFCCs, FBEs, frames, H, F ] = ...
                 mfcc( speech, fs, Tw, Ts, alpha, @hamming, [LF HF], M, C+1, L );
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Draw triangular bank-filter
-
 figure;
+
 HH = H';
 plot(F(1:1000), HH(1:1000, :), 'LineWidth', 2);
 set(gca, 'FontSize', tit_fs);
@@ -71,8 +68,6 @@ set(gcf, 'PaperPositionMode', 'manual');
 set(gcf, 'PaperUnits', 'inches');
 set(gcf, 'PaperSize', [8 2.5]);
 set(gcf, 'PaperPosition', [0 0 8 2.5]);
-
-colormap(morgenstemning);
 
 arch = 'mfcc_filterbank';
 print(typef, arch, resol);     
@@ -100,10 +95,6 @@ idx = 1;
 
 mfilename = 'mfcc_result';
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%% Plot original signal
-
 plot(time, speech, 'k');
 box off;
 set(gca, 'FontSize', tit_fs);
@@ -117,13 +108,11 @@ set(gcf, 'PaperUnits', 'inches');
 set(gcf, 'PaperSize', [8 2.5]);
 set(gcf, 'PaperPosition', [0 0 8 2.5]);
 
-print(typef, sprintf('%s1.eps', mfilename), resol);
 print('-dpdf', sprintf('%s1.pdf', mfilename), resol); 
-
+print(typef, sprintf('%s1.eps', mfilename), resol);     
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%% Plot log-FBE
 
 figure; 
 imagesc( time_frames, (1:C), logFBEs); 
@@ -139,14 +128,11 @@ set(gcf, 'PaperUnits', 'inches');
 set(gcf, 'PaperSize', [8 2.5]);
 set(gcf, 'PaperPosition', [0 0 8 2.5]);
 
-colormap(morgenstemning);
-
-print(typef, sprintf('%s2.eps', mfilename), resol);     
 print('-dpdf', sprintf('%s2.pdf', mfilename), resol); 
+print(typef, sprintf('%s2.eps', mfilename), resol);     
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%% Plot MFCC
 
 figure;     
 imagesc(time_frames, (1:C), MFCCs(2:end,:)); % HTK's TARGETKIND: MFCC
@@ -163,14 +149,11 @@ set(gcf, 'PaperUnits', 'inches');
 set(gcf, 'PaperSize', [8 2.5]);
 set(gcf, 'PaperPosition', [0 0 8 2.5]);
 
-colormap(morgenstemning);
-
-print(typef, sprintf('%s3.eps', mfilename), resol);     
 print('-dpdf', sprintf('%s3.pdf', mfilename), resol); 
+print(typef, sprintf('%s3.eps', mfilename), resol);     
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%% Plot result (kmeans)
 
 figure; 
 aa = kmeans(MFCCs(2:end, :)', 25);
@@ -188,10 +171,8 @@ set(gcf, 'PaperUnits', 'inches');
 set(gcf, 'PaperSize', [8 2.5]);
 set(gcf, 'PaperPosition', [0 0 8 2.5]);
 
-colormap(morgenstemning);
-
-print(typef, sprintf('%s4.eps', mfilename), resol); 
 print('-dpdf', sprintf('%s4.pdf', mfilename), resol); 
+print(typef, sprintf('%s4.eps', mfilename), resol); 
 
 close all;
 
